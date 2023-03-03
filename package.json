@@ -1,0 +1,60 @@
+{
+  "name": "nuxt-quasar-ui",
+  "version": "1.0.0",
+  "description": "Quasar Module for Nuxt (Unofficial)",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Maiquu/nuxt-quasar"
+  },
+  "scripts": {
+    "prepack": "nuxt-module-build",
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest watch"
+  },
+  "peerDependencies": {
+    "quasar": "^2.8.0"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.2.3",
+    "@rollup/pluginutils": "^5.0.2",
+    "magic-string": "^0.30.0",
+    "p-memoize": "^7.1.1",
+    "unplugin": "^1.1.0"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^0.2.5",
+    "@nuxt/eslint-config": "^0.1.1",
+    "@nuxt/module-builder": "^0.2.1",
+    "@nuxt/schema": "^3.2.3",
+    "@nuxt/test-utils": "^3.2.3",
+    "@quasar/extras": "^1.15.11",
+    "changelogen": "^0.4.1",
+    "eslint": "^8.35.0",
+    "nuxt": "^3.2.3",
+    "quasar": "^2.11.7",
+    "sass": "1.32.12",
+    "vite": "^4.1.4",
+    "vitest": "^0.28.5",
+    "vue": "^3.2.47",
+    "webpack": "^5.75.0"
+  }
+}
