@@ -21,6 +21,8 @@ export interface ModuleOptions {
    *      --> no, don't make the variables available in vue files
    *   - `'src/my-variables.sass'`
    *      --> yes, and I'd also like to customize those variables
+   *
+   * @default false
    */
   sassVariables?: string | boolean
 
@@ -55,7 +57,7 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: 'quasar'
   },
   defaults: {
-    sassVariables: true,
+    sassVariables: false,
     plugins: [],
     extras: {}
   },
@@ -71,9 +73,12 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.options.css.push(...options.extras.fontIcons.map(resolveFontIcon))
     }
 
-    nuxt.options.css.push(
-      'quasar/src/css/index.sass'
-    )
+    if (options.sassVariables) {
+      nuxt.options.css.push('quasar/src/css/index.sass')
+    } else {
+      nuxt.options.css.push('quasar/dist/quasar.css')
+    }
+
 
     nuxt.options.vite.optimizeDeps ??= {}
     nuxt.options.vite.optimizeDeps.exclude ??= []
