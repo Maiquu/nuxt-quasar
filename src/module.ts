@@ -8,7 +8,7 @@ import { importJSON } from './utils'
 import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
 import { AssetURLOptions } from 'vue/compiler-sfc'
 import { ModuleCustomTab } from '@nuxt/devtools'
-import { DefinePlugin } from 'webpack'
+// import { DefinePlugin } from 'webpack'
 import { readFile } from 'fs/promises'
 import { vuePluginTemplate } from './plugin'
 
@@ -161,7 +161,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     nuxt.hook('webpack:config', (configs) => {
       configs.forEach(config => {
-        const ssr = nuxt.options.ssr
         const isClient = config.name === 'client'
         const isServer = !isClient
         const context: ModuleContext = {
@@ -172,13 +171,14 @@ export default defineNuxtModule<ModuleOptions>({
 
         config.plugins ??= []
         config.plugins.push(
-          new DefinePlugin({
-            __QUASAR_VERSION__: JSON.stringify(quasarVersion),
-            __QUASAR_SSR__: ssr,
-            __QUASAR_SSR_SERVER__: ssr && isServer,
-            __QUASAR_SSR_CLIENT__: ssr && isClient,
-            __QUASAR_SSR_PWA__: false
-          })
+          // TODO: Prepack tries to bundle webpack
+          // new DefinePlugin({
+          //   __QUASAR_VERSION__: JSON.stringify(quasarVersion),
+          //   __QUASAR_SSR__: ssr,
+          //   __QUASAR_SSR_SERVER__: ssr && isServer,
+          //   __QUASAR_SSR_CLIENT__: ssr && isClient,
+          //   __QUASAR_SSR_PWA__: false
+          // })
         )
 
         config.plugins.push(

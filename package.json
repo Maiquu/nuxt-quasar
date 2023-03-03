@@ -1,6 +1,6 @@
 {
   "name": "nuxt-quasar-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Quasar Module for Nuxt (Unofficial)",
   "license": "MIT",
   "type": "module",
@@ -54,7 +54,6 @@
     "sass": "1.32.12",
     "vite": "^4.1.4",
     "vitest": "^0.28.5",
-    "vue": "^3.2.47",
-    "webpack": "^5.75.0"
+    "vue": "^3.2.47"
   }
 }
