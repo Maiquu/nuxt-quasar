@@ -11,6 +11,7 @@ import { ModuleCustomTab } from '@nuxt/devtools'
 // import { DefinePlugin } from 'webpack'
 import { readFile } from 'fs/promises'
 import { vuePluginTemplate } from './plugin'
+import { ViteConfig } from '@nuxt/schema'
 
 export interface ModuleOptions {
   /**
@@ -21,6 +22,8 @@ export interface ModuleOptions {
    *      --> no, don't make the variables available in vue files
    *   - `'src/my-variables.sass'`
    *      --> yes, and I'd also like to customize those variables
+   *
+   * **`sass@1.32.12` required**
    *
    * @default false
    */
@@ -79,21 +82,10 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.options.css.push('quasar/dist/quasar.css')
     }
 
-
-    nuxt.options.vite.optimizeDeps ??= {}
-    nuxt.options.vite.optimizeDeps.exclude ??= []
-    nuxt.options.vite.optimizeDeps.exclude.push('quasar')
-
     const { version: quasarVersion } = await importJSON('quasar/package.json')
     const importMap = await importJSON('quasar/dist/transforms/import-map.json') as Record<string, string>
     const transformAssetUrls = await importJSON('quasar/dist/transforms/loader-asset-urls.json') as AssetURLOptions
     const imports = await categorizeImports(importMap)
-
-    nuxt.options.vite.vue = {
-      template: {
-        transformAssetUrls
-      }
-    }
 
     addPluginTemplate({
       mode: 'client',
@@ -137,12 +129,22 @@ export default defineNuxtModule<ModuleOptions>({
       }
     }
 
-    nuxt.hook('vite:extendConfig', (config, { isClient, isServer }) => {
+    nuxt.hook('vite:extendConfig', (config: ViteConfig, { isClient, isServer }) => {
       const ssr = nuxt.options.ssr
       const context: ModuleContext = {
         imports,
         options,
         mode: isServer ? 'server' : 'client'
+      }
+
+      config.optimizeDeps ??= {}
+      config.optimizeDeps.exclude ??= []
+      config.optimizeDeps.exclude.push('quasar');
+
+      config.vue = {
+        template: {
+          transformAssetUrls
+        }
       }
 
       config.define = {
@@ -164,6 +166,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
     })
 
+    // WARN: Webpack support incomplete
     nuxt.hook('webpack:config', (configs) => {
       configs.forEach(config => {
         const isClient = config.name === 'client'
@@ -208,7 +211,6 @@ export default defineNuxtModule<ModuleOptions>({
         }
       })
     })
-
 
   }
 })
