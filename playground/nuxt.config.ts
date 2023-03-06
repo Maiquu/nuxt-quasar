@@ -3,12 +3,12 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
     '../src/module',
   ],
+  // ssr: false,
   quasar: {
-    plugins: ['Dialog'],
+    plugins: [],
     extras: {
       font: 'roboto-font',
       fontIcons: ['material-icons'],
     },
-    sassVariables: 'assets/quasar-variables.sass',
   }
 })
