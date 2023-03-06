@@ -55,6 +55,8 @@ That's it! You can now use Quasar Nuxt in your Nuxt app ✨
 </template>
 ```
 
+> See detailed usage at [playground](https://github.com/Maiquu/nuxt-quasar/tree/main/playground)
+
 ## Options
 
 ```js
@@ -65,13 +67,17 @@ export default defineNuxtConfig({
   quasar: {
     // Plugins: https://quasar.dev/quasar-plugins
     plugins: []
-    // Truthy values requires `sass@1.32.12`
+    // Truthy values requires `sass@1.32.12`.
     sassVariables: false
     // Requires `@quasar/extras` package
     extras: {
+      // string | null: Auto-import roboto font. https://quasar.dev/style/typography#default-font
       font: null,
+      // string[]: Auto-import webfont icons. Usage: https://quasar.dev/vue-components/icon#webfont-usage
       fontIcons: []
+      // string[]: Auto-import svg icon collections. Usage: https://quasar.dev/vue-components/icon#svg-usage
       svgIcons: [],
+      // string[]: Auto-import animations from 'animate.css'. Usage: https://quasar.dev/options/animations#usage  
       animations: [],
     }
   }
