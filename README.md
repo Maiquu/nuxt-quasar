@@ -1,26 +1,22 @@
-<!--
-Get your module up and running quickly.
+![Quasar Framework logo](https://cdn.quasar.dev/logo-v2/header.png)
 
-Find and replace all on all files (CMD+SHIFT+F):
-- Name: Quasar Nuxt
-- Package name: nuxt-quasar-ui
-- Description: Quasar Integration for Nuxt
--->
-
-# Quasar Nuxt
+# [Quasar](https://quasar.dev/) Module for [Nuxt](https://nuxt.com/)
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
-
-> Quasar Integration for Nuxt
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 <!-- - [📖 &nbsp;Documentation](https://example.com) -->
 
 ## Features
 
-- TODO
+- Automatically import [components](https://quasar.dev/vue-components)
+- Automatically import [directives](https://quasar.dev/vue-directives)
+- Automatically import svg icon sets provided by [`@quasar/extras`](https://github.com/quasarframework/quasar/tree/dev/extras)
+- Configure used [animations](https://animate.style/), [webfonts and icon sets via](https://github.com/quasarframework/quasar/tree/dev/extras) `nuxt.config`
+- Configure [Sass/Scss variables](https://quasar.dev/style/sass-scss-variables) used by `quasar` (Requires `sass@1.32.12`)
+- [Nuxt DevTools](https://devtools.nuxtjs.org/) support
 
 ## Quick Setup
 
@@ -48,6 +44,42 @@ export default defineNuxtConfig({
 ```
 
 That's it! You can now use Quasar Nuxt in your Nuxt app ✨
+
+## Usage
+
+```vue
+<template>
+  <q-btn color="primary" label="Primary" />
+  <QBtn color="secondary" label="Secondary" />
+  <LazyQBtn color="amber" glossy label="Amber" />
+</template>
+```
+
+## Options
+
+```js
+export default defineNuxtConfig({
+  modules: [
+    'nuxt-quasar-ui'
+  ],
+  quasar: {
+    // Plugins: https://quasar.dev/quasar-plugins
+    plugins: []
+    // Truthy values requires `sass@1.32.12`
+    sassVariables: false
+    // Requires `@quasar/extras` package
+    extras: {
+      font: null,
+      fontIcons: []
+      svgIcons: [],
+      animations: [],
+    }
+  }
+})
+```
+
+## Known issues
+- SSR Hydration errors on several components
 
 ## Development
 
