@@ -48,6 +48,7 @@ export interface QuasarImports {
   components: ImportData[]
   composables: ImportData[]
   directives: ImportData[]
+  plugins: ImportData[]
 }
 
 export interface ImportData {

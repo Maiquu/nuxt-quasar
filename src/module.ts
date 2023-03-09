@@ -227,7 +227,8 @@ async function categorizeImports(importMap: Record<string, string>): Promise<Qua
     raw: importMap,
     components: [],
     composables: [],
-    directives: []
+    directives: [],
+    plugins: [],
   }
 
   for (const [name, path] of Object.entries(importMap)) {
@@ -245,6 +246,12 @@ async function categorizeImports(importMap: Record<string, string>): Promise<Qua
     }
     else if (path.includes('/directives/')) {
       imports.directives.push({
+        name,
+        path: await resolvePath(`quasar/${path}`)
+      })
+    }
+    else if (path.includes('/plugins/')) {
+      imports.plugins.push({
         name,
         path: await resolvePath(`quasar/${path}`)
       })
