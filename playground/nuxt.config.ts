@@ -3,9 +3,15 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
     '../src/module',
   ],
-  // ssr: false,
   quasar: {
-    plugins: [],
+    plugins: [
+      'AppFullscreen',
+      'BottomSheet',
+      'Dialog',
+      'Loading',
+      'LoadingBar',
+      'Notify',
+    ],
     extras: {
       font: 'roboto-font',
       fontIcons: ['material-icons'],

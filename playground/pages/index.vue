@@ -1,41 +1,107 @@
+<script setup lang="ts">
+import { QBtnProps, QNotifyOptions, useQuasar } from 'quasar';
+
+const { dialog, fullscreen, bottomSheet, loading, loadingBar, notify } = useQuasar()
+
+loadingBar.setDefaults({
+  color: 'green',
+  size: '15px',
+  position: 'bottom',
+})
+
+const showBottomsheet = () => bottomSheet({
+  message: 'Bottom Sheet',
+  actions: [
+    {
+      label: 'Drive',
+      img: 'https://cdn.quasar.dev/img/logo_drive_128px.png',
+      id: 'drive'
+    },
+    {
+      label: 'Keep',
+      img: 'https://cdn.quasar.dev/img/logo_keep_128px.png',
+      id: 'keep'
+    },
+    {
+      label: 'Google Hangouts',
+      img: 'https://cdn.quasar.dev/img/logo_hangouts_128px.png',
+      id: 'calendar'
+    },
+    {
+      label: 'Calendar',
+      img: 'https://cdn.quasar.dev/img/logo_calendar_128px.png',
+      id: 'calendar'
+    },
+  ]
+})
+
+const random = <T extends string>(items: T[]): T =>
+  items[Math.floor(Math.random() * items.length)]
+
+type Position = Exclude<QNotifyOptions['position'], undefined>
+
+const buttons: QBtnProps[] = [
+  {
+    label: 'Fullscreen',
+    onClick: () => fullscreen.toggle()
+  },
+  {
+    label: "Bottomsheet",
+    onClick: () => showBottomsheet()
+  },
+  {
+    label: 'Loading',
+    onClick: () => {
+      loading.show()
+      setTimeout(() => {
+        loading.hide()
+      }, 1000)
+    }
+  },
+  {
+    label: 'LoadingBar',
+    onClick: () => {
+      loadingBar.start()
+      setTimeout(() => {
+        loadingBar.stop()
+      }, 1000)
+    }
+  },
+  {
+    label: 'Dialog',
+    onClick: () => dialog({ message: 'Hello World' })
+  },
+  {
+    label: 'Notify',
+    onClick: () => notify({
+      message: 'Hello World',
+      position: random<Position>([
+        'left',
+        'right',
+        'center',
+        'bottom',
+        'top',
+      ])
+    })
+  },
+]
+
+</script>
 <template>
-  <q-page class="row items-center justify-evenly">
-    <ExampleComponent
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    />
+  <q-page class="q-pl-lg">
+    <p class="text-h6 q-pt-md">
+      Plugin Showcase
+    </p>
+    <q-list>
+      <q-item
+        v-for="(button, idx) in buttons"
+        :key="idx"
+      >
+        <q-btn
+          color="primary"
+          v-bind="button"
+        />
+      </q-item>
+    </q-list>
   </q-page>
 </template>
-
-<script setup lang="ts">
-import { Todo, Meta } from 'components/models';
-import { ref } from 'vue';
-
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
-  }
-]);
-const meta = ref<Meta>({
-  totalCount: 1200
-});
-</script>
