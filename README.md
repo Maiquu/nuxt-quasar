@@ -83,6 +83,18 @@ export default defineNuxtConfig({
   }
 })
 ```
+## Regarding Meta tags
+Avoid using quasar plugins and composables that manipulate `<meta>` tags.
+Use [`useHead`](https://nuxt.com/docs/api/composables/use-head) instead.
+
+List of known plugins/composables that do this:
+- [`AddressbarColor`](https://quasar.dev/quasar-plugins/addressbar-color)
+- [`Meta`](https://quasar.dev/quasar-plugins/meta)
+- [`useMeta`](https://quasar.dev/vue-composables/use-meta)
+
+## Limitations
+List of (known) plugins that does not work with SSR (excluding ones listed obove):
+- [`Dark`](https://quasar.dev/quasar-plugins/dark)
 
 ## Known issues
 - SSR Hydration errors on several components
