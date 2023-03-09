@@ -95,13 +95,21 @@ export default defineNuxtModule<ModuleOptions>({
     addPluginTemplate({
       mode: 'client',
       filename: 'quasar-plugin.mjs',
-      getContents: () => vuePluginTemplate(options, false)
+      getContents: () => vuePluginTemplate({
+        imports,
+        options,
+        mode: 'client',
+      })
     })
     if (nuxt.options.ssr) {
       addPluginTemplate({
         mode: 'server',
         filename: 'quasar-plugin.server.mjs',
-        getContents: () => vuePluginTemplate(options, true)
+        getContents: () => vuePluginTemplate({
+          imports,
+          options,
+          mode: 'server',
+        })
       })
     }
 
@@ -169,6 +177,23 @@ export default defineNuxtModule<ModuleOptions>({
       if (options.sassVariables && isClient) {
         config.plugins.push(transformScssPlugin.vite(context))
       }
+    })
+
+    nuxt.hook('nitro:config', async (config) => {
+      config.replace = {
+        ...config.replace,
+        __QUASAR_VERSION__: `'${ quasarVersion }'`,
+        __QUASAR_SSR__: nuxt.options.ssr,
+        __QUASAR_SSR_SERVER__: true,
+        __QUASAR_SSR_CLIENT__: false,
+        __QUASAR_SSR_PWA__: false
+      }
+      config.externals ??= {}
+      config.externals.inline ??= []
+      config.externals.inline.push(
+        await resolvePath('quasar/lang/en-US'),
+        await resolvePath('quasar/icon-set/material-icons')
+      )
     })
 
     // WARN: Webpack support incomplete

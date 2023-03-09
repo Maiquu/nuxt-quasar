@@ -1,16 +1,25 @@
-import type { ModuleOptions } from './module'
+import { ModuleContext } from './types'
 
+const when = (condition: boolean, content: string) => condition ? content : ''
 
-export function vuePluginTemplate(options: ModuleOptions, isServer: boolean): string {
+export function vuePluginTemplate(context: ModuleContext): string {
+  const isServer = context.mode === 'server'
   return `\
-import { Quasar, ${!isServer ? options.plugins : []}} from 'quasar'
 import { defineNuxtPlugin } from '#app'
+import Quasar from 'quasar/src/vue-plugin.js'
+${context.options.plugins
+  ?.map(plugin => `import ${plugin} from 'quasar/${context.imports.raw[plugin]}'`)
+  .join('\n')
+}
 
-export default defineNuxtPlugin((nuxt) => {
+export default defineNuxtPlugin((nuxt) => {\n${
+  when(isServer, `\
+  const ssrContext = {
+    req: nuxt.ssrContext.event.req,
+    res: nuxt.ssrContext.event.res,
+  }`)}
   nuxt.vueApp.use(Quasar, {
-      plugins: {${!isServer ? options.plugins : []}}
-    }, {${isServer ? `\
-      req: nuxt.ssrContext.event.req,
-      res: nuxt.ssrContext.event.res,` : ''}})
+    plugins: {${context.options.plugins || []}}
+  }${when(isServer, ', ssrContext')})
 })`
 }
