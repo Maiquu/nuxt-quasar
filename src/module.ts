@@ -33,7 +33,12 @@ export interface ModuleOptions {
    *
    * @see [Documentation](https://quasar.dev/quasar-plugins/)
    **/
-  plugins?: QuasarPlugins[]
+  plugins?: Exclude<QuasarPlugins, ''
+    // Disable plugins that does not work correctly? Or warn users instead?
+    // | 'AddressbarColor'
+    // | 'Meta'
+    // | 'Meta'
+  >[]
 
   /** `@quasar/extras` options.
    *
