@@ -104,8 +104,22 @@ List of known plugins/composables that do this:
 List of (known) plugins that does not work with SSR (excluding ones listed obove):
 - [`Dark`](https://quasar.dev/quasar-plugins/dark)
 
-## Known issues
-- SSR Hydration errors on several components
+## FAQ
+**Q**: Component icons are not visible.
+
+**A**: You need to install `@quasar/extras` and append `'material-icons'` to `fontIcons` in your `nuxt.config.ts` file.
+
+```ts 
+// nuxt.config.ts
+export default {
+  quasar: {
+    extras: {
+      fontIcons: ['material-icons']
+    }
+  }
+}
+
+```
 
 ## Development
 
