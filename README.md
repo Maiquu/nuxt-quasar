@@ -15,8 +15,16 @@
 - Automatically import [directives](https://quasar.dev/vue-directives)
 - Automatically import svg icon sets provided by [`@quasar/extras`](https://github.com/quasarframework/quasar/tree/dev/extras)
 - Configure used [animations](https://animate.style/), [webfonts and icon sets via](https://github.com/quasarframework/quasar/tree/dev/extras) `nuxt.config`
-- Configure [Sass/Scss variables](https://quasar.dev/style/sass-scss-variables) used by `quasar` (Requires `sass@1.32.12`)
+- Configure [Sass/Scss variables](https://quasar.dev/style/sass-scss-variables) used by `quasar`
 - [Nuxt DevTools](https://devtools.nuxtjs.org/) support
+
+## Prerequisites
+
+Following modules are not installed with `nuxt-quasar-ui`
+
+- [`quasar`](https://quasar.dev/)
+- [`@quasar/extras`](https://github.com/quasarframework/quasar/tree/dev/extras) (Optional: required for using `extras`)
+- `sass@1.32.12` (Optional: required for using `sassVariables`)
 
 ## Quick Setup
 
