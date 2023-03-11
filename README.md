@@ -107,7 +107,7 @@ List of (known) plugins that does not work with SSR (excluding ones listed obove
 ## Regarding component icons
 
 By default, icons are not packaged with `quasar` module.
-You need will have to install `@quasar/extras` and append `'material-icons'` to `fontIcons` in your `nuxt.config.ts` file for icons to take effect.
+You will have to install `@quasar/extras` and append `'material-icons'` to `fontIcons` in your `nuxt.config.ts` file for icons to take effect.
 
 ```ts 
 // nuxt.config.ts
