@@ -104,10 +104,10 @@ List of known plugins/composables that do this:
 List of (known) plugins that does not work with SSR (excluding ones listed obove):
 - [`Dark`](https://quasar.dev/quasar-plugins/dark)
 
-## FAQ
-**Q**: Component icons are not visible.
+## Regarding component icons
 
-**A**: You need to install `@quasar/extras` and append `'material-icons'` to `fontIcons` in your `nuxt.config.ts` file.
+By default, icons are not packaged with `quasar` module.
+You need will have to install `@quasar/extras` and append `'material-icons'` to `fontIcons` in your `nuxt.config.ts` file for icons to take effect.
 
 ```ts 
 // nuxt.config.ts
