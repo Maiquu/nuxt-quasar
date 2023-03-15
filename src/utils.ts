@@ -22,3 +22,14 @@ export const importJSON = pMemoize(async (path: string) => {
   const resolvedPath = await resolvePath(path)
   return JSON.parse(await readFile(resolvedPath, 'utf-8'))
 })
+
+const PASCAL_CASE = /[a-z][A-Z]|^[A-Z]/g
+
+/** Convert `PascalCase` to `kebab-case` */
+export function kebabCase(string: string): string {
+	return string.replaceAll(PASCAL_CASE,
+		match => match.length === 1
+			? match[0].toLowerCase()
+			: `${match[0]}-${match[1].toLowerCase()}`
+	)
+}
