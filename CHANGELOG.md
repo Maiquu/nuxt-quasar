@@ -1,6 +1,32 @@
 # Changelog
 
 
+## v1.0.4
+
+
+### 🩹 Fixes
+
+  - Resolving directives, code transformation for directives (dd36477)
+
+### 📖 Documentation
+
+  - Added prerequisites section (2897f40)
+  - Added FAQ section, removed known issues for now (8d923c1)
+
+### 🏡 Chore
+
+  - KebabCase utility (b2069cc)
+  - KebabCase property for directive imports (fdf3ffd)
+  - Directives showcase for playground (a242876)
+
+### 🎨 Styles
+
+  - Double quoted strings in transformed code for consistency (a698459)
+
+### ❤️  Contributors
+
+- Maiquu ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.0.3
 
 
