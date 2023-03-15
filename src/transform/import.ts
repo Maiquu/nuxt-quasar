@@ -41,7 +41,7 @@ function mapQuasarImports(code: string, importMap: Record<string, string>): stri
           throw new Error(`Unknown Quasar import: ${importName}`)
         }
 
-        return `import ${importAs} from 'quasar/${importPath}'`;
+        return `import ${importAs} from "quasar/${importPath}"`;
       })
       .join('\n')
   );

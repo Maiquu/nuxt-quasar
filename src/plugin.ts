@@ -5,11 +5,11 @@ const when = (condition: boolean, content: string) => condition ? content : ''
 export function vuePluginTemplate(context: ModuleContext): string {
   const isServer = context.mode === 'server'
   return `\
-import { defineNuxtPlugin } from '#app'
-import Quasar from 'quasar/src/vue-plugin.js'
+import { defineNuxtPlugin } from "#app"
+import Quasar from "quasar/src/vue-plugin.js"
 ${context.options.plugins
-  ?.map(plugin => `import ${plugin} from 'quasar/${context.imports.raw[plugin]}'`)
-  .join('\n')
+  ?.map(plugin => `import ${plugin} from "quasar/${context.imports.raw[plugin]}"`)
+  .join('\n') || ''
 }
 
 export default defineNuxtPlugin((nuxt) => {\n${
