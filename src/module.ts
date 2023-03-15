@@ -4,7 +4,7 @@ import type { QuasarAnimations, QuasarFonts } from 'quasar'
 import type { ModuleContext, QuasarFontIconSets, QuasarImports, QuasarPlugins, QuasarSvgIconSets } from './types'
 import { transformScssPlugin } from './transform/scss'
 import { transformImportPlugin } from './transform/import'
-import { importJSON } from './utils'
+import { importJSON, kebabCase } from './utils'
 import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
 import { AssetURLOptions } from 'vue/compiler-sfc'
 import { ModuleCustomTab } from '@nuxt/devtools'
@@ -272,7 +272,8 @@ async function categorizeImports(importMap: Record<string, string>): Promise<Qua
     else if (path.includes('/directives/')) {
       imports.directives.push({
         name,
-        path: await resolvePath(`quasar/${path}`)
+        path: await resolvePath(`quasar/${path}`),
+        kebabCase: kebabCase(name),
       })
     }
     else if (path.includes('/plugins/')) {
