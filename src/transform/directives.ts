@@ -1,5 +1,4 @@
 import MagicString from 'magic-string'
-import { capitalize } from '../utils'
 import { ModuleContext } from '../types'
 import { useNuxt } from '@nuxt/kit'
 import { createUnplugin } from 'unplugin'
@@ -20,7 +19,6 @@ export const transformDirectivesPlugin = createUnplugin((context: ModuleContext)
 
       const s = new MagicString(code)
       const directives: {
-        name: string,
         alias: string,
         path: string
       }[] = []
@@ -28,11 +26,10 @@ export const transformDirectivesPlugin = createUnplugin((context: ModuleContext)
       let counter = 0
 
       s.replace(directivesRegExp, (full, name) => {
-        const directive = context.imports.directives.find(d => d.name === name)
+        const directive = context.imports.directives.find(d => d.kebabCase === name)
         if (directive) {
           const alias = `__q_directive_${counter++}`
           directives.push({
-            name: capitalize(name),
             alias,
             path: directive.path
           })
@@ -45,8 +42,8 @@ export const transformDirectivesPlugin = createUnplugin((context: ModuleContext)
       if (directives.length) {
         s.prepend(
           directives
-            .map(d => `import { ${d.name} as ${d.alias} } from '${d.path}'`)
-            .join('\n')
+            .map(d => `import ${d.alias} from "${d.path}"`)
+            .join('\n') + '\n'
         )
       }
 
