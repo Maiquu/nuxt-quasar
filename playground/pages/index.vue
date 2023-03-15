@@ -103,5 +103,9 @@ const buttons: QBtnProps[] = [
         />
       </q-item>
     </q-list>
+    <p class="text-h6 q-pt-md">
+      Directive Showcase
+    </p>
+    <example-list />
   </q-page>
 </template>
