@@ -47,7 +47,7 @@ export interface QuasarImports {
   raw: Record<string, string>
   components: ImportData[]
   composables: ImportData[]
-  directives: ImportData[]
+  directives: (ImportData & { kebabCase: string})[]
   plugins: ImportData[]
 }
 
