@@ -68,9 +68,9 @@ export default defineNuxtConfig({
     'nuxt-quasar-ui'
   ],
   quasar: {
-    // Plugins: https://quasar.dev/quasar-plugins
+    // string[]: https://quasar.dev/quasar-plugins
     plugins: [],
-    // Truthy values requires `sass@1.32.12`.
+    // boolean | string: Truthy values requires `sass@1.32.12`, same behaviour as `@quasar/vite-plugin`
     sassVariables: false,
     // Requires `@quasar/extras` package
     extras: {
