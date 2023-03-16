@@ -137,6 +137,15 @@ export default defineNuxtModule<ModuleOptions>({
           from: composable.path
         })
       }
+      if (options.plugins) {
+        for (const plugin of options.plugins) {
+          addImports({
+            name: 'default',
+            as: plugin,
+            from: imports.raw[plugin]
+          })
+        }
+      }
       if (options.extras?.svgIcons) {
         for (const iconSet of options.extras.svgIcons) {
           const icons = await getIconsFromIconset(iconSet)
