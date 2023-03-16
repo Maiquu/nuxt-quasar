@@ -1,17 +1,18 @@
+
+import { readFile } from 'fs/promises'
+import type { ModuleCustomTab } from '@nuxt/devtools'
 import { addComponent, addImports, defineNuxtModule, resolvePath, addImportsSources, addPluginTemplate } from '@nuxt/kit'
-import { transformDirectivesPlugin } from './transform/directives'
+import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts } from 'quasar'
+import type { AssetURLOptions } from 'vue/compiler-sfc'
+import { vuePluginTemplate } from './plugin'
+import { transformDirectivesPlugin } from './transform/directives'
 import type { ModuleContext, QuasarFontIconSets, QuasarImports, QuasarPlugins, QuasarSvgIconSets } from './types'
 import { transformScssPlugin } from './transform/scss'
 import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
 import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
-import { AssetURLOptions } from 'vue/compiler-sfc'
-import { ModuleCustomTab } from '@nuxt/devtools'
-// import { DefinePlugin } from 'webpack'
-import { readFile } from 'fs/promises'
-import { vuePluginTemplate } from './plugin'
-import { ViteConfig } from '@nuxt/schema'
+import { version } from '../package.json'
 
 export interface ModuleOptions {
   /**
@@ -62,7 +63,12 @@ export interface ModuleOptions {
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'quasar',
-    configKey: 'quasar'
+    version,
+    configKey: 'quasar',
+    compatibility: {
+      nuxt: '^3.0.0',
+      bridge: false,
+    },
   },
   defaults: {
     sassVariables: false,
