@@ -18,26 +18,21 @@
 - Configure [Sass/Scss variables](https://quasar.dev/style/sass-scss-variables) used by `quasar`
 - [Nuxt DevTools](https://devtools.nuxtjs.org/) support
 
-## Prerequisites
-
-Following modules are not installed with `nuxt-quasar-ui`
-
-- [`quasar`](https://quasar.dev/)
-- [`@quasar/extras`](https://github.com/quasarframework/quasar/tree/dev/extras) (Optional: required for using `extras`)
-- `sass@1.32.12` (Optional: required for using `sassVariables`)
-
 ## Quick Setup
 
 1. Add `nuxt-quasar-ui` dependency to your project
 
 ```bash
 # Using pnpm
+pnpm add quasar @quasar/extras
 pnpm add -D nuxt-quasar-ui
 
 # Using yarn
+yarn add quasar @quasar/extras
 yarn add --dev nuxt-quasar-ui
 
 # Using npm
+npm install quasar @quasar/extras
 npm install --save-dev nuxt-quasar-ui
 ```
 
