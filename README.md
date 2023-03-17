@@ -48,6 +48,10 @@ export default defineNuxtConfig({
 
 That's it! You can now use Quasar Nuxt in your Nuxt app ✨
 
+## Demo
+
+[StackBlitz](https://stackblitz.com/edit/github-g9bzsz?file=nuxt.config.ts)
+
 ## Usage
 
 ```vue
