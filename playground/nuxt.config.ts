@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   modules: [
-    '@nuxt/devtools',
     '../src/module',
+    '@nuxt/devtools',
   ],
   quasar: {
     plugins: [
