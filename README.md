@@ -100,7 +100,7 @@ List of known plugins/composables that do this:
 - [`useMeta`](https://quasar.dev/vue-composables/use-meta)
 
 ## Limitations
-List of (known) plugins that does not work with SSR (excluding ones listed obove):
+List of (known) plugins that does not work with SSR (excluding ones listed above):
 - [`Dark`](https://quasar.dev/quasar-plugins/dark)
 
 ## Regarding Component Icons
