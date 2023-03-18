@@ -87,10 +87,11 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.options.css.push(...options.extras.fontIcons.map(resolveFontIcon))
     }
 
+    // Quasar css is inserted at the start to ensure custom stylesheets in will be able to overwrite without the use of !important.
     if (options.sassVariables) {
-      nuxt.options.css.push('quasar/src/css/index.sass')
+      nuxt.options.css.unshift('quasar/src/css/index.sass')
     } else {
-      nuxt.options.css.push('quasar/dist/quasar.css')
+      nuxt.options.css.unshift('quasar/dist/quasar.css')
     }
 
     const { version: quasarVersion } = await importJSON('quasar/package.json')
