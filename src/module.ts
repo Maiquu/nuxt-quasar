@@ -75,24 +75,9 @@ export default defineNuxtModule<ModuleOptions>({
     plugins: [],
     extras: {}
   },
-  async setup (options, nuxt) {
+  async setup (options: ModuleOptions, nuxt) {
 
-    // Quasar css is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
-    if (options.extras?.font) {
-      nuxt.options.css.unshift(resolveFont(options.extras.font))
-    }
-    if (options.extras?.animations) {
-      nuxt.options.css.unshift(...options.extras.animations.map(resolveAnimation))
-    }
-    if (options.extras?.fontIcons) {
-      nuxt.options.css.unshift(...options.extras.fontIcons.map(resolveFontIcon))
-    }
-
-    if (options.sassVariables) {
-      nuxt.options.css.unshift('quasar/src/css/index.sass')
-    } else {
-      nuxt.options.css.unshift('quasar/dist/quasar.css')
-    }
+    nuxt.options.css = setupCss(nuxt.options.css, options)
 
     const { version: quasarVersion } = await importJSON('quasar/package.json')
     const importMap = await importJSON('quasar/dist/transforms/import-map.json') as Record<string, string>
@@ -319,4 +304,61 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
 
     return icons
   }
+}
+
+
+/**
+ * Inject the Quasar css into the nuxt.options.css array.
+ * It takes into account the order of the css array when the user has specified it.
+ * Example:
+ *  css: [
+ *   'quasar/fonts',
+ *   'quasar/animations',
+ *   'quasar/icons',
+ *   '@/assets/style.css',
+ *   'quasar/base',
+ * ]
+ * @param css
+ * @param options
+ */
+export function setupCss(css: string[], options: ModuleOptions) {
+
+  // Quasar css is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
+  const quasarPath = options.sassVariables ? 'quasar/src/css/index.sass' : 'quasar/dist/quasar.css'
+  const index = css.indexOf('quasar/base')
+  if (index !== -1) {
+    css.splice(index, 1, quasarPath)
+  } else {
+    css.unshift(quasarPath)
+  }
+
+
+  if (options.extras?.animations) {
+    const i = css.indexOf('quasar/animations')
+    if (i !== -1) {
+      css.splice(i, 1, ...options.extras.animations.map(resolveAnimation))
+    } else {
+      css.unshift(...options.extras.animations.map(resolveAnimation))
+    }
+  }
+
+  if (options.extras?.fontIcons) {
+    const i = css.indexOf('quasar/icons')
+    if (i !== -1) {
+      css.splice(i, 1, ...options.extras.fontIcons.map(resolveFontIcon))
+    } else {
+      css.unshift(...options.extras.fontIcons.map(resolveFontIcon))
+    }
+  }
+
+  if (options.extras?.font) {
+    const i = css.indexOf('quasar/fonts')
+    if (i !== -1) {
+      css.splice(i, 1, resolveFont(options.extras.font))
+    } else {
+      css.unshift(resolveFont(options.extras.font))
+    }
+  }
+
+  return css;
 }
