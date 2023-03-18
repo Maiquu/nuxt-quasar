@@ -308,7 +308,7 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
 
 
 /**
- * Inject the Quasar css into the nuxt.config.css array.
+ * Inject the Quasar css into the nuxt.options.css array.
  * It takes into account the order of the css array when the user has specified it.
  * Example:
  *  css: [
@@ -331,7 +331,6 @@ function setupCss(css: string[], options: ModuleOptions) {
   }
 
   css.unshift(quasarPath)
-
 
   if (options.extras?.animations) {
     const i = css.findIndex(x => x === 'quasar/animations')
