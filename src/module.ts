@@ -13,6 +13,7 @@ import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
 import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
 import { version } from '../package.json'
+import {quasarAnimationsPath, quasarBasePath, quasarFontsPath, quasarIconsPath} from "./types";
 
 export interface ModuleOptions {
   /**
@@ -325,7 +326,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
 
   // Quasar css is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
   const quasarPath = options.sassVariables ? 'quasar/src/css/index.sass' : 'quasar/dist/quasar.css'
-  const index = css.indexOf('quasar/base')
+  const index = css.indexOf(quasarBasePath)
   if (index !== -1) {
     css.splice(index, 1, quasarPath)
   } else {
@@ -334,7 +335,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
 
 
   if (options.extras?.animations) {
-    const i = css.indexOf('quasar/animations')
+    const i = css.indexOf(quasarAnimationsPath)
     if (i !== -1) {
       css.splice(i, 1, ...options.extras.animations.map(resolveAnimation))
     } else {
@@ -343,7 +344,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
   }
 
   if (options.extras?.fontIcons) {
-    const i = css.indexOf('quasar/icons')
+    const i = css.indexOf(quasarIconsPath)
     if (i !== -1) {
       css.splice(i, 1, ...options.extras.fontIcons.map(resolveFontIcon))
     } else {
@@ -352,7 +353,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
   }
 
   if (options.extras?.font) {
-    const i = css.indexOf('quasar/fonts')
+    const i = css.indexOf(quasarFontsPath)
     if (i !== -1) {
       css.splice(i, 1, resolveFont(options.extras.font))
     } else {
