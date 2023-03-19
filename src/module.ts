@@ -321,37 +321,40 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
  * @param css
  * @param options
  */
-function setupCss(css: string[], options: ModuleOptions) {
+export function setupCss(css: string[], options: ModuleOptions) {
 
   // Quasar css is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
   const quasarPath = options.sassVariables ? 'quasar/src/css/index.sass' : 'quasar/dist/quasar.css'
-  const index = css.findIndex(x => x === 'quasar/base')
+  const index = css.indexOf('quasar/base')
   if (index !== -1) {
     css.splice(index, 1, quasarPath)
+  } else {
+    css.unshift(quasarPath)
   }
 
-  css.unshift(quasarPath)
 
   if (options.extras?.animations) {
-    const i = css.findIndex(x => x === 'quasar/animations')
+    const i = css.indexOf('quasar/animations')
     if (i !== -1) {
       css.splice(i, 1, ...options.extras.animations.map(resolveAnimation))
+    } else {
+      css.unshift(...options.extras.animations.map(resolveAnimation))
     }
-    css.unshift(...options.extras.animations.map(resolveAnimation))
   }
 
   if (options.extras?.fontIcons) {
-    const i = css.findIndex(x => x === 'quasar/icons')
+    const i = css.indexOf('quasar/icons')
     if (i !== -1) {
       css.splice(i, 1, ...options.extras.fontIcons.map(resolveFontIcon))
+    } else {
+      css.unshift(...options.extras.fontIcons.map(resolveFontIcon))
     }
-    css.unshift(...options.extras.fontIcons.map(resolveFontIcon))
   }
 
   if (options.extras?.font) {
-    const i = css.findIndex(x => x === 'quasar/fonts')
+    const i = css.indexOf('quasar/fonts')
     if (i !== -1) {
-      css[i] = resolveFont(options.extras.font)
+      css.splice(i, 1, resolveFont(options.extras.font))
     } else {
       css.unshift(resolveFont(options.extras.font))
     }
