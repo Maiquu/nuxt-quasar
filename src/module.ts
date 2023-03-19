@@ -324,15 +324,24 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
  */
 export function setupCss(css: string[], options: ModuleOptions) {
 
+  if (!css){
+    css = [];
+  }
+
+  if (!options) {
+    css.unshift('quasar/dist/quasar.css')
+    return css;
+  }
+
   // Quasar css is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
   const quasarPath = options.sassVariables ? 'quasar/src/css/index.sass' : 'quasar/dist/quasar.css'
+
   const index = css.indexOf(quasarBasePath)
   if (index !== -1) {
     css.splice(index, 1, quasarPath)
   } else {
     css.unshift(quasarPath)
   }
-
 
   if (options.extras?.animations) {
     const i = css.indexOf(quasarAnimationsPath)
