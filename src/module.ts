@@ -31,6 +31,12 @@ export interface ModuleOptions {
    */
   sassVariables?: string | boolean
 
+  /**
+   * Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings polluting the console log when running Nuxt. This function silences 'Using / for division outside of calc() is deprecated' warnings by routing those log messages to a dump.
+   * See an example of this here: https://github.com/quasarframework/quasar/pull/15514#issue-1606006213
+   * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007
+   */
+  quietSassWarnings?: boolean
   /** Quasar Plugins
    *
    * @see [Documentation](https://quasar.dev/quasar-plugins/)
@@ -73,6 +79,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     sassVariables: false,
+    quietSassWarnings: true,
     plugins: [],
     extras: {}
   },
@@ -161,6 +168,8 @@ export default defineNuxtModule<ModuleOptions>({
           transformAssetUrls
         }
       }
+
+      muteQuasarSassWarnings(config, options)
 
       config.define = {
         ...config.define,
@@ -373,4 +382,77 @@ export function setupCss(css: string[], options: ModuleOptions) {
   }
 
   return css;
+}
+
+/**
+ * Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings polluting the console log when running Nuxt. This function silences 'Using / for division outside of calc() is deprecated' warnings by routing those log messages to a dump.
+ * See an example of this here: https://github.com/quasarframework/quasar/pull/15514#issue-1606006213
+ * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007
+ *
+ * @param config
+ * @param options
+ */
+export function muteQuasarSassWarnings(config: ViteConfig, options: ModuleOptions){
+
+  if (!config || !options || !options.quietSassWarnings) {
+    return;
+  }
+
+  // Source of this fix: https://github.com/quasarframework/quasar/pull/12034#issuecomment-1021503176
+  const silenceSomeSassDeprecationWarnings = {
+    verbose: true,
+    logger: {
+      // @ts-ignore
+      warn(logMessage, logOptions) {
+        const { stderr } = process;
+        const span = logOptions.span ?? undefined;
+        const stack = (logOptions.stack === 'null' ? undefined : logOptions.stack) ?? undefined;
+
+        if (logOptions.deprecation) {
+          if (logMessage.startsWith('Using / for division outside of calc() is deprecated')) {
+            // silences above deprecation warning
+            return;
+          }
+          stderr.write('DEPRECATION ');
+        }
+        stderr.write(`WARNING: ${logMessage}\n`);
+
+        if (span !== undefined) {
+          // output the snippet that is causing this warning
+          stderr.write(`\n"${span.text}"\n`);
+        }
+
+        if (stack !== undefined) {
+          // indent each line of the stack
+          stderr.write(`    ${stack.toString().trimEnd().replace(/\n/gm, '\n    ')}\n`);
+        }
+
+        stderr.write('\n');
+      },
+    },
+  };
+
+  if (!config.css){
+    config.css = {};
+  }
+
+  if (!config.css.preprocessorOptions){
+    config.css.preprocessorOptions = {};
+  }
+
+  const types = ['scss', 'sass'];
+
+  for (const type of types) {
+    if (!config.css.preprocessorOptions[type]) {
+          config.css.preprocessorOptions[type] = {
+            ...silenceSomeSassDeprecationWarnings,
+          }
+        } else {
+          const userConfig = config.css.preprocessorOptions[type];
+          config.css.preprocessorOptions[type] = {
+            ...silenceSomeSassDeprecationWarnings,
+            ...userConfig
+          }
+        }
+  }
 }
