@@ -1,6 +1,21 @@
 # Changelog
 
 
+## v1.1.1
+
+
+### 🩹 Fixes
+
+  - Test components being imported on quasar @^2.11.8 (4b0f441)
+
+### 📖 Documentation
+
+  - Updated README.md based on latest changes (1ffecaa)
+
+### ❤️  Contributors
+
+- Maiquu ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.1.0
 
 
