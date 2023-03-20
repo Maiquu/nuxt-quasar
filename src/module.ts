@@ -259,7 +259,7 @@ async function categorizeImports(importMap: Record<string, string>): Promise<Qua
   }
 
   for (const [name, path] of Object.entries(importMap)) {
-    if (path.includes('/components/')) {
+    if (path.includes('/components/') && !path.includes('/__tests__/')) {
       imports.components.push({
         name,
         path: await resolvePath(`quasar/${path}`)
