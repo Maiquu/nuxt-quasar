@@ -99,10 +99,6 @@ List of known plugins/composables that do this:
 - [`Meta`](https://quasar.dev/quasar-plugins/meta)
 - [`useMeta`](https://quasar.dev/vue-composables/use-meta)
 
-## Limitations
-List of (known) plugins that does not work with SSR (excluding ones listed above):
-- [`Dark`](https://quasar.dev/quasar-plugins/dark)
-
 ## Regarding Component Icons
 
 By default, icons are not packaged with `quasar` module.
