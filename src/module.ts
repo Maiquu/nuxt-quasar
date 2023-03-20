@@ -51,7 +51,7 @@ export interface ModuleOptions {
   /** `@quasar/extras` options.
    *
    * @see [Documentation](https://github.com/quasarframework/quasar/blob/dev/extras/README.md)
-  */
+   */
   extras?: {
     font?: QuasarFonts | null
     /** Icons that are imported as webfont. */
@@ -333,7 +333,7 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
  */
 export function setupCss(css: string[], options: ModuleOptions) {
 
-  if (!css){
+  if (!css) {
     css = [];
   }
 
@@ -392,7 +392,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
  * @param config
  * @param options
  */
-export function muteQuasarSassWarnings(config: ViteConfig, options: ModuleOptions){
+export function muteQuasarSassWarnings(config: ViteConfig, options: ModuleOptions) {
 
   if (!config || !options || !options.quietSassWarnings) {
     return;
@@ -404,7 +404,7 @@ export function muteQuasarSassWarnings(config: ViteConfig, options: ModuleOption
     logger: {
       // @ts-ignore
       warn(logMessage, logOptions) {
-        const { stderr } = process;
+        const {stderr} = process;
         const span = logOptions.span ?? undefined;
         const stack = (logOptions.stack === 'null' ? undefined : logOptions.stack) ?? undefined;
 
@@ -432,11 +432,11 @@ export function muteQuasarSassWarnings(config: ViteConfig, options: ModuleOption
     },
   };
 
-  if (!config.css){
+  if (!config.css) {
     config.css = {};
   }
 
-  if (!config.css.preprocessorOptions){
+  if (!config.css.preprocessorOptions) {
     config.css.preprocessorOptions = {};
   }
 
@@ -444,15 +444,15 @@ export function muteQuasarSassWarnings(config: ViteConfig, options: ModuleOption
 
   for (const type of types) {
     if (!config.css.preprocessorOptions[type]) {
-          config.css.preprocessorOptions[type] = {
-            ...silenceSomeSassDeprecationWarnings,
-          }
-        } else {
-          const userConfig = config.css.preprocessorOptions[type];
-          config.css.preprocessorOptions[type] = {
-            ...silenceSomeSassDeprecationWarnings,
-            ...userConfig
-          }
-        }
+      config.css.preprocessorOptions[type] = {
+        ...silenceSomeSassDeprecationWarnings,
+      }
+    } else {
+      const userConfig = config.css.preprocessorOptions[type];
+      config.css.preprocessorOptions[type] = {
+        ...silenceSomeSassDeprecationWarnings,
+        ...userConfig
+      }
+    }
   }
 }
