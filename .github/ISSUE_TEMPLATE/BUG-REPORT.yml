@@ -11,12 +11,19 @@ body:
       options:
         - label: I have searched the existing issues for a similar bug and it does not exist!
           required: true
-  - type: input
-    id: version
+  - type: textarea
+    id: bug-environment
     attributes:
-      label: "Nuxt-Quasar version"
-      description: Please enter the version of Nuxt-Quasar this bug occurred on.
-      placeholder: ex. v0.10.0
+      label: Environment
+      description: You can use `npx nuxi info` to fill this section
+      placeholder: Environment
+    validations:
+      required: true
+  - type: input
+    id: quasar-version
+    attributes:
+      label: "Quasar version"
+      placeholder: ex. v2.11.8
     validations:
       required: true
   - type: dropdown
