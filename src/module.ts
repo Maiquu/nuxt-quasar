@@ -13,7 +13,7 @@ import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
 import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
 import { version } from '../package.json'
-import { quasarAnimationsPath, quasarBasePath, quasarFontsPath, quasarIconsPath } from "./constants";
+import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from "./constants";
 
 export interface ModuleOptions {
   /**
@@ -317,7 +317,7 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
  *   'quasar/animations',
  *   'quasar/icons',
  *   '@/assets/style.css',
- *   'quasar/base',
+ *   'quasar/css',
  * ]
  * @param css
  * @param options
@@ -333,14 +333,16 @@ export function setupCss(css: string[], options: ModuleOptions) {
     return css;
   }
 
-  // Quasar css is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
-  const quasarPath = options.sassVariables ? 'quasar/src/css/index.sass' : 'quasar/dist/quasar.css'
+  // Quasar CSS is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
+  const quasarCssActualPath = options.sassVariables
+    ? 'quasar/src/css/index.sass'
+    : 'quasar/dist/quasar.css'
 
-  const index = css.indexOf(quasarBasePath)
+  const index = css.indexOf(quasarCssPath)
   if (index !== -1) {
-    css.splice(index, 1, quasarPath)
+    css.splice(index, 1, quasarCssActualPath)
   } else {
-    css.unshift(quasarPath)
+    css.unshift(quasarCssActualPath)
   }
 
   if (options.extras?.animations) {

@@ -1,6 +1,6 @@
 import {describe, it, expect} from 'vitest'
 import {ModuleOptions, setupCss} from "../src/module";
-import { quasarAnimationsPath, quasarBasePath, quasarFontsPath, quasarIconsPath } from "../src/constants";
+import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from "../src/constants";
 
 describe('Quasar CSS injection', async () => {
 
@@ -11,7 +11,7 @@ describe('Quasar CSS injection', async () => {
       quasarIconsPath,
       quasarAnimationsPath,
       '@/assets/style.css',
-      quasarBasePath,
+      quasarCssPath,
     ]
 
     const options: ModuleOptions = {
@@ -43,7 +43,7 @@ describe('Quasar CSS injection', async () => {
 
     const css = [
       '@/assets/style.css',
-      quasarBasePath,
+      quasarCssPath,
     ]
 
     const options: ModuleOptions = {
