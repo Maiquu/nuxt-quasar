@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { QBtnProps, QNotifyOptions, useQuasar } from 'quasar';
 
-const { dialog, fullscreen, bottomSheet, loading, loadingBar, notify } = useQuasar()
+const { dialog, fullscreen, bottomSheet, loading, loadingBar, notify, dark } = useQuasar()
 
 loadingBar.setDefaults({
   color: 'green',
@@ -70,6 +70,10 @@ const buttons: QBtnProps[] = [
   {
     label: 'Dialog',
     onClick: () => dialog({ message: 'Hello World' })
+  },
+  {
+    label: 'Dark',
+    onClick: () => dark.toggle()
   },
   {
     label: 'Notify',
