@@ -76,4 +76,4 @@ body:
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks. Make sure to hide any credentials, tokens and other identifying information.
       render: bash
     validations:
-      required: true
+      required: false
