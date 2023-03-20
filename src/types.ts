@@ -1,3 +1,5 @@
+import { App as VueApp } from 'vue';
+import { QVueGlobals, QuasarIconSet, QuasarLanguage } from 'quasar'
 import { ModuleOptions } from "./module";
 
 export type QuasarPlugins =
@@ -66,3 +68,27 @@ export const quasarFontsPath = 'quasar/fonts';
 export const quasarAnimationsPath = 'quasar/animations';
 export const quasarIconsPath = 'quasar/icons';
 export const quasarBasePath = 'quasar/base';
+
+
+/**
+ * This type is for future reference. Object with this interface gets passed to Quasar plugins on client-side
+ **/
+export interface QuasarPluginClientContext {
+  parentApp: VueApp
+  $q: QVueGlobals
+  lang: QuasarLanguage
+  iconSet: QuasarIconSet
+  onSSRHydrated: (() => void)[]
+}
+
+/**
+ * This type is for future reference. Object with this interface gets passed to Quasar plugins on server-side
+ **/
+export interface QuasarPluginServerContext {
+  parentApp: VueApp
+  $q: QVueGlobals
+  lang: QuasarLanguage
+  iconSet: QuasarIconSet
+  ssrContext: any
+}
+

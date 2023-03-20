@@ -92,7 +92,7 @@ export default defineNuxtModule<ModuleOptions>({
         imports,
         options,
         mode: 'client',
-      })
+      }, nuxt.options.ssr)
     })
     if (nuxt.options.ssr) {
       addPluginTemplate({
@@ -102,7 +102,7 @@ export default defineNuxtModule<ModuleOptions>({
           imports,
           options,
           mode: 'server',
-        })
+        }, nuxt.options.ssr)
       })
     }
 
