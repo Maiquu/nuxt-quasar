@@ -64,12 +64,6 @@ export interface ModuleContext {
   mode: 'server' | 'client'
 }
 
-export const quasarFontsPath = 'quasar/fonts';
-export const quasarAnimationsPath = 'quasar/animations';
-export const quasarIconsPath = 'quasar/icons';
-export const quasarBasePath = 'quasar/base';
-
-
 /**
  * This type is for future reference. Object with this interface gets passed to Quasar plugins on client-side
  **/

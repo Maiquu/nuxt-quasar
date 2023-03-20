@@ -13,7 +13,7 @@ import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
 import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
 import { version } from '../package.json'
-import {quasarAnimationsPath, quasarBasePath, quasarFontsPath, quasarIconsPath} from "./types";
+import { quasarAnimationsPath, quasarBasePath, quasarFontsPath, quasarIconsPath } from "./constants";
 
 export interface ModuleOptions {
   /**
