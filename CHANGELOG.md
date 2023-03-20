@@ -1,6 +1,26 @@
 # Changelog
 
 
+## v1.1.0
+
+
+### 🚀 Enhancements
+
+  - Allow user to decide load order of quasar css files via aliases (5489abf)
+
+### 🩹 Fixes
+
+  - Dark, Screen plugins (e21010e)
+  
+### ✅ Tests
+
+  - Added several tests to confirm setupCss is working (cfd40bd)
+
+### ❤️  Contributors
+
+- Maiquu ([@Maiquu](http://github.com/Maiquu))
+- JasonLandbridge ([@JasonLandbridge](http://github.com/JasonLandbridge))
+
 ## v1.0.5
 
 
