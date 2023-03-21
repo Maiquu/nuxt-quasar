@@ -14,6 +14,7 @@ import { importJSON, kebabCase } from './utils'
 import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
 import { version } from '../package.json'
 import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from "./constants";
+import type { Options as SassOptions } from 'sass'
 
 export interface ModuleOptions {
   /**
@@ -169,8 +170,6 @@ export default defineNuxtModule<ModuleOptions>({
         }
       }
 
-      muteQuasarSassWarnings(config, options)
-
       config.define = {
         ...config.define,
         __QUASAR_VERSION__: `'${ quasarVersion }'`,
@@ -178,6 +177,10 @@ export default defineNuxtModule<ModuleOptions>({
         __QUASAR_SSR_SERVER__: ssr && isServer,
         __QUASAR_SSR_CLIENT__: ssr && isClient,
         __QUASAR_SSR_PWA__: false
+      }
+
+      if (options.quietSassWarnings) {
+        muteQuasarSassWarnings(config)
       }
 
       config.plugins ??= []
@@ -392,17 +395,12 @@ export function setupCss(css: string[], options: ModuleOptions) {
  * @param config
  * @param options
  */
-export function muteQuasarSassWarnings(config: ViteConfig, options: ModuleOptions) {
-
-  if (!config || !options || !options.quietSassWarnings) {
-    return;
-  }
+export function muteQuasarSassWarnings(config: ViteConfig) {
 
   // Source of this fix: https://github.com/quasarframework/quasar/pull/12034#issuecomment-1021503176
-  const silenceSomeSassDeprecationWarnings = {
+  const silenceSomeSassDeprecationWarnings: SassOptions<'sync'> = {
     verbose: true,
     logger: {
-      // @ts-ignore
       warn(logMessage, logOptions) {
         const {stderr} = process;
         const span = logOptions.span ?? undefined;
@@ -432,27 +430,16 @@ export function muteQuasarSassWarnings(config: ViteConfig, options: ModuleOption
     },
   };
 
-  if (!config.css) {
-    config.css = {};
-  }
+  config.css ??= {};
+  config.css.preprocessorOptions ??= {};
 
-  if (!config.css.preprocessorOptions) {
-    config.css.preprocessorOptions = {};
-  }
-
-  const types = ['scss', 'sass'];
+  const types = ['scss', 'sass'] as const;
 
   for (const type of types) {
-    if (!config.css.preprocessorOptions[type]) {
-      config.css.preprocessorOptions[type] = {
-        ...silenceSomeSassDeprecationWarnings,
-      }
-    } else {
-      const userConfig = config.css.preprocessorOptions[type];
-      config.css.preprocessorOptions[type] = {
-        ...silenceSomeSassDeprecationWarnings,
-        ...userConfig
-      }
+    const userConfig = config.css.preprocessorOptions[type];
+    config.css.preprocessorOptions[type] = {
+      ...silenceSomeSassDeprecationWarnings,
+      ...userConfig
     }
   }
 }
