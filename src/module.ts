@@ -393,7 +393,6 @@ export function setupCss(css: string[], options: ModuleOptions) {
  * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007
  *
  * @param config
- * @param options
  */
 export function muteQuasarSassWarnings(config: ViteConfig) {
 
