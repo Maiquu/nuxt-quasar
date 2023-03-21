@@ -79,6 +79,10 @@ export default defineNuxtModule<ModuleOptions>({
   async setup (options: ModuleOptions, nuxt) {
 
     nuxt.options.css = setupCss(nuxt.options.css, options)
+    
+    nuxt.hook('prepare:types', ({ references }) => {
+      references.unshift({ types: 'quasar' })
+    })
 
     const { version: quasarVersion } = await importJSON('quasar/package.json')
     const importMap = await importJSON('quasar/dist/transforms/import-map.json') as Record<string, string>
