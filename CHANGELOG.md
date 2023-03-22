@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v1.2.0
+
+### 🚀 Enhancements
+
+  - Added quasar types (#14)
+  - Added `quietSassWarnings` option, which mutes SCSS/SASS deprecation warnings when using newer versions of `sass`
+
+### 🏡 Chore
+
+  - Updated dependencies (52073a5)
+
+### ❤️  Contributors
+
+- Maiquu ([@Maiquu](http://github.com/Maiquu))
+- Jason Landbridge ([@JasonLandbridge](http://github.com/JasonLandbridge))
+- Oumar Barry ([@oumarbarry](http://github.com/oumarbarry))
+
 ## v1.1.1
 
 
