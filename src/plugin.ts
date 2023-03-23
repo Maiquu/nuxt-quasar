@@ -7,6 +7,7 @@ export function vuePluginTemplate(context: ModuleContext, ssr: boolean): string 
   const isClient = !isServer
   const { iconSet } = context.options
   return `\
+import { ref, computed, useHeadSafe } from "#imports"
 import { defineNuxtPlugin } from "#app"
 import Quasar from "quasar/src/vue-plugin.js"
 ${context.options.plugins
@@ -22,12 +23,56 @@ export default defineNuxtPlugin((nuxt) => {\n${
   const ssrContext = {
     req: nuxt.ssrContext.event.req,
     res: nuxt.ssrContext.event.res,
-  }`)}${
+  }`)}\n${
   when(ssr && isClient, `\
   const NuxtPlugin = {
     install({ onSSRHydrated }) {
-      nuxt.hook('app:suspense:resolve', () => {
+      nuxt.hook("app:suspense:resolve", () => {
         onSSRHydrated.forEach(fn => fn())
+      })
+    }
+  }`)}\n${
+  when(ssr && isServer, `\
+
+  const bodyClasses = ref("")
+  const htmlAttrs = ref("")
+
+  const htmlAttrsRecord = computed(() => {
+    return Object.fromEntries(
+      htmlAttrs
+        .split(" ")
+        .map(attr => attr.split("="))
+    )
+  })
+
+  useHeadSafe(computed(() => ({
+    bodyAttrs: {
+      class: bodyClasses.value
+    }
+  })))
+
+  const NuxtPlugin = {
+    install({ ssrContext }) {
+      ssrContext._meta = new Proxy({}, {
+        get(target, key) {
+          if (key === "bodyClasses") {
+            return bodyClasses.value
+          } else if (key === "htmlAttrs") {
+            return htmlAttrs.value
+          } else {
+            return target[key]
+          }
+        },
+        set(target, key, value) {
+          if (key === "bodyClasses") {
+            bodyClasses.value = value
+          } else if (key === "htmlAttrs") {
+            htmlAttrs.value = value
+          } else {
+            target[key] = value
+          }
+          return true
+        }
       })
     }
   }`)}
@@ -35,7 +80,7 @@ export default defineNuxtPlugin((nuxt) => {\n${
   nuxt.vueApp.use(Quasar, {
     ${when(typeof iconSet === 'string', 'iconSet,')}
     plugins: {
-      ${when(ssr && isClient, 'NuxtPlugin, ')
+      ${when(ssr, 'NuxtPlugin, ')
       + context.options.plugins?.join(`,\n${' '.repeat(6)}`) || []}
     }
   }${when(isServer, ', ssrContext')})

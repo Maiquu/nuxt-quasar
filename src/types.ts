@@ -1,3 +1,4 @@
+import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { App as VueApp } from 'vue'
 import type { QVueGlobals, QuasarIconSet, QuasarLanguage } from 'quasar'
 import type { ModuleOptions } from './module'
@@ -83,4 +84,21 @@ export interface QuasarPluginServerContext {
   lang: QuasarLanguage
   iconSet: QuasarIconSet
   ssrContext: any
+}
+
+export interface QuasarSSRContext {
+  req: IncomingMessage
+  res: ServerResponse
+  $q: any
+  _meta: {
+    htmlAttrs: string
+    headTags: string
+    endingHeadTags: string
+    bodyClasses: string
+    bodyAttrs: string
+    bodyTags: string
+  }
+  _modules: any[]
+  onRendered: ((...args: any[]) => any)[]
+  __qPrevLang: string
 }
