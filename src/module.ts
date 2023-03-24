@@ -25,7 +25,7 @@ export interface ModuleOptions {
    *   - `'src/my-variables.sass'`
    *      --> yes, and I'd also like to customize those variables
    *
-   * **`sass@1.32.12` required**
+   * **`sass@^1.32.12` required**
    *
    * @default false
    */
@@ -44,7 +44,7 @@ export interface ModuleOptions {
   plugins?: QuasarPlugins[]
 
   /**
-   * Icon set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
+   * Icon Set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
    * @default 'material-icons'
    */
   iconSet?: QuasarFontIconSets

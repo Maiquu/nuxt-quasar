@@ -42,7 +42,8 @@ npm install --save-dev nuxt-quasar-ui
 export default defineNuxtConfig({
   modules: [
     'nuxt-quasar-ui'
-  ]
+  ],
+  quasar: { /* */ }
 })
 ```
 
@@ -66,30 +67,84 @@ That's it! You can now use Quasar Nuxt in your Nuxt app ✨
 
 ## Options
 
+### plugins
+- Type: `[QuasarPlugin](https://github.com/Maiquu/nuxt-quasar/blob/main/src/types.ts#L6-L18)[]`
+- Default: `[]`
+
+List of quasar plugins to apply.
+
+### sassVariables
+- Type: `boolean | string`
+- Default: `false`
+
+Enables usage of Quasar Sass/SCSS variables. 
+Can optionally be a string which points to a file that contains the variables.
+
+### quietSassWarnings
+- Type: `boolean`
+- Default: `true`
+
+Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings, polluting the console log when running Nuxt. 
+Enabling this option silences these deprecation warnings.
+
+### iconSet
+- Type: `string`
+- Default: `'material-icons'`
+
+Icon set used by Quasar Components. Should also be included in `extra.fontIcons` to take effect.
+
+### extras.font
+- Type: `'roboto-font' | 'roboto-font-latin-ext' | null`
+- Default: `null`
+
+Requires `@quasar/extras`.
+
+### extras.fontIcons
+- Type: `string[]`
+- Default: `[]`
+
+Auto-import webfont icon set provided by `@quasar/extras`.
+
+### extras.svgIcons
+- Type: `string[]`
+- Default: `[]`
+
+Auto-import svg icon sets provided by `@quasar/extras`.
+
+### extras.animations
+- Type: `string[]`
+- Default: `[]`
+
+Auto-import animations provided by `@quasar/extras`
+
+
+## CSS Import Ordering
+
+Module will import css in following order:
+
+1) Fonts
+2) Icons
+3) Animations
+4) Quasar CSS
+
+It is possible to change this order via `css` option.
+
+### Example
+
 ```js
 export default defineNuxtConfig({
-  modules: [
-    'nuxt-quasar-ui'
-  ],
-  quasar: {
-    // string[]: https://quasar.dev/quasar-plugins
-    plugins: [],
-    // boolean | string: Truthy values requires `sass@1.32.12`, same behaviour as `@quasar/vite-plugin`
-    sassVariables: false,
-    // Requires `@quasar/extras` package
-    extras: {
-      // string | null: Auto-import roboto font. https://quasar.dev/style/typography#default-font
-      font: null,
-      // string[]: Auto-import webfont icons. Usage: https://quasar.dev/vue-components/icon#webfont-usage
-      fontIcons: [],
-      // string[]: Auto-import svg icon collections. Usage: https://quasar.dev/vue-components/icon#svg-usage
-      svgIcons: [],
-      // string[]: Auto-import animations from 'animate.css'. Usage: https://quasar.dev/options/animations#usage  
-      animations: [],
-    }
-  }
+  css: [
+    // ...
+    'quasar/fonts',
+    'quasar/animations',
+    'quasar/icons',
+    'quasar/css',
+    // ...
+  ]
 })
 ```
+
+
 ## Regarding Meta tags
 Avoid using quasar plugins and composables that manipulate `<meta>` tags.
 Use [`useHead`](https://nuxt.com/docs/api/composables/use-head) instead.
@@ -102,7 +157,7 @@ List of known plugins/composables that do this:
 ## Regarding Component Icons
 
 By default, icons are not packaged with `quasar` module.
-You will have to install `@quasar/extras` and append `'material-icons'` to `fontIcons` in your `nuxt.config.ts` file for icons to take effect.
+You will have to install `@quasar/extras` and append `'material-icons'` (or value used in `iconSet` if defined) to `extras.fontIcons` in your `nuxt.config.ts` file for icons to take effect.
 
 ```ts 
 // nuxt.config.ts
@@ -113,7 +168,6 @@ export default {
     }
   }
 }
-
 ```
 
 ## Development
