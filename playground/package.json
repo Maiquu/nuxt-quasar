@@ -1,4 +1,4 @@
 {
-  "private": true,
-  "name": "nuxt-quasar-playground"
+  "name": "nuxt-quasar-playground",
+  "private": true
 }

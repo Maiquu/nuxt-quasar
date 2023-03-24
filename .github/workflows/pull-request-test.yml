@@ -2,9 +2,9 @@ name: Runs All Unit tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
   setup-and-run-tests:

@@ -1,9 +1,9 @@
-name: "Bug Report 🐛"
+name: Bug Report 🐛
 description: Report a bug you found in Nuxt-Quasar!
-title: "[BUG] - <title>"
-labels: [
-  "bug"
-]
+title: '[BUG] - <title>'
+labels:
+  - bug
+
 body:
   - type: checkboxes
     attributes:
@@ -22,14 +22,14 @@ body:
   - type: input
     id: quasar-version
     attributes:
-      label: "Quasar version"
+      label: Quasar version
       placeholder: ex. v2.11.8
     validations:
       required: true
   - type: dropdown
     id: browsers
     attributes:
-      label: "Browsers"
+      label: Browsers
       description: What browsers are you seeing the problem on?
       multiple: true
       options:
@@ -48,7 +48,7 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: "Description"
+      label: Description
       description: Please enter an explicit description of the bug
       placeholder: Short and explicit description of the bug
     validations:
@@ -56,7 +56,7 @@ body:
   - type: textarea
     id: reproduce-steps
     attributes:
-      label: "Reproduction steps"
+      label: Reproduction steps
       description: Please enter the steps needed to reproduce the bug
       value: |
         1. Go to '...'
@@ -69,7 +69,7 @@ body:
   - type: textarea
     id: screenshot
     attributes:
-      label: "Screenshots"
+      label: Screenshots
       description: If applicable, add screenshots to help explain your problem. Make sure to hide any credentials and other identifying information.
       value: |
         ![DESCRIPTION](LINK.png)
@@ -79,7 +79,7 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: "Logs"
+      label: Logs
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks. Make sure to hide any credentials, tokens and other identifying information.
       render: bash
     validations:

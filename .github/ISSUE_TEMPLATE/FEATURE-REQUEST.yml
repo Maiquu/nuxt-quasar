@@ -1,13 +1,13 @@
-name: "Feature request 🚀"
+name: Feature request 🚀
 description: Suggest a feature that will improve Nuxt-Quasar!
-title: "💡 [REQUEST] - <title>"
-labels: [
-  "enhancement"
-]
+title: '💡 [REQUEST] - <title>'
+labels:
+  - enhancement
+
 body:
   - type: markdown
     attributes:
-      value: "**Thank you for taking the time to fill out this feature request! The more details you can provide the better!**"
+      value: '**Thank you for taking the time to fill out this feature request! The more details you can provide the better!**'
   - type: textarea
     id: feature-description
     attributes:

@@ -1,14 +1,18 @@
 {
   "name": "nuxt-quasar-ui",
+  "type": "module",
   "version": "1.2.0",
   "description": "Quasar Module for Nuxt (Unofficial)",
   "license": "MIT",
-  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Maiquu/nuxt-quasar"
+  },
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",
-      "import": "./dist/module.mjs",
-      "require": "./dist/module.cjs"
+      "require": "./dist/module.cjs",
+      "import": "./dist/module.mjs"
     }
   },
   "main": "./dist/module.cjs",
@@ -16,10 +20,6 @@
   "files": [
     "dist"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Maiquu/nuxt-quasar"
-  },
   "scripts": {
     "prepack": "nuxt-module-build",
     "dev": "nuxi dev playground",
