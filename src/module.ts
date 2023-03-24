@@ -207,39 +207,6 @@ export default defineNuxtModule<ModuleOptions>({
       )
     })
 
-    // WARN: Webpack support incomplete
-    nuxt.hook('webpack:config', (configs) => {
-      configs.forEach((config) => {
-        const isClient = config.name === 'client'
-        const isServer = !isClient
-        const context: ModuleContext = {
-          imports,
-          options,
-          mode: isServer ? 'server' : 'client',
-        }
-
-        config.plugins ??= []
-        config.plugins.push(
-          // TODO: Prepack tries to bundle webpack
-          // new DefinePlugin({
-          //   __QUASAR_VERSION__: JSON.stringify(quasarVersion),
-          //   __QUASAR_SSR__: ssr,
-          //   __QUASAR_SSR_SERVER__: ssr && isServer,
-          //   __QUASAR_SSR_CLIENT__: ssr && isClient,
-          //   __QUASAR_SSR_PWA__: false
-          // })
-        )
-
-        config.plugins.push(
-          transformImportPlugin.webpack(context),
-          transformDirectivesPlugin.webpack(context),
-        )
-        if (options.sassVariables && isClient) {
-          config.plugins.push(transformScssPlugin.webpack(context))
-        }
-      })
-    })
-
     // @ts-expect-error - Private API
     nuxt.hook('devtools:customTabs', (tabs: ModuleCustomTab[]) => {
       tabs.push({
