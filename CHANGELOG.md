@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.3.0
+
+### 🚀 Enhancements
+
+  - Select iconSet used by Quasar (4af1f30)
+  - UseHead/ssrContext integration (#19)
+
+### 📖 Documentation
+
+  - Updated README to include new features (5ccda7e)
+
+### ❤️  Contributors
+
+  - Maiquu ([@Maiquu](http://github.com/Maiquu))
 
 ## v1.2.0
 
