@@ -43,6 +43,12 @@ export interface ModuleOptions {
    **/
   plugins?: QuasarPlugins[]
 
+  /**
+   * Icon set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
+   * @default 'material-icons'
+   */
+  iconSet?: QuasarFontIconSets
+
   /** `@quasar/extras` options.
    *
    * @see [Documentation](https://github.com/quasarframework/quasar/blob/dev/extras/README.md)
@@ -76,9 +82,10 @@ export default defineNuxtModule<ModuleOptions>({
     sassVariables: false,
     quietSassWarnings: true,
     plugins: [],
+    iconSet: 'material-icons',
     extras: {},
   },
-  async setup(options: ModuleOptions, nuxt) {
+  async setup(options, nuxt) {
     const { version: quasarVersion } = await importJSON('quasar/package.json')
     const importMap = await importJSON('quasar/dist/transforms/import-map.json') as Record<string, string>
     const transformAssetUrls = await importJSON('quasar/dist/transforms/loader-asset-urls.json') as AssetURLOptions
