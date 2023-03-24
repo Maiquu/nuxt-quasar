@@ -1,19 +1,18 @@
-import { createFilter } from '@rollup/pluginutils';
-import { ModuleContext } from '../types';
+import { createFilter } from '@rollup/pluginutils'
 import { createUnplugin } from 'unplugin'
+import type { ModuleContext } from '../types'
 
 interface VueQuery {
-  vue?: boolean;
-  src?: string;
-  type?: 'script' | 'template' | 'style' | 'custom';
-  index?: number;
-  lang?: string;
-  raw?: boolean;
-  scoped?: boolean;
+  vue?: boolean
+  src?: string
+  type?: 'script' | 'template' | 'style' | 'custom'
+  index?: number
+  lang?: string
+  raw?: boolean
+  scoped?: boolean
 }
 
-const importQuasarRegex = /import\s*\{([\w,\s]+)\}\s*from\s*(['"])quasar\2;?/g;
-
+const importQuasarRegex = /import\s*\{([\w,\s]+)\}\s*from\s*(['"])quasar\2;?/g
 
 /**
  * Transforms JS code where importing from 'quasar' package
@@ -26,49 +25,49 @@ function mapQuasarImports(code: string, importMap: Record<string, string>): stri
     match
       .split(',')
       .map((identifier) => {
-        const data = identifier.split(' as ');
-        const importName = data[0].trim();
+        const data = identifier.split(' as ')
+        const importName = data[0].trim()
 
         // might be an empty entry like below
         // (notice useQuasar is followed by a comma)
         // import { QTable, useQuasar, } from 'quasar'
         if (importName === '') {
-          return '';
+          return ''
         }
-        const importAs = data[1] !== void 0 ? data[1].trim() : importName;
+        const importAs = data[1] !== undefined ? data[1].trim() : importName
         const importPath = importMap[importName]
         if (!importPath) {
           throw new Error(`Unknown Quasar import: ${importName}`)
         }
 
-        return `import ${importAs} from "quasar/${importPath}"`;
+        return `import ${importAs} from "quasar/${importPath}"`
       })
-      .join('\n')
-  );
+      .join('\n'),
+  )
 }
 
 function parseVueRequest(id: string): {
-  filename: string;
-  query: VueQuery;
+  filename: string
+  query: VueQuery
 } {
-  const [filename, rawQuery] = id.split(`?`, 2);
-  const query = Object.fromEntries(new URLSearchParams(rawQuery)) as VueQuery;
+  const [filename, rawQuery] = id.split('?', 2)
+  const query = Object.fromEntries(new URLSearchParams(rawQuery)) as VueQuery
   if (query.vue != null) {
-    query.vue = true;
+    query.vue = true
   }
   if (query.index != null) {
-    query.index = Number(query.index);
+    query.index = Number(query.index)
   }
   if (query.raw != null) {
-    query.raw = true;
+    query.raw = true
   }
   if (query.scoped != null) {
-    query.scoped = true;
+    query.scoped = true
   }
   return {
     filename,
     query,
-  };
+  }
 }
 
 export const transformImportPlugin = createUnplugin((context: ModuleContext) => {
@@ -86,17 +85,17 @@ export const transformImportPlugin = createUnplugin((context: ModuleContext) => 
         /[\\/]node_modules[\\/]/,
         /[\\/]\.git[\\/]/,
         /[\\/]\.nuxt[\\/]/,
-      ]
+      ],
     ),
 
     transform(code, id) {
-      const { query } = parseVueRequest(id);
+      const { query } = parseVueRequest(id)
       if (!query.vue || (query.vue && query.type === 'script')) {
         return {
           code: mapQuasarImports(code, context.imports.raw),
           map: null,
-        };
+        }
       }
     },
-  };
+  }
 })

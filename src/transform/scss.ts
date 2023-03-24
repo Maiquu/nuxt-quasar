@@ -1,5 +1,5 @@
 import { createUnplugin } from 'unplugin'
-import { ModuleContext } from '../types'
+import type { ModuleContext } from '../types'
 import { normalizePath } from '../utils'
 
 export const transformScssPlugin = createUnplugin(({ options }: ModuleContext) => {
@@ -15,42 +15,42 @@ export const transformScssPlugin = createUnplugin(({ options }: ModuleContext) =
     enforce: 'pre',
 
     transform(src, id) {
-      const [ filename ] = id.split('?', 2)
+      const [filename] = id.split('?', 2)
 
       if (filename.endsWith('.scss')) {
         return {
           code: scssTransform(src),
-          map: null
+          map: null,
         }
       }
 
       if (filename.endsWith('.sass')) {
         return {
           code: sassTransform(src),
-          map: null
+          map: null,
         }
       }
 
       return null
-    }
+    },
   }
 })
 
 function createScssTransform(fileExtension: string, sassVariables?: string | boolean): (code: string) => string {
-  const sassImportCode = [ `@import 'quasar/src/css/variables.sass'`, '' ]
+  const sassImportCode = ['@import \'quasar/src/css/variables.sass\'', '']
 
   if (typeof sassVariables === 'string') {
-    sassImportCode.unshift(`@import '${ sassVariables }'`)
+    sassImportCode.unshift(`@import '${sassVariables}'`)
   }
 
   const prefix = fileExtension === 'sass'
     ? sassImportCode.join('\n')
     : sassImportCode.join(';\n')
 
-  return content => {
+  return (content) => {
     const useIndex = Math.max(
       content.lastIndexOf('@use '),
-      content.lastIndexOf('@forward ')
+      content.lastIndexOf('@forward '),
     )
 
     if (useIndex === -1) {
@@ -64,6 +64,6 @@ function createScssTransform(fileExtension: string, sassVariables?: string | boo
       return content.substring(0, index) + prefix + content.substring(index)
     }
 
-    return content + '\n' + prefix
+    return `${content}\n${prefix}`
   }
 }

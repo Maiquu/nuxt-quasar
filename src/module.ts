@@ -1,10 +1,11 @@
-
-import { readFile } from 'fs/promises'
+import { readFile } from 'node:fs/promises'
 import type { ModuleCustomTab } from '@nuxt/devtools'
-import { addComponent, addImports, defineNuxtModule, resolvePath, addImportsSources, addPluginTemplate } from '@nuxt/kit'
+import { addComponent, addImports, addImportsSources, addPluginTemplate, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
+import type { Options as SassOptions } from 'sass'
+import { version } from '../package.json'
 import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './transform/directives'
 import type { ModuleContext, QuasarFontIconSets, QuasarImports, QuasarPlugins, QuasarSvgIconSets } from './types'
@@ -12,9 +13,7 @@ import { transformScssPlugin } from './transform/scss'
 import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
 import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
-import { version } from '../package.json'
-import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from "./constants";
-import type { Options as SassOptions } from 'sass'
+import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 
 export interface ModuleOptions {
   /**
@@ -42,12 +41,7 @@ export interface ModuleOptions {
    *
    * @see [Documentation](https://quasar.dev/quasar-plugins/)
    **/
-  plugins?: Exclude<QuasarPlugins, ''
-    // Disable plugins that does not work correctly? Or warn users instead?
-    // | 'AddressbarColor'
-    // | 'Meta'
-    // | 'Meta'
-  >[]
+  plugins?: QuasarPlugins[]
 
   /** `@quasar/extras` options.
    *
@@ -82,12 +76,11 @@ export default defineNuxtModule<ModuleOptions>({
     sassVariables: false,
     quietSassWarnings: true,
     plugins: [],
-    extras: {}
+    extras: {},
   },
-  async setup (options: ModuleOptions, nuxt) {
-
+  async setup(options: ModuleOptions, nuxt) {
     nuxt.options.css = setupCss(nuxt.options.css, options)
-    
+
     nuxt.hook('prepare:types', ({ references }) => {
       references.unshift({ types: 'quasar' })
     })
@@ -104,7 +97,7 @@ export default defineNuxtModule<ModuleOptions>({
         imports,
         options,
         mode: 'client',
-      }, nuxt.options.ssr)
+      }, nuxt.options.ssr),
     })
     if (nuxt.options.ssr) {
       addPluginTemplate({
@@ -114,7 +107,7 @@ export default defineNuxtModule<ModuleOptions>({
           imports,
           options,
           mode: 'server',
-        }, nuxt.options.ssr)
+        }, nuxt.options.ssr),
       })
     }
 
@@ -133,7 +126,7 @@ export default defineNuxtModule<ModuleOptions>({
         addImports({
           name: 'default',
           as: composable.name,
-          from: composable.path
+          from: composable.path,
         })
       }
       if (options.plugins) {
@@ -141,7 +134,7 @@ export default defineNuxtModule<ModuleOptions>({
           addImports({
             name: 'default',
             as: plugin,
-            from: imports.raw[plugin]
+            from: imports.raw[plugin],
           })
         }
       }
@@ -161,26 +154,26 @@ export default defineNuxtModule<ModuleOptions>({
       const context: ModuleContext = {
         imports,
         options,
-        mode: isServer ? 'server' : 'client'
+        mode: isServer ? 'server' : 'client',
       }
 
       config.optimizeDeps ??= {}
       config.optimizeDeps.exclude ??= []
-      config.optimizeDeps.exclude.push('quasar');
+      config.optimizeDeps.exclude.push('quasar')
 
       config.vue = {
         template: {
-          transformAssetUrls
-        }
+          transformAssetUrls,
+        },
       }
 
       config.define = {
         ...config.define,
-        __QUASAR_VERSION__: `'${ quasarVersion }'`,
+        __QUASAR_VERSION__: `'${quasarVersion}'`,
         __QUASAR_SSR__: ssr,
         __QUASAR_SSR_SERVER__: ssr && isServer,
         __QUASAR_SSR_CLIENT__: ssr && isClient,
-        __QUASAR_SSR_PWA__: false
+        __QUASAR_SSR_PWA__: false,
       }
 
       if (options.quietSassWarnings) {
@@ -200,29 +193,29 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hook('nitro:config', async (config) => {
       config.replace = {
         ...config.replace,
-        __QUASAR_VERSION__: `'${ quasarVersion }'`,
+        __QUASAR_VERSION__: `'${quasarVersion}'`,
         __QUASAR_SSR__: nuxt.options.ssr,
         __QUASAR_SSR_SERVER__: true,
         __QUASAR_SSR_CLIENT__: false,
-        __QUASAR_SSR_PWA__: false
+        __QUASAR_SSR_PWA__: false,
       }
       config.externals ??= {}
       config.externals.inline ??= []
       config.externals.inline.push(
         await resolvePath('quasar/lang/en-US'),
-        await resolvePath('quasar/icon-set/material-icons')
+        await resolvePath('quasar/icon-set/material-icons'),
       )
     })
 
     // WARN: Webpack support incomplete
     nuxt.hook('webpack:config', (configs) => {
-      configs.forEach(config => {
+      configs.forEach((config) => {
         const isClient = config.name === 'client'
         const isServer = !isClient
         const context: ModuleContext = {
           imports,
           options,
-          mode: isServer ? 'server' : 'client'
+          mode: isServer ? 'server' : 'client',
         }
 
         config.plugins ??= []
@@ -247,7 +240,7 @@ export default defineNuxtModule<ModuleOptions>({
       })
     })
 
-    // @ts-expect-error
+    // @ts-expect-error - Private API
     nuxt.hook('devtools:customTabs', (tabs: ModuleCustomTab[]) => {
       tabs.push({
         name: 'quasar',
@@ -256,16 +249,13 @@ export default defineNuxtModule<ModuleOptions>({
         view: {
           type: 'iframe',
           src: 'https://quasar.dev/vue-components',
-        }
+        },
       })
     })
-
-  }
+  },
 })
 
-
 async function categorizeImports(importMap: Record<string, string>): Promise<QuasarImports> {
-
   const imports: QuasarImports = {
     raw: importMap,
     components: [],
@@ -278,13 +268,13 @@ async function categorizeImports(importMap: Record<string, string>): Promise<Qua
     if (path.includes('/components/') && !path.includes('/__tests__/')) {
       imports.components.push({
         name,
-        path: await resolvePath(`quasar/${path}`)
+        path: await resolvePath(`quasar/${path}`),
       })
     }
     else if (path.includes('/composables/')) {
       imports.composables.push({
         name,
-        path: await resolvePath(`quasar/${path}`)
+        path: await resolvePath(`quasar/${path}`),
       })
     }
     else if (path.includes('/directives/')) {
@@ -297,14 +287,13 @@ async function categorizeImports(importMap: Record<string, string>): Promise<Qua
     else if (path.includes('/plugins/')) {
       imports.plugins.push({
         name,
-        path: await resolvePath(`quasar/${path}`)
+        path: await resolvePath(`quasar/${path}`),
       })
     }
   }
 
   return imports
 }
-
 
 const iconDeclarationPattern = /^export declare const ([a-zA-Z\d]+): string;?$/gm
 
@@ -323,7 +312,6 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
   }
 }
 
-
 /**
  * Inject the Quasar css into the nuxt.options.css array.
  * It takes into account the order of the css array when the user has specified it.
@@ -339,14 +327,13 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
  * @param options
  */
 export function setupCss(css: string[], options: ModuleOptions) {
-
   if (!css) {
-    css = [];
+    css = []
   }
 
   if (!options) {
     css.unshift('quasar/dist/quasar.css')
-    return css;
+    return css
   }
 
   // Quasar CSS is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
@@ -357,7 +344,8 @@ export function setupCss(css: string[], options: ModuleOptions) {
   const index = css.indexOf(quasarCssPath)
   if (index !== -1) {
     css.splice(index, 1, quasarCssActualPath)
-  } else {
+  }
+  else {
     css.unshift(quasarCssActualPath)
   }
 
@@ -365,7 +353,8 @@ export function setupCss(css: string[], options: ModuleOptions) {
     const i = css.indexOf(quasarAnimationsPath)
     if (i !== -1) {
       css.splice(i, 1, ...options.extras.animations.map(resolveAnimation))
-    } else {
+    }
+    else {
       css.unshift(...options.extras.animations.map(resolveAnimation))
     }
   }
@@ -374,7 +363,8 @@ export function setupCss(css: string[], options: ModuleOptions) {
     const i = css.indexOf(quasarIconsPath)
     if (i !== -1) {
       css.splice(i, 1, ...options.extras.fontIcons.map(resolveFontIcon))
-    } else {
+    }
+    else {
       css.unshift(...options.extras.fontIcons.map(resolveFontIcon))
     }
   }
@@ -383,12 +373,13 @@ export function setupCss(css: string[], options: ModuleOptions) {
     const i = css.indexOf(quasarFontsPath)
     if (i !== -1) {
       css.splice(i, 1, resolveFont(options.extras.font))
-    } else {
+    }
+    else {
       css.unshift(resolveFont(options.extras.font))
     }
   }
 
-  return css;
+  return css
 }
 
 /**
@@ -399,50 +390,49 @@ export function setupCss(css: string[], options: ModuleOptions) {
  * @param config
  */
 export function muteQuasarSassWarnings(config: ViteConfig) {
-
   // Source of this fix: https://github.com/quasarframework/quasar/pull/12034#issuecomment-1021503176
   const silenceSomeSassDeprecationWarnings: SassOptions<'sync'> = {
     verbose: true,
     logger: {
       warn(logMessage, logOptions) {
-        const {stderr} = process;
-        const span = logOptions.span ?? undefined;
-        const stack = (logOptions.stack === 'null' ? undefined : logOptions.stack) ?? undefined;
+        const { stderr } = process
+        const span = logOptions.span ?? undefined
+        const stack = (logOptions.stack === 'null' ? undefined : logOptions.stack) ?? undefined
 
         if (logOptions.deprecation) {
           if (logMessage.startsWith('Using / for division outside of calc() is deprecated')) {
             // silences above deprecation warning
-            return;
+            return
           }
-          stderr.write('DEPRECATION ');
+          stderr.write('DEPRECATION ')
         }
-        stderr.write(`WARNING: ${logMessage}\n`);
+        stderr.write(`WARNING: ${logMessage}\n`)
 
         if (span !== undefined) {
           // output the snippet that is causing this warning
-          stderr.write(`\n"${span.text}"\n`);
+          stderr.write(`\n"${span.text}"\n`)
         }
 
         if (stack !== undefined) {
           // indent each line of the stack
-          stderr.write(`    ${stack.toString().trimEnd().replace(/\n/gm, '\n    ')}\n`);
+          stderr.write(`    ${stack.toString().trimEnd().replace(/\n/gm, '\n    ')}\n`)
         }
 
-        stderr.write('\n');
+        stderr.write('\n')
       },
     },
-  };
+  }
 
-  config.css ??= {};
-  config.css.preprocessorOptions ??= {};
+  config.css ??= {}
+  config.css.preprocessorOptions ??= {}
 
-  const types = ['scss', 'sass'] as const;
+  const types = ['scss', 'sass'] as const
 
   for (const type of types) {
-    const userConfig = config.css.preprocessorOptions[type];
+    const userConfig = config.css.preprocessorOptions[type]
     config.css.preprocessorOptions[type] = {
       ...silenceSomeSassDeprecationWarnings,
-      ...userConfig
+      ...userConfig,
     }
   }
 }

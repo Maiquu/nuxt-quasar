@@ -1,8 +1,8 @@
 import path from 'node:path'
 import os from 'node:os'
-import pMemoize from 'p-memoize';
-import { resolvePath } from '@nuxt/kit'
 import { readFile } from 'node:fs/promises'
+import pMemoize from 'p-memoize'
+import { resolvePath } from '@nuxt/kit'
 
 export const isWindows = os.platform() === 'win32'
 
@@ -27,9 +27,9 @@ const PASCAL_CASE = /[a-z][A-Z]|^[A-Z]/g
 
 /** Convert `PascalCase` to `kebab-case` */
 export function kebabCase(string: string): string {
-	return string.replaceAll(PASCAL_CASE,
-		match => match.length === 1
-			? match[0].toLowerCase()
-			: `${match[0]}-${match[1].toLowerCase()}`
-	)
+  return string.replaceAll(PASCAL_CASE,
+    match => match.length === 1
+      ? match[0].toLowerCase()
+      : `${match[0]}-${match[1].toLowerCase()}`,
+  )
 }

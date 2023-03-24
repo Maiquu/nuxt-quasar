@@ -1,5 +1,5 @@
-import { QuasarAnimations, QuasarFonts } from "quasar"
-import { QuasarFontIconSets } from "./types"
+import type { QuasarAnimations, QuasarFonts } from 'quasar'
+import type { QuasarFontIconSets } from './types'
 
 export function resolveAnimation(animation: QuasarAnimations): string {
   return `@quasar/extras/animate/${animation}.css`

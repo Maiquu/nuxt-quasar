@@ -1,7 +1,7 @@
 import MagicString from 'magic-string'
-import { ModuleContext } from '../types'
 import { useNuxt } from '@nuxt/kit'
 import { createUnplugin } from 'unplugin'
+import type { ModuleContext } from '../types'
 
 const directivesRegExp = /(?<=[ (])_?resolveDirective\(\s*["']([^'"]*?)["'][\s,]*[^)]*\)/g
 
@@ -12,14 +12,14 @@ export const transformDirectivesPlugin = createUnplugin((context: ModuleContext)
     enforce: 'post',
 
     transform(code, id) {
-      const [ filename ] = id.split('?', 2)
+      const [filename] = id.split('?', 2)
 
       if (!filename.endsWith('.vue'))
         return null
 
       const s = new MagicString(code)
       const directives: {
-        alias: string,
+        alias: string
         path: string
       }[] = []
 
@@ -31,19 +31,20 @@ export const transformDirectivesPlugin = createUnplugin((context: ModuleContext)
           const alias = `__q_directive_${counter++}`
           directives.push({
             alias,
-            path: directive.path
+            path: directive.path,
           })
           return alias
-        } else {
+        }
+        else {
           return full
         }
       })
 
       if (directives.length) {
         s.prepend(
-          directives
+          `${directives
             .map(d => `import ${d.alias} from "${d.path}"`)
-            .join('\n') + '\n'
+            .join('\n')}\n`,
         )
       }
 
@@ -52,10 +53,9 @@ export const transformDirectivesPlugin = createUnplugin((context: ModuleContext)
           code: s.toString(),
           map: sourcemap[context.mode]
             ? s.generateMap({ source: id, includeContent: true })
-            : undefined
+            : undefined,
         }
       }
-
-    }
+    },
   }
 })
