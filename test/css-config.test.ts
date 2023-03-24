@@ -80,12 +80,4 @@ describe('Quasar CSS injection', async () => {
       '@/assets/style.css',
     ])
   })
-
-  it('should insert base quasar css path when nuxt-quasar options and nuxt.options.css is null', async () => {
-    // @ts-expect-error
-    const result = setupCss(null, null)
-    expect(result).toEqual([
-      'quasar/dist/quasar.css',
-    ])
-  })
 })

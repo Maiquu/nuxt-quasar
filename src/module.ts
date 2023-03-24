@@ -79,16 +79,12 @@ export default defineNuxtModule<ModuleOptions>({
     extras: {},
   },
   async setup(options: ModuleOptions, nuxt) {
-    nuxt.options.css = setupCss(nuxt.options.css, options)
-
-    nuxt.hook('prepare:types', ({ references }) => {
-      references.unshift({ types: 'quasar' })
-    })
-
     const { version: quasarVersion } = await importJSON('quasar/package.json')
     const importMap = await importJSON('quasar/dist/transforms/import-map.json') as Record<string, string>
     const transformAssetUrls = await importJSON('quasar/dist/transforms/loader-asset-urls.json') as AssetURLOptions
     const imports = await categorizeImports(importMap)
+
+    setupCss(nuxt.options.css, options)
 
     addPluginTemplate({
       mode: 'client',
@@ -148,6 +144,10 @@ export default defineNuxtModule<ModuleOptions>({
         }
       }
     }
+
+    nuxt.hook('prepare:types', ({ references }) => {
+      references.unshift({ types: 'quasar' })
+    })
 
     nuxt.hook('vite:extendConfig', (config: ViteConfig, { isClient, isServer }) => {
       const ssr = nuxt.options.ssr
@@ -327,15 +327,6 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
  * @param options
  */
 export function setupCss(css: string[], options: ModuleOptions) {
-  if (!css) {
-    css = []
-  }
-
-  if (!options) {
-    css.unshift('quasar/dist/quasar.css')
-    return css
-  }
-
   // Quasar CSS is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
   const quasarCssActualPath = options.sassVariables
     ? 'quasar/src/css/index.sass'
