@@ -103,7 +103,7 @@ Requires `@quasar/extras`.
 - Type: `string[]`
 - Default: `[]`
 
-Auto-import webfont icon set provided by `@quasar/extras`.
+Import webfont icon sets provided by `@quasar/extras`.
 
 ### extras.svgIcons
 - Type: `string[]`
@@ -115,7 +115,7 @@ Auto-import svg icon sets provided by `@quasar/extras`.
 - Type: `string[]`
 - Default: `[]`
 
-Auto-import animations provided by `@quasar/extras`
+Import animations provided by `@quasar/extras`.
 
 
 ## CSS Import Ordering
