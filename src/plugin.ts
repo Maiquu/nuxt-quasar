@@ -7,7 +7,7 @@ export function vuePluginTemplate(context: ModuleContext, ssr: boolean): string 
   const isClient = !isServer
   const { iconSet } = context.options
   return `\
-import { ref, computed, useHeadSafe } from "#imports"
+import { ref, computed, useHead } from "#imports"
 import { defineNuxtPlugin } from "#app"
 import Quasar from "quasar/src/vue-plugin.js"
 ${context.options.plugins
@@ -45,7 +45,7 @@ export default defineNuxtPlugin((nuxt) => {\n${
     )
   })
 
-  useHeadSafe(computed(() => ({
+  useHead(computed(() => ({
     bodyAttrs: {
       class: bodyClasses.value
     }
