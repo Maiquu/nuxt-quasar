@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.3.1
+
+### 🩹 Fixes
+
+  - Switched to useHead for backwards compatibility (#23)
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.3.0
 
 ### 🚀 Enhancements
