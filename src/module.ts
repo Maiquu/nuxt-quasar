@@ -13,7 +13,7 @@ import { transformScssPlugin } from './transform/scss'
 import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
 import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
-import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
+import { allAnimationValues, quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 
 export interface ModuleOptions {
   /**
@@ -63,7 +63,7 @@ export interface ModuleOptions {
      *
      * @see [Documentation](https://quasar.dev/options/animations)
      **/
-    animations?: QuasarAnimations[]
+    animations?: QuasarAnimations[] | 'all'
   }
 
 }
@@ -316,11 +316,12 @@ export function setupCss(css: string[], options: ModuleOptions) {
 
   if (options.extras?.animations) {
     const i = css.indexOf(quasarAnimationsPath)
+    const animationValues = options.extras.animations === 'all' ? allAnimationValues : options.extras.animations
     if (i !== -1) {
-      css.splice(i, 1, ...options.extras.animations.map(resolveAnimation))
+      css.splice(i, 1, ...animationValues.map(resolveAnimation))
     }
     else {
-      css.unshift(...options.extras.animations.map(resolveAnimation))
+      css.unshift(...animationValues.map(resolveAnimation))
     }
   }
 
