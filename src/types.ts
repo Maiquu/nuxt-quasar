@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { App as VueApp } from 'vue'
-import type { QVueGlobals, QuasarIconSet, QuasarLanguage } from 'quasar'
+import type { QVueGlobals, QuasarIconSet, QuasarLanguage, VueClassProp, VueStyleProp } from 'quasar'
 import type { ModuleOptions } from './module'
 
 export type QuasarPlugins =
@@ -68,7 +68,7 @@ export interface ModuleContext {
  * This type is for future reference. Object with this interface gets passed to Quasar plugins on client-side
  **/
 export interface QuasarPluginClientContext {
-  parentApp: VueApp
+  parentApp: VueApp<any>
   $q: QVueGlobals
   lang: QuasarLanguage
   iconSet: QuasarIconSet
@@ -79,7 +79,7 @@ export interface QuasarPluginClientContext {
  * This type is for future reference. Object with this interface gets passed to Quasar plugins on server-side
  **/
 export interface QuasarPluginServerContext {
-  parentApp: VueApp
+  parentApp: VueApp<any>
   $q: QVueGlobals
   lang: QuasarLanguage
   iconSet: QuasarIconSet
@@ -101,4 +101,76 @@ export interface QuasarSSRContext {
   _modules: any[]
   onRendered: ((...args: any[]) => any)[]
   __qPrevLang: string
+}
+
+export interface QuasarFrameworkInnerConfiguration {
+  brand?: {
+    primary?: string
+    secondary?: string
+    accent?: string
+    dark?: string
+    positive?: string
+    negative?: string
+    info?: string
+    warning?: string
+  }
+  dark?: boolean | 'auto'
+  lang?: {
+    noHtmlAttrs?: boolean
+  }
+  loading?: {
+    delay?: number
+    message?: false | string
+    html?: boolean
+    boxClass?: string
+    spinnerSize?: number
+    spinnerColor?: string
+    messageColor?: string
+    backgroundColor?: string
+    customClass?: string
+  }
+  ripple?: boolean | {
+    early?: boolean
+    stop?: boolean
+    center?: boolean
+    color?: string
+    keyCodes?: number[] | number
+  }
+  loadingBar?: {
+    position?: string
+    size?: string
+    color?: string
+    reverse?: boolean
+    skipHijack?: boolean
+  }
+  notify?: {
+    type?: string
+    color?: string
+    textColor?: string
+    message?: string
+    caption?: string
+    html?: boolean
+    icon?: string
+    iconColor?: string
+    iconSize?: string
+    avatar?: string
+    spinner?: boolean
+    spinnerColor?: string
+    spinnerSize?: string
+    position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top' | 'bottom' | 'left' | 'right' | 'center'
+    group?: boolean | string | number
+    badgeColor?: string
+    badgeTextColor?: string
+    badgePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+    badgeStyle?: VueStyleProp
+    badgeClass?: VueClassProp
+    progress?: boolean
+    progressClass?: VueClassProp
+    classes?: string
+    attrs?: object
+    timeout?: number
+    closeBtn?: boolean | string
+    multiLine?: boolean
+    actions?: { icon: string; color: string }[]
+  }
 }

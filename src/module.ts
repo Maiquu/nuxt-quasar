@@ -7,7 +7,7 @@ import type { Options as SassOptions } from 'sass'
 import { version } from '../package.json'
 import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './transform/directives'
-import type { ModuleContext, QuasarFontIconSets, QuasarImports, QuasarPlugins, QuasarSvgIconSets } from './types'
+import type { ModuleContext, QuasarFontIconSets, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarPlugins, QuasarSvgIconSets } from './types'
 import { transformScssPlugin } from './transform/scss'
 import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
@@ -41,6 +41,8 @@ export interface ModuleOptions {
    * @see [Documentation](https://quasar.dev/quasar-plugins/)
    **/
   plugins?: QuasarPlugins[]
+
+  config?: Pick<QuasarFrameworkInnerConfiguration, 'dark'>
 
   /**
    * Icon Set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
