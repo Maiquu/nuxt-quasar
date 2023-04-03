@@ -1,5 +1,4 @@
 import { readFile } from 'node:fs/promises'
-import type { ModuleCustomTab } from '@nuxt/devtools'
 import { addComponent, addImports, addImportsSources, addPluginTemplate, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts } from 'quasar'
@@ -214,8 +213,7 @@ export default defineNuxtModule<ModuleOptions>({
       )
     })
 
-    // @ts-expect-error - Private API
-    nuxt.hook('devtools:customTabs', (tabs: ModuleCustomTab[]) => {
+    nuxt.hook('devtools:customTabs', (tabs) => {
       tabs.push({
         name: 'quasar',
         title: 'Quasar',
