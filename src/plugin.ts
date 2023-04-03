@@ -1,11 +1,11 @@
 import type { ModuleContext } from './types'
 
-const when = (condition: boolean, content: string) => condition ? content : ''
+const when = (condition: any, content: string) => condition ? content : ''
 
 export function vuePluginTemplate(context: ModuleContext, ssr: boolean): string {
   const isServer = context.mode === 'server'
   const isClient = !isServer
-  const { iconSet } = context.options
+  const { config, iconSet } = context.options
   return `\
 import { ref, computed, useHead } from "#imports"
 import { defineNuxtPlugin } from "#app"
@@ -39,7 +39,7 @@ export default defineNuxtPlugin((nuxt) => {\n${
 
   const htmlAttrsRecord = computed(() => {
     return Object.fromEntries(
-      htmlAttrs
+      htmlAttrs.value
         .split(" ")
         .map(attr => attr.split("="))
     )
@@ -48,7 +48,8 @@ export default defineNuxtPlugin((nuxt) => {\n${
   useHead(computed(() => ({
     bodyAttrs: {
       class: bodyClasses.value
-    }
+    },
+    htmlAttrs: htmlAttrsRecord.value,
   })))
 
   const NuxtPlugin = {
