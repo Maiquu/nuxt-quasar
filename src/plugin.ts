@@ -82,7 +82,8 @@ export default defineNuxtPlugin((nuxt) => {\n${
     plugins: {
       ${when(ssr, 'NuxtPlugin, ')
       + context.options.plugins?.join(`,\n${' '.repeat(6)}`) || []}
-    }
+    },
+    ${when(config, `config: ${JSON.stringify(context.options.config)},`)}
   }${when(isServer, ', ssrContext')})
 })`
 }
