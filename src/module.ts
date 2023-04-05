@@ -12,7 +12,9 @@ import { transformScssPlugin } from './transform/scss'
 import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
 import { virtualAnimationsPlugin } from './virtual/animations'
-import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
+import { virtualBrandPlugin } from './virtual/brand'
+import { resolveFont, resolveFontIcon } from './resolve'
+import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 
 export interface ModuleOptions {
   /**
@@ -191,6 +193,7 @@ export default defineNuxtModule<ModuleOptions>({
       config.plugins ??= []
       config.plugins.push(
         virtualAnimationsPlugin.vite(context),
+        virtualBrandPlugin.vite(context),
         transformImportPlugin.vite(context),
         transformDirectivesPlugin.vite(context),
       )
@@ -297,6 +300,7 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
  *   'quasar/icons',
  *   '@/assets/style.css',
  *   'quasar/css',
+ *   'quasar/brand',
  * ]
  * @param css
  * @param options
@@ -307,6 +311,11 @@ export function setupCss(css: string[], options: ModuleOptions) {
     ? 'quasar/src/css/index.sass'
     : 'quasar/dist/quasar.css'
 
+  const brand = options.config?.brand || {}
+  if (!css.includes(quasarBrandPath) && Object.keys(brand).length) {
+    css.unshift(quasarBrandPath)
+  }
+
   const index = css.indexOf(quasarCssPath)
   if (index !== -1) {
     css.splice(index, 1, quasarCssActualPath)
@@ -316,7 +325,6 @@ export function setupCss(css: string[], options: ModuleOptions) {
   }
 
   const animations = options.extras?.animations || []
-
   if (!css.includes(quasarAnimationsPath) && animations.length) {
     css.unshift(quasarAnimationsPath)
   }

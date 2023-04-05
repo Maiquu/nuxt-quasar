@@ -18,6 +18,16 @@ export function normalizePath(id: string): string {
   return path.posix.normalize(isWindows ? slash(id) : id)
 }
 
+export function omit<T extends object, K extends keyof T & string>(object: T, keys: K[]): Omit<T, K>
+export function omit(object: Record<string, any>, keys: string[]): Record<string, any> {
+  return Object.keys(object).reduce((output, key) => {
+    if (!keys.includes(key)) {
+      output[key] = object[key]
+    }
+    return output
+  }, {} as Record<string, any>)
+}
+
 export const readFileMemoized = pMemoize(async (path: string) => {
   const resolvedPath = await resolvePath(path)
   return readFile(resolvedPath, 'utf-8')
