@@ -11,11 +11,14 @@ export default defineNuxtConfig({
       'Loading',
       'LoadingBar',
       'Notify',
-      'Dark',
     ],
     extras: {
       font: 'roboto-font',
       fontIcons: ['material-icons'],
+      animations: 'all',
+    },
+    config: {
+      dark: true,
     },
   },
 })
