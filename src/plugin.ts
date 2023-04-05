@@ -87,7 +87,7 @@ export default defineNuxtPlugin((nuxt) => {\n${
   nuxt.vueApp.use(Quasar, {
     ${when(typeof iconSet === 'string', 'iconSet,')}
     plugins: {${when(ssr, 'NuxtPlugin, ')
-      + (context.options.plugins?.join(', ') || '')
+      + (context.options.plugins?.join(',') || '')
     }},
     ${when(config, () =>
       `config: ${JSON.stringify(omit(context.options.config || {}, ['brand']))},`)}
