@@ -68,10 +68,10 @@ That's it! You can now use Quasar Nuxt in your Nuxt app ✨
 ## Options
 
 ### plugins
-- Type: `[QuasarPlugin](https://github.com/Maiquu/nuxt-quasar/blob/main/src/types.ts#L6-L18)[]`
+- Type: `string[]
 - Default: `[]`
 
-List of quasar plugins to apply.
+List of [quasar plugins]((https://github.com/Maiquu/nuxt-quasar/blob/main/src/types.ts#L6-L18)[]`) to apply.
 
 ### sassVariables
 - Type: `boolean | string`
