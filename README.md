@@ -93,6 +93,20 @@ Enabling this option silences these deprecation warnings.
 
 Icon set used by Quasar Components. Should also be included in `extra.fontIcons` to take effect.
 
+
+### config
+- Type: `object`
+- Default: `{}`
+
+Configurate default settings of UI related plugins and directives (`Dialog`, `Ripple` etc).
+
+### config.brand
+- Type: `object`
+- Default: `{}`
+
+Modify css variables used by Quasar. Alternative to `sassVariables`.
+This option basicly appends a css file with variables defined at root level.
+
 ### extras.font
 - Type: `'roboto-font' | 'roboto-font-latin-ext' | null`
 - Default: `null`
@@ -112,7 +126,7 @@ Import webfont icon sets provided by `@quasar/extras`.
 Auto-import svg icon sets provided by `@quasar/extras`.
 
 ### extras.animations
-- Type: `string[]`
+- Type: `string[] | "all"`
 - Default: `[]`
 
 Import animations provided by `@quasar/extras`.
@@ -126,6 +140,7 @@ Module will import css in following order:
 2) Icons
 3) Animations
 4) Quasar CSS
+5) Brand
 
 It is possible to change this order via `css` option.
 
@@ -139,6 +154,7 @@ export default defineNuxtConfig({
     'quasar/animations',
     'quasar/icons',
     'quasar/css',
+    'quasar/brand' // If config.brand is used
     // ...
   ]
 })
