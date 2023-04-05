@@ -9,7 +9,6 @@ export type QuasarPlugins =
   | 'AppVisibility'
   | 'BottomSheet'
   | 'Cookies'
-  | 'Dark'
   | 'Dialog'
   | 'Loading'
   | 'LoadingBar'
