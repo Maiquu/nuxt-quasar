@@ -30,8 +30,7 @@ describe('Quasar CSS injection', async () => {
     expect(result).toEqual([
       '@quasar/extras/roboto-font/roboto-font.css',
       '@quasar/extras/mdi-v6/mdi-v6.css',
-      '@quasar/extras/animate/bounceInLeft.css',
-      '@quasar/extras/animate/bounceOutRight.css',
+      quasarAnimationsPath,
       '@/assets/style.css',
       'quasar/src/css/index.sass',
     ])
@@ -60,8 +59,7 @@ describe('Quasar CSS injection', async () => {
     expect(result).toEqual([
       '@quasar/extras/roboto-font/roboto-font.css',
       '@quasar/extras/mdi-v6/mdi-v6.css',
-      '@quasar/extras/animate/bounceInLeft.css',
-      '@quasar/extras/animate/bounceOutRight.css',
+      quasarAnimationsPath,
       '@/assets/style.css',
       'quasar/src/css/index.sass',
     ])
