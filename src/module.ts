@@ -11,8 +11,9 @@ import type { ModuleContext, QuasarFontIconSets, QuasarFrameworkInnerConfigurati
 import { transformScssPlugin } from './transform/scss'
 import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
-import { resolveAnimation, resolveFont, resolveFontIcon } from './resolve'
-import { allAnimationValues, quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
+import { virtualAnimationsPlugin } from './transform/animations'
+import { resolveFont, resolveFontIcon } from './resolve'
+import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 
 export interface ModuleOptions {
   /**
@@ -190,7 +191,7 @@ export default defineNuxtModule<ModuleOptions>({
 
       config.plugins ??= []
       config.plugins.push(
-        transformImportPlugin.vite(context),
+        virtualAnimationsPlugin.vite(context),
         transformDirectivesPlugin.vite(context),
       )
       if (options.sassVariables && isClient) {
@@ -314,15 +315,8 @@ export function setupCss(css: string[], options: ModuleOptions) {
     css.unshift(quasarCssActualPath)
   }
 
-  if (options.extras?.animations) {
-    const i = css.indexOf(quasarAnimationsPath)
-    const animationValues = options.extras.animations === 'all' ? allAnimationValues : options.extras.animations
-    if (i !== -1) {
-      css.splice(i, 1, ...animationValues.map(resolveAnimation))
-    }
-    else {
-      css.unshift(...animationValues.map(resolveAnimation))
-    }
+  if (!css.includes(quasarAnimationsPath)) {
+    css.unshift(quasarAnimationsPath)
   }
 
   if (options.extras?.fontIcons) {
