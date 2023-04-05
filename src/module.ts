@@ -9,8 +9,8 @@ import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './transform/directives'
 import type { ModuleContext, QuasarFontIconSets, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarPlugins, QuasarSvgIconSets } from './types'
 import { transformScssPlugin } from './transform/scss'
-import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
+import { virtualQuasarEntryPlugin } from './virtual/entry'
 import { virtualAnimationsPlugin } from './virtual/animations'
 import { virtualBrandPlugin } from './virtual/brand'
 import { resolveFont, resolveFontIcon } from './resolve'
@@ -44,7 +44,7 @@ export interface ModuleOptions {
    **/
   plugins?: QuasarPlugins[]
 
-  config?: Pick<QuasarFrameworkInnerConfiguration, 'dark'>
+  config?: Omit<QuasarFrameworkInnerConfiguration, 'lang'>
 
   /**
    * Icon Set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
@@ -130,17 +130,15 @@ export default defineNuxtModule<ModuleOptions>({
     if (nuxt.options.imports.autoImport !== false) {
       for (const composable of imports.composables) {
         addImports({
-          name: 'default',
-          as: composable.name,
-          from: composable.path,
+          name: composable.name,
+          from: 'quasar',
         })
       }
       if (options.plugins) {
         for (const plugin of options.plugins) {
           addImports({
-            name: 'default',
-            as: plugin,
-            from: imports.raw[plugin],
+            name: plugin,
+            from: 'quasar',
           })
         }
       }
@@ -192,9 +190,10 @@ export default defineNuxtModule<ModuleOptions>({
 
       config.plugins ??= []
       config.plugins.push(
+        virtualQuasarEntryPlugin.vite(),
         virtualAnimationsPlugin.vite(context),
         virtualBrandPlugin.vite(context),
-        transformImportPlugin.vite(context),
+        // transformImportPlugin.vite(context),
         transformDirectivesPlugin.vite(context),
       )
       if (options.sassVariables && isClient) {
