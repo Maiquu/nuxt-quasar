@@ -12,6 +12,7 @@ import { transformScssPlugin } from './transform/scss'
 import { importJSON, kebabCase } from './utils'
 import { virtualQuasarEntryPlugin } from './virtual/entry'
 import { virtualAnimationsPlugin } from './virtual/animations'
+import { virtualBrandPlugin } from './virtual/brand'
 import { resolveFont, resolveFontIcon } from './resolve'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 
@@ -191,6 +192,7 @@ export default defineNuxtModule<ModuleOptions>({
       config.plugins.push(
         virtualQuasarEntryPlugin.vite(),
         virtualAnimationsPlugin.vite(context),
+        virtualBrandPlugin.vite(context),
         // transformImportPlugin.vite(context),
         transformDirectivesPlugin.vite(context),
       )
@@ -320,7 +322,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
     css.unshift(quasarCssActualPath)
   }
 
-  if (!css.includes(quasarAnimationsPath)) {
+  if (options.extras?.animations?.length && !css.includes(quasarAnimationsPath)) {
     css.unshift(quasarAnimationsPath)
   }
 

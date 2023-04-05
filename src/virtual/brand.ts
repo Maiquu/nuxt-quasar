@@ -1,10 +1,11 @@
 import { createUnplugin } from 'unplugin'
 import { quasarBrandPath } from '../constants'
+import type { ModuleContext } from '../types'
 
 // Add css suffix so loaded string can be interpreted as a css file
-const QUASAR_VIRTUAL_BRAND = `\0${quasarBrandPath}.css`
+const QUASAR_VIRTUAL_BRAND = `\0virtual:${quasarBrandPath}.css`
 
-export const virtualBrandPlugin = createUnplugin((brand: Record<string, string>) => {
+export const virtualBrandPlugin = createUnplugin((context: ModuleContext) => {
   return {
     name: 'quasar:brand',
 
@@ -18,7 +19,9 @@ export const virtualBrandPlugin = createUnplugin((brand: Record<string, string>)
     load() {
       return [
         ':root {',
-        ...Object.entries(brand).map(([name, color]) => `  --q-${name}:${color};`),
+        ...Object
+          .entries(context.options.config?.brand || {})
+          .map(([name, color]) => `  --q-${name}: ${color};`),
         '}',
       ].join('\n')
     },
