@@ -43,7 +43,7 @@ export interface ModuleOptions {
    **/
   plugins?: QuasarPlugins[]
 
-  config?: Pick<QuasarFrameworkInnerConfiguration, 'dark'>
+  config?: Omit<QuasarFrameworkInnerConfiguration, 'brand' | 'lang'>
 
   /**
    * Icon Set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
