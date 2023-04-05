@@ -8,11 +8,14 @@ export const virtualQuasarEntryPlugin = createUnplugin(() => {
   return {
     name: 'quasar:entry',
     enforce: 'pre',
+
     resolveId(id) {
       if (id === QUASAR_ENTRY)
         return QUASAR_VIRTUAL_ENTRY
     },
+
     loadInclude: id => id === QUASAR_VIRTUAL_ENTRY,
+
     async load() {
       const entry = await createVirtualEntry()
       return entry

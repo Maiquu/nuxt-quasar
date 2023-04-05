@@ -11,11 +11,14 @@ const QUASAR_VIRTUAL_ANIMATIONS = `\0${quasarAnimationsPath}.css`
 export const virtualAnimationsPlugin = createUnplugin((context: ModuleContext) => {
   return {
     name: 'quasar:animations',
+
     resolveId(id) {
       if (id === quasarAnimationsPath)
         return QUASAR_VIRTUAL_ANIMATIONS
     },
+
     loadInclude: id => id === QUASAR_VIRTUAL_ANIMATIONS,
+
     async load() {
       let animations = context.options.extras?.animations || []
       if (animations === 'all') {
