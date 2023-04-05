@@ -1,9 +1,9 @@
-import { readFile } from 'node:fs/promises'
 import { createUnplugin } from 'unplugin'
-import { logger, resolvePath } from '@nuxt/kit'
+import { logger } from '@nuxt/kit'
 import { allAnimationValues, quasarAnimationsPath } from '../constants'
 import { resolveAnimation } from '../resolve'
 import type { ModuleContext } from '../types'
+import { readFileMemoized } from '../utils'
 
 // Add css suffix so loaded string can be interpreted as a css file
 const QUASAR_VIRTUAL_ANIMATIONS = `virtual:${quasarAnimationsPath}.css`
@@ -25,13 +25,17 @@ export const virtualAnimationsPlugin = createUnplugin((context: ModuleContext) =
         animations = allAnimationValues
       }
 
-      const animationsCSS = await Promise.all(animations.map(async (animation) => {
-        const path = await resolvePath(resolveAnimation(animation))
-        return readFile(path, 'utf-8').catch(() => {
-          logger.error(`Unrecognized quasar animation: ${animation}`)
-          return ''
-        })
-      }))
+      const animationsCSS = await Promise.all(
+        animations.map(async (animation) => {
+          try {
+            return await readFileMemoized(resolveAnimation(animation))
+          }
+          catch {
+            logger.error(`Invalid quasar animation: ${animation}`)
+            return ''
+          }
+        }),
+      )
 
       return animationsCSS.join('\n')
     },

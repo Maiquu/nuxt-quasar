@@ -28,6 +28,11 @@ export function omit(object: Record<string, any>, keys: string[]): Record<string
   }, {} as Record<string, any>)
 }
 
+export const readFileMemoized = pMemoize(async (path: string) => {
+  const resolvedPath = await resolvePath(path)
+  return readFile(resolvedPath, 'utf-8')
+})
+
 export const importJSON = pMemoize(async (path: string) => {
   const resolvedPath = await resolvePath(path)
   return JSON.parse(await readFile(resolvedPath, 'utf-8'))
