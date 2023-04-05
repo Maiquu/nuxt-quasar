@@ -1,4 +1,5 @@
 import type { ModuleContext } from './types'
+import { omit } from './utils'
 
 const when = (condition: any, content: string) => condition ? content : ''
 
@@ -84,7 +85,7 @@ export default defineNuxtPlugin((nuxt) => {\n${
       ${when(ssr, 'NuxtPlugin, ')
       + context.options.plugins?.join(`,\n${' '.repeat(6)}`) || []}
     },
-    ${when(config, `config: ${JSON.stringify(context.options.config)},`)}
+    ${when(config, `config: ${JSON.stringify(omit(context.options.config!, ['brand']))},`)}
   }${when(isServer, ', ssrContext')})
 })`
 }

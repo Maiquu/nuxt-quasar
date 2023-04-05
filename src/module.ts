@@ -13,7 +13,7 @@ import { importJSON, kebabCase } from './utils'
 import { virtualQuasarEntryPlugin } from './virtual/entry'
 import { virtualAnimationsPlugin } from './virtual/animations'
 import { resolveFont, resolveFontIcon } from './resolve'
-import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
+import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 
 export interface ModuleOptions {
   /**
@@ -43,7 +43,7 @@ export interface ModuleOptions {
    **/
   plugins?: QuasarPlugins[]
 
-  config?: Omit<QuasarFrameworkInnerConfiguration, 'brand' | 'lang'>
+  config?: Omit<QuasarFrameworkInnerConfiguration, 'lang'>
 
   /**
    * Icon Set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
@@ -297,6 +297,7 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
  *   'quasar/icons',
  *   '@/assets/style.css',
  *   'quasar/css',
+ *   'quasar/brand',
  * ]
  * @param css
  * @param options
@@ -306,6 +307,10 @@ export function setupCss(css: string[], options: ModuleOptions) {
   const quasarCssActualPath = options.sassVariables
     ? 'quasar/src/css/index.sass'
     : 'quasar/dist/quasar.css'
+
+  if (Object.keys(options.config?.brand || {}).length > 0) {
+    css.unshift(quasarBrandPath)
+  }
 
   const index = css.indexOf(quasarCssPath)
   if (index !== -1) {
