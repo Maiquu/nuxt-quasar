@@ -6,7 +6,7 @@ import { resolveAnimation } from '../resolve'
 import type { ModuleContext } from '../types'
 
 // Add css suffix so loaded string can be interpreted as a css file
-const QUASAR_VIRTUAL_ANIMATIONS = `\0virtual:${quasarAnimationsPath}.css`
+const QUASAR_VIRTUAL_ANIMATIONS = `virtual:${quasarAnimationsPath}.css`
 
 export const virtualAnimationsPlugin = createUnplugin((context: ModuleContext) => {
   return {
