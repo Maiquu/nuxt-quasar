@@ -9,8 +9,8 @@ import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './transform/directives'
 import type { ModuleContext, QuasarFontIconSets, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarPlugins, QuasarSvgIconSets } from './types'
 import { transformScssPlugin } from './transform/scss'
-import { transformImportPlugin } from './transform/import'
 import { importJSON, kebabCase } from './utils'
+import { virtualQuasarEntryPlugin } from './transform/entry'
 import { virtualAnimationsPlugin } from './transform/animations'
 import { resolveFont, resolveFontIcon } from './resolve'
 import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
@@ -129,17 +129,15 @@ export default defineNuxtModule<ModuleOptions>({
     if (nuxt.options.imports.autoImport !== false) {
       for (const composable of imports.composables) {
         addImports({
-          name: 'default',
-          as: composable.name,
-          from: composable.path,
+          name: composable.name,
+          from: 'quasar',
         })
       }
       if (options.plugins) {
         for (const plugin of options.plugins) {
           addImports({
-            name: 'default',
-            as: plugin,
-            from: imports.raw[plugin],
+            name: plugin,
+            from: 'quasar',
           })
         }
       }
@@ -191,7 +189,9 @@ export default defineNuxtModule<ModuleOptions>({
 
       config.plugins ??= []
       config.plugins.push(
+        virtualQuasarEntryPlugin.vite(),
         virtualAnimationsPlugin.vite(context),
+        // transformImportPlugin.vite(context),
         transformDirectivesPlugin.vite(context),
       )
       if (options.sassVariables && isClient) {
