@@ -58,6 +58,8 @@ export default defineNuxtPlugin((nuxt) => {\n${
 
   const NuxtPlugin = {
     install({ ssrContext }) {
+      bodyClasses.value = ssrContext._meta.bodyClasses
+      htmlAttrs.value = ssrContext._meta.htmlAttrs
       ssrContext._meta = new Proxy({}, {
         get(target, key) {
           if (key === "bodyClasses") {
@@ -84,12 +86,11 @@ export default defineNuxtPlugin((nuxt) => {\n${
 
   nuxt.vueApp.use(Quasar, {
     ${when(typeof iconSet === 'string', 'iconSet,')}
-    plugins: {
-      ${when(ssr, 'NuxtPlugin, ')
-      + context.options.plugins?.join(`,\n${' '.repeat(6)}`) || []}
-    },
-    ${when(config, () => `\
-    config: ${JSON.stringify(omit(context.options.config || {}, ['brand']))},`)}
+    plugins: {${when(ssr, 'NuxtPlugin, ')
+      + (context.options.plugins?.join(', ') || '')
+    }},
+    ${when(config, () =>
+      `config: ${JSON.stringify(omit(context.options.config || {}, ['brand']))},`)}
   }${when(isServer, ', ssrContext')})
 })`
 }
