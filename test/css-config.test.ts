@@ -65,6 +65,25 @@ describe('Quasar CSS injection', async () => {
     ])
   })
 
+  it('should insert brand css when provided by user', async () => {
+    const css = [
+      '@/assets/style.css',
+    ]
+    const options: ModuleOptions = {
+      config: {
+        brand: {
+          primary: 'blue',
+        },
+      },
+    }
+    const result = setupCss(css, options)
+    expect(result).toEqual([
+      'quasar/dist/quasar.css',
+      quasarBrandPath,
+      '@/assets/style.css',
+    ])
+  })
+
   it('should insert base quasar css path when no nuxt-quasar options have been provided by the user', async () => {
     const css = [
       '@/assets/style.css',
