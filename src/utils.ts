@@ -18,6 +18,11 @@ export function normalizePath(id: string): string {
   return path.posix.normalize(isWindows ? slash(id) : id)
 }
 
+export const readFileMemoized = pMemoize(async (path: string) => {
+  const resolvedPath = await resolvePath(path)
+  return readFile(resolvedPath, 'utf-8')
+})
+
 export const importJSON = pMemoize(async (path: string) => {
   const resolvedPath = await resolvePath(path)
   return JSON.parse(await readFile(resolvedPath, 'utf-8'))
