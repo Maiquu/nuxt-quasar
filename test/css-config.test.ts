@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { ModuleOptions } from '../src/module'
 import { setupCss } from '../src/module'
-import { quasarAnimationsPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from '../src/constants'
+import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from '../src/constants'
 
 describe('Quasar CSS injection', async () => {
   it('should replace and maintain the order of the quasar default stylesheets paths when provided by the user', async () => {
@@ -62,6 +62,25 @@ describe('Quasar CSS injection', async () => {
       quasarAnimationsPath,
       '@/assets/style.css',
       'quasar/src/css/index.sass',
+    ])
+  })
+
+  it('should insert brand css when provided by user', async () => {
+    const css = [
+      '@/assets/style.css',
+    ]
+    const options: ModuleOptions = {
+      config: {
+        brand: {
+          primary: 'blue',
+        },
+      },
+    }
+    const result = setupCss(css, options)
+    expect(result).toEqual([
+      'quasar/dist/quasar.css',
+      quasarBrandPath,
+      '@/assets/style.css',
     ])
   })
 
