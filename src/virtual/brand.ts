@@ -3,18 +3,21 @@ import { quasarBrandPath } from '../constants'
 import type { ModuleContext } from '../types'
 
 // Add css suffix so loaded string can be interpreted as a css file
-const QUASAR_VIRTUAL_BRAND = `virtual:${quasarBrandPath}.css`
+const RESOLVED_ID = '/quasar/brand.css'
+const RESOLVED_ID_WITH_QUERY_RE = /(?:[\/\\])quasar\/brand.css(\?.*)?$/
 
 export const virtualBrandPlugin = createUnplugin((context: ModuleContext) => {
   return {
     name: 'quasar:brand',
 
     resolveId(id) {
+      if (id.match(RESOLVED_ID_WITH_QUERY_RE))
+        return id
       if (id === quasarBrandPath)
-        return QUASAR_VIRTUAL_BRAND
+        return RESOLVED_ID
     },
 
-    loadInclude: id => id === QUASAR_VIRTUAL_BRAND,
+    loadInclude: id => RESOLVED_ID_WITH_QUERY_RE.test(id),
 
     load() {
       return [

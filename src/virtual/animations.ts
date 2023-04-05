@@ -6,18 +6,21 @@ import type { ModuleContext } from '../types'
 import { readFileMemoized } from '../utils'
 
 // Add css suffix so loaded string can be interpreted as a css file
-const QUASAR_VIRTUAL_ANIMATIONS = `virtual:${quasarAnimationsPath}.css`
+const RESOLVED_ID = '/quasar/animations.css'
+const RESOLVED_ID_WITH_QUERY_RE = /(?:[\/\\])quasar\/animations.css(\?.*)?$/
 
 export const virtualAnimationsPlugin = createUnplugin((context: ModuleContext) => {
   return {
     name: 'quasar:animations',
 
     resolveId(id) {
+      if (id.match(RESOLVED_ID_WITH_QUERY_RE))
+        return id
       if (id === quasarAnimationsPath)
-        return QUASAR_VIRTUAL_ANIMATIONS
+        return RESOLVED_ID
     },
 
-    loadInclude: id => id === QUASAR_VIRTUAL_ANIMATIONS,
+    loadInclude: id => RESOLVED_ID_WITH_QUERY_RE.test(id),
 
     async load() {
       let animations = context.options.extras?.animations || []
