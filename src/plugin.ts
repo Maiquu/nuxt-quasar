@@ -1,6 +1,10 @@
 import type { ModuleContext } from './types'
+import { omit } from './utils'
 
-const when = (condition: any, content: string) => condition ? content : ''
+const when = (condition: any, content: string | (() => string)) =>
+  condition
+    ? typeof content === 'function' ? content() : content
+    : ''
 
 export function vuePluginTemplate(context: ModuleContext, ssr: boolean): string {
   const isServer = context.mode === 'server'
@@ -15,16 +19,16 @@ ${context.options.plugins
     .join('\n') || ''
 }
 ${when(typeof iconSet === 'string',
-  `import iconSet from "quasar/icon-set/${iconSet}"`,
+  () => `import iconSet from "quasar/icon-set/${iconSet}"`,
 )}
 
 export default defineNuxtPlugin((nuxt) => {\n${
-  when(isServer, `\
+  when(isServer, () => `\
   const ssrContext = {
     req: nuxt.ssrContext.event.req,
     res: nuxt.ssrContext.event.res,
   }`)}\n${
-  when(ssr && isClient, `\
+  when(ssr && isClient, () => `\
   const NuxtPlugin = {
     install({ onSSRHydrated }) {
       nuxt.hook("app:suspense:resolve", () => {
@@ -32,7 +36,7 @@ export default defineNuxtPlugin((nuxt) => {\n${
       })
     }
   }`)}\n${
-  when(ssr && isServer, `\
+  when(ssr && isServer, () => `\
 
   const bodyClasses = ref("")
   const htmlAttrs = ref("")
@@ -54,6 +58,8 @@ export default defineNuxtPlugin((nuxt) => {\n${
 
   const NuxtPlugin = {
     install({ ssrContext }) {
+      bodyClasses.value = ssrContext._meta.bodyClasses
+      htmlAttrs.value = ssrContext._meta.htmlAttrs
       ssrContext._meta = new Proxy({}, {
         get(target, key) {
           if (key === "bodyClasses") {
@@ -80,11 +86,11 @@ export default defineNuxtPlugin((nuxt) => {\n${
 
   nuxt.vueApp.use(Quasar, {
     ${when(typeof iconSet === 'string', 'iconSet,')}
-    plugins: {
-      ${when(ssr, 'NuxtPlugin, ')
-      + context.options.plugins?.join(`,\n${' '.repeat(6)}`) || []}
-    },
-    ${when(config, `config: ${JSON.stringify(context.options.config)},`)}
+    plugins: {${when(ssr, 'NuxtPlugin, ')
+      + (context.options.plugins?.join(',') || '')
+    }},
+    ${when(config, () =>
+      `config: ${JSON.stringify(omit(context.options.config || {}, ['brand']))},`)}
   }${when(isServer, ', ssrContext')})
 })`
 }

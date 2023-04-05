@@ -3,6 +3,7 @@ export const quasarFontsPath = 'quasar/fonts'
 export const quasarAnimationsPath = 'quasar/animations'
 export const quasarIconsPath = 'quasar/icons'
 export const quasarCssPath = 'quasar/css'
+export const quasarBrandPath = 'quasar/brand'
 export const allAnimationValues: QuasarAnimations[] = [
   'bounce',
   'flash',
