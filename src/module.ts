@@ -308,7 +308,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
     ? 'quasar/src/css/index.sass'
     : 'quasar/dist/quasar.css'
 
-  if (Object.keys(options.config?.brand || {}).length > 0) {
+  if (!css.includes(quasarBrandPath) && Object.keys(options.config?.brand || {}).length > 0) {
     css.unshift(quasarBrandPath)
   }
 
