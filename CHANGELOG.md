@@ -1,5 +1,49 @@
 # Changelog
 
+## v1.5.0
+
+### 🚀 Enhancements
+
+  - Setting defaults for plugins ([7d2518a](https://github.com/Maiquu/nuxt-quasar/commit/7d2518a))
+  - Brand ([4538609](https://github.com/Maiquu/nuxt-quasar/commit/4538609))
+
+### 🔥 Performance
+
+  - Animations loaded from single file to reduce head tag clutter ([837305e](https://github.com/Maiquu/nuxt-quasar/commit/837305e))
+
+### 🩹 Fixes
+
+  - Types for auto-imports via virtual entry ([e4565c4](https://github.com/Maiquu/nuxt-quasar/commit/e4565c4))
+  
+### 📖 Documentation
+
+  - Updated README with latest changes, fixed formating ([3afb7c2](https://github.com/Maiquu/nuxt-quasar/commit/3afb7c2))
+
+### 🏡 Chore
+
+  - Updated playground ([1e023fb](https://github.com/Maiquu/nuxt-quasar/commit/1e023fb))
+
+### ✅ Tests
+
+  - Modified tests related to animations ([0952bb8](https://github.com/Maiquu/nuxt-quasar/commit/0952bb8))
+  - Added brand tests ([e57621f](https://github.com/Maiquu/nuxt-quasar/commit/e57621f))
+
+### ❤️  Contributors
+
+  - Maiquu ([@Maiquu](http://github.com/Maiquu))
+
+## v1.4.0
+
+### 🚀 Enhancements
+
+  - Animations "all" option (#25)
+  - Configurable dark plugin (#27)
+
+### ❤️  Contributors
+
+  - Maiquu ([@Maiquu](http://github.com/Maiquu))
+  - cusitosr88 ([@cusitosr88](http://github.com/cusitosr88))
+
 ## v1.3.1
 
 ### 🩹 Fixes
@@ -8,7 +52,7 @@
 
 ### ❤️  Contributors
 
-- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+  - Ege İliklier ([@Maiquu](http://github.com/Maiquu))
 
 ## v1.3.0
 
