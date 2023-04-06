@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { addComponent, addImports, addImportsSources, addPluginTemplate, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
-import type { QuasarAnimations, QuasarFonts } from 'quasar'
+import type { QuasarAnimations, QuasarFonts, QuasarLanguageCodes } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
 import type { Options as SassOptions } from 'sass'
 import { version } from '../package.json'
@@ -38,6 +38,7 @@ export interface ModuleOptions {
    * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007
    */
   quietSassWarnings?: boolean
+
   /** Quasar Plugins
    *
    * @see [Documentation](https://quasar.dev/quasar-plugins/)
@@ -45,6 +46,13 @@ export interface ModuleOptions {
   plugins?: QuasarPlugins[]
 
   config?: Omit<QuasarFrameworkInnerConfiguration, 'lang'>
+
+  /**
+   * Default Language pack used by Quasar
+   *
+   * @see [Documentation](https://quasar.dev/options/quasar-language-packs)
+   **/
+  lang?: QuasarLanguageCodes
 
   /**
    * Icon Set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
