@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.6.0
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.3.1...v1.6.0)
+
+
+### 🚀 Enhancements
+
+  - Configurable default language pack ([69ab380](https://github.com/Maiquu/nuxt-quasar/commit/69ab380))
+
+### ❤️  Contributors
+
+- Maiquu ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.5.0
 
 ### 🚀 Enhancements
