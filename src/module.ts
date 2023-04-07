@@ -1,5 +1,13 @@
 import { readFile } from 'node:fs/promises'
-import { addComponent, addImports, addImportsSources, addPluginTemplate, defineNuxtModule, resolvePath } from '@nuxt/kit'
+import {
+  addComponent,
+  addImports,
+  addImportsSources,
+  addPluginTemplate,
+  createResolver,
+  defineNuxtModule,
+  resolvePath
+} from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarLanguageCodes } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
@@ -103,7 +111,7 @@ export default defineNuxtModule<ModuleOptions>({
     const imports = await categorizeImports(importMap)
 
     setupCss(nuxt.options.css, options)
-
+    setupQuasarDefaultPropExports()
     addPluginTemplate({
       mode: 'client',
       filename: 'quasar-plugin.mjs',
@@ -295,6 +303,15 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
 
     return icons
   }
+}
+
+export function setupQuasarDefaultPropExports() {
+  const resolver = createResolver(import.meta.url)
+  addImports({
+    name: 'useQuasarPropDefaults',
+    as: 'useQuasarPropDefaults',
+    from: resolver.resolve('runtime/composables/quasar-prop-defaults'),
+  })
 }
 
 /**
