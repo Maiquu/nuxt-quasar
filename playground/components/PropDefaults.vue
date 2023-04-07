@@ -2,7 +2,6 @@
 import {ref} from "#imports";
 
 const toggle = ref(true);
-const progress = ref(0.5);
 </script>
 
 
@@ -31,7 +30,7 @@ const progress = ref(0.5);
           Q-Linear-Progress with green as the default color:
         </td>
         <td>
-          <QLinearProgress value="progress" indeterminate/>
+          <QLinearProgress indeterminate/>
         </td>
       </tr>
     </q-markup-table>

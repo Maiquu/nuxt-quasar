@@ -6,7 +6,7 @@ import {
   addPluginTemplate,
   createResolver,
   defineNuxtModule,
-  resolvePath
+  resolvePath,
 } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarLanguageCodes } from 'quasar'
@@ -111,7 +111,8 @@ export default defineNuxtModule<ModuleOptions>({
     const imports = await categorizeImports(importMap)
 
     setupCss(nuxt.options.css, options)
-    setupQuasarDefaultPropExports()
+    setupComposables()
+
     addPluginTemplate({
       mode: 'client',
       filename: 'quasar-plugin.mjs',
@@ -305,7 +306,7 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
   }
 }
 
-export function setupQuasarDefaultPropExports() {
+function setupComposables() {
   const resolver = createResolver(import.meta.url)
   addImports({
     name: 'useQuasarPropDefaults',
@@ -329,7 +330,7 @@ export function setupQuasarDefaultPropExports() {
  * @param css
  * @param options
  */
-export function setupCss(css: string[], options: ModuleOptions) {
+function setupCss(css: string[], options: ModuleOptions) {
   // Quasar CSS is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
   const quasarCssActualPath = options.sassVariables
     ? 'quasar/src/css/index.sass'
@@ -383,7 +384,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
  *
  * @param config
  */
-export function muteQuasarSassWarnings(config: ViteConfig) {
+function muteQuasarSassWarnings(config: ViteConfig) {
   // Source of this fix: https://github.com/quasarframework/quasar/pull/12034#issuecomment-1021503176
   const silenceSomeSassDeprecationWarnings: SassOptions<'sync'> = {
     verbose: true,
