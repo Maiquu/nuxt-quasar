@@ -111,5 +111,9 @@ const buttons: QBtnProps[] = [
       Directive Showcase
     </p>
     <example-list />
+    <p class="text-h6 q-pt-md">
+      Quasar Default Prop Values
+    </p>
+    <prop-defaults />
   </q-page>
 </template>
