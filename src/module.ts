@@ -330,7 +330,7 @@ function setupComposables() {
  * @param css
  * @param options
  */
-function setupCss(css: string[], options: ModuleOptions) {
+export function setupCss(css: string[], options: ModuleOptions) {
   // Quasar CSS is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
   const quasarCssActualPath = options.sassVariables
     ? 'quasar/src/css/index.sass'
