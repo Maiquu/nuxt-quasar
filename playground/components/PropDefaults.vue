@@ -8,32 +8,34 @@ const toggle = ref(true);
 <template>
   <div>
     <p>Default Quasar Prop values can be set in <code>"/plugins/quasar-prop-defaults.ts"</code></p>
-    <q-markup-table style="max-width: 600px;">
-      <tr>
-        <td>
-          Q-CircularProgress with blue as the default color:
-        </td>
-        <td>
-          <QCircularProgress/>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Q-Toggle with red as the default color:
-        </td>
-        <td>
-          <QToggle v-model="toggle"/>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Q-Linear-Progress with green as the default color:
-        </td>
-        <td>
-          <QLinearProgress indeterminate/>
-        </td>
-      </tr>
-    </q-markup-table>
+    <QMarkupTable style="max-width: 600px;">
+      <tbody>
+        <tr>
+          <td>
+            Q-CircularProgress with blue as the default color:
+          </td>
+          <td>
+            <QCircularProgress />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Q-Toggle with red as the default color:
+          </td>
+          <td>
+            <QToggle v-model="toggle"/>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Q-Linear-Progress with green as the default color:
+          </td>
+          <td>
+            <QLinearProgress indeterminate/>
+          </td>
+        </tr>
+      </tbody>
+    </QMarkupTable>
   </div>
 </template>
 
