@@ -20,7 +20,7 @@ const progress = ref(0.5);
       </tr>
       <tr>
         <td>
-          Q-toggle with red as the default color:
+          Q-Toggle with red as the default color:
         </td>
         <td>
           <QToggle v-model="toggle"/>
@@ -28,7 +28,7 @@ const progress = ref(0.5);
       </tr>
       <tr>
         <td>
-          Q-toggle with green as the default color:
+          Q-Linear-Progress with green as the default color:
         </td>
         <td>
           <QLinearProgress value="progress" indeterminate/>
