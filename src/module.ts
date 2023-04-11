@@ -15,6 +15,8 @@ import { virtualAnimationsPlugin } from './virtual/animations'
 import { virtualBrandPlugin } from './virtual/brand'
 import { resolveFont, resolveFontIcon } from './resolve'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
+import { transformDefaultsPlugin } from './transform/defaults'
+import type { QuasarComponentDefaults } from './types/defaults'
 
 export interface ModuleOptions {
   /**
@@ -53,6 +55,8 @@ export interface ModuleOptions {
    * @see [Documentation](https://quasar.dev/options/quasar-language-packs)
    **/
   lang?: QuasarLanguageCodes
+
+  components?: Partial<QuasarComponentDefaults>
 
   /**
    * Icon Set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
@@ -198,7 +202,8 @@ export default defineNuxtModule<ModuleOptions>({
 
       config.plugins ??= []
       config.plugins.push(
-        virtualQuasarEntryPlugin.vite(),
+        transformDefaultsPlugin.vite(context),
+        virtualQuasarEntryPlugin.vite(context),
         virtualAnimationsPlugin.vite(context),
         virtualBrandPlugin.vite(context),
         // transformImportPlugin.vite(context),
