@@ -1,7 +1,7 @@
 import MagicString from 'magic-string'
 import { useNuxt } from '@nuxt/kit'
 import { createUnplugin } from 'unplugin'
-import type { ModuleContext } from '../types'
+import type { ModuleContext } from '../types/module'
 
 const directivesRegExp = /(?<=[ (])_?resolveDirective\(\s*["']([^'"]*?)["'][\s,]*[^)]*\)/g
 

@@ -1,5 +1,5 @@
 import { createUnplugin } from 'unplugin'
-import type { ModuleContext } from '../types'
+import type { ModuleContext } from '../types/module'
 import { normalizePath } from '../utils'
 
 export const transformScssPlugin = createUnplugin(({ options }: ModuleContext) => {

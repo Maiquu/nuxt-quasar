@@ -1,4 +1,4 @@
-import type { ModuleContext } from './types'
+import type { ModuleContext } from './types/module'
 import { omit } from './utils'
 
 const when = (condition: any, content: string | (() => string)) =>

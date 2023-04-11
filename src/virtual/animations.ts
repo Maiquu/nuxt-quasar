@@ -2,7 +2,7 @@ import { createUnplugin } from 'unplugin'
 import { logger } from '@nuxt/kit'
 import { allAnimationValues, quasarAnimationsPath } from '../constants'
 import { resolveAnimation } from '../resolve'
-import type { ModuleContext } from '../types'
+import type { ModuleContext } from '../types/module'
 import { readFileMemoized } from '../utils'
 
 // Add css suffix so loaded string can be interpreted as a css file

@@ -1,6 +1,6 @@
 import { createUnplugin } from 'unplugin'
 import { quasarBrandPath } from '../constants'
-import type { ModuleContext } from '../types'
+import type { ModuleContext } from '../types/module'
 
 // Add css suffix so loaded string can be interpreted as a css file
 const RESOLVED_ID = '/quasar/brand.css'

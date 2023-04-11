@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { App as VueApp } from 'vue'
 import type { QVueGlobals, QuasarIconSet, QuasarLanguage, VueClassProp, VueStyleProp } from 'quasar'
-import type { ModuleOptions } from './module'
+import type { ModuleOptions } from '../module'
 
 export type QuasarPlugins =
   | 'AddressbarColor'

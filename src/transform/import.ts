@@ -1,6 +1,6 @@
 import { createFilter } from '@rollup/pluginutils'
 import { createUnplugin } from 'unplugin'
-import type { ModuleContext } from '../types'
+import type { ModuleContext } from '../types/module'
 
 interface VueQuery {
   vue?: boolean
