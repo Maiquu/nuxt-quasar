@@ -34,8 +34,7 @@ export const transformDirectivesPlugin = createUnplugin((context: ModuleContext)
             path: directive.path,
           })
           return alias
-        }
-        else {
+        } else {
           return full
         }
       })

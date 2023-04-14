@@ -205,8 +205,7 @@ export default defineNuxtModule<ModuleOptions>({
       )
       if (nuxt.options.dev) {
         config.plugins.push(virtualQuasarEntryPlugin.vite())
-      }
-      else {
+      } else {
         config.plugins.push(transformImportPlugin.vite(context))
       }
       if (options.sassVariables && isClient) {
@@ -260,21 +259,18 @@ async function categorizeImports(importMap: Record<string, string>): Promise<Qua
         name,
         path: await resolvePath(`quasar/${path}`),
       })
-    }
-    else if (path.includes('/composables/')) {
+    } else if (path.includes('/composables/')) {
       imports.composables.push({
         name,
         path: await resolvePath(`quasar/${path}`),
       })
-    }
-    else if (path.includes('/directives/')) {
+    } else if (path.includes('/directives/')) {
       imports.directives.push({
         name,
         path: await resolvePath(`quasar/${path}`),
         kebabCase: kebabCase(name),
       })
-    }
-    else if (path.includes('/plugins/')) {
+    } else if (path.includes('/plugins/')) {
       imports.plugins.push({
         name,
         path: await resolvePath(`quasar/${path}`),
@@ -291,8 +287,7 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
   try {
     const icons = await importJSON(`@quasar/extras/${iconSet}/icons.json`) as string[]
     return icons
-  }
-  catch {
+  } catch {
     // Some icon sets does not provide `icons.json`, so we check `index.d.ts`
     const path = await resolvePath(`@quasar/extras/${iconSet}/index.d.ts`)
     const dts = await readFile(path, 'utf-8')
@@ -331,8 +326,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
   const index = css.indexOf(quasarCssPath)
   if (index !== -1) {
     css.splice(index, 1, quasarCssActualPath)
-  }
-  else {
+  } else {
     css.unshift(quasarCssActualPath)
   }
 
@@ -345,8 +339,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
     const i = css.indexOf(quasarIconsPath)
     if (i !== -1) {
       css.splice(i, 1, ...options.extras.fontIcons.map(resolveFontIcon))
-    }
-    else {
+    } else {
       css.unshift(...options.extras.fontIcons.map(resolveFontIcon))
     }
   }
@@ -355,8 +348,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
     const i = css.indexOf(quasarFontsPath)
     if (i !== -1) {
       css.splice(i, 1, resolveFont(options.extras.font))
-    }
-    else {
+    } else {
       css.unshift(resolveFont(options.extras.font))
     }
   }
