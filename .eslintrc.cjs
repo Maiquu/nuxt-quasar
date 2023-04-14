@@ -4,6 +4,7 @@ module.exports = defineConfig({
   root: true,
   extends: ['@antfu/eslint-config-ts'],
   rules: {
-    curly: 'off',
+    'curly': 'off',
+    '@typescript-eslint/brace-style': ['error', '1tbs'],
   },
 })

@@ -32,8 +32,7 @@ export const virtualAnimationsPlugin = createUnplugin((context: ModuleContext) =
         animations.map(async (animation) => {
           try {
             return await readFileMemoized(resolveAnimation(animation))
-          }
-          catch {
+          } catch {
             logger.error(`Invalid quasar animation: ${animation}`)
             return ''
           }
