@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.6.1
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.6.0...v1.6.1)
+
+
+### 🩹 Fixes
+
+  - Build tree-shaking ([e511ebf](https://github.com/Maiquu/nuxt-quasar/commit/e511ebf))
+
+### 🏡 Chore
+
+  - Updated CHANGELOG.md ([c46ea41](https://github.com/Maiquu/nuxt-quasar/commit/c46ea41))
+
+### 🎨 Styles
+
+  - Brace-style 1tbs ([2a9d902](https://github.com/Maiquu/nuxt-quasar/commit/2a9d902))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.6.0
 
 ### 🚀 Enhancements
