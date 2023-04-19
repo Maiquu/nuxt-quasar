@@ -61,6 +61,13 @@ export interface ModuleOptions {
    */
   iconSet?: QuasarFontIconSets
 
+  /**
+   * When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
+   *
+   * @see [Documentation](https://quasar.dev/layout/grid/introduction-to-flexbox#flex-addons)
+   */
+  cssAddon?: boolean
+
   /** `@quasar/extras` options.
    *
    * @see [Documentation](https://github.com/quasarframework/quasar/blob/dev/extras/README.md)
@@ -313,21 +320,25 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]
  * @param options
  */
 export function setupCss(css: string[], options: ModuleOptions) {
-  // Quasar CSS is inserted at the start to ensure custom stylesheets will be able to overwrite styles without the use of !important.
-  const quasarCssActualPath = options.sassVariables
-    ? 'quasar/src/css/index.sass'
-    : 'quasar/dist/quasar.css'
-
   const brand = options.config?.brand || {}
   if (!css.includes(quasarBrandPath) && Object.keys(brand).length) {
     css.unshift(quasarBrandPath)
   }
 
+  const quasarCss = [
+    options.sassVariables
+      ? 'quasar/src/css/index.sass'
+      : 'quasar/dist/quasar.css',
+  ]
+  if (options.cssAddon) {
+    quasarCss.push('quasar/src/css/flex-addon.sass')
+  }
+
   const index = css.indexOf(quasarCssPath)
   if (index !== -1) {
-    css.splice(index, 1, quasarCssActualPath)
+    css.splice(index, 1, ...quasarCss)
   } else {
-    css.unshift(quasarCssActualPath)
+    css.unshift(...quasarCss)
   }
 
   const animations = options.extras?.animations || []
