@@ -147,19 +147,40 @@ export default defineNuxtModule<ModuleOptions>({
 
     if (nuxt.options.imports.autoImport !== false) {
       for (const composable of imports.composables) {
-        addImports({
-          name: composable.name,
-          from: 'quasar',
-        })
-      }
-      if (options.plugins) {
-        for (const plugin of options.plugins) {
+        // We use virtual quasar entry file in development.
+        // Without said virtual entry, quasar module would resolve to quasar dist files which are not SSR compatible.
+        // And resolving to actual source files would make auto-imports marked as 'any' since source files are not directly paired with declaration files.
+        if (nuxt.options.dev) {
           addImports({
-            name: plugin,
+            name: composable.name,
             from: 'quasar',
+          })
+        } else {
+          addImports({
+            name: 'default',
+            as: composable.name,
+            from: composable.path,
           })
         }
       }
+      if (options.plugins) {
+        for (const plugin of options.plugins) {
+          // We use virtual quasar entry in dev. See above for detailed explanation.
+          if (nuxt.options.dev) {
+            addImports({
+              name: plugin,
+              from: 'quasar',
+            })
+          } else {
+            addImports({
+              name: 'default',
+              as: plugin,
+              from: imports.raw[plugin],
+            })
+          }
+        }
+      }
+
       if (options.extras?.svgIcons) {
         for (const iconSet of options.extras.svgIcons) {
           const icons = await getIconsFromIconset(iconSet)
@@ -215,6 +236,8 @@ export default defineNuxtModule<ModuleOptions>({
       if (nuxt.options.dev) {
         config.plugins.push(virtualQuasarEntryPlugin.vite())
       } else {
+        // We can no longer use virtual entry plugin because vite will assume quasar has 'sideEffects' which will make vite skip tree-shaking all together.
+        // Since users can still directly import from quasar, we still have to transform quasar imports to their respective source files.
         config.plugins.push(transformImportPlugin.vite(context))
       }
       if (options.sassVariables && isClient) {
