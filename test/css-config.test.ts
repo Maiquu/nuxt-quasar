@@ -97,4 +97,22 @@ describe('Quasar CSS injection', async () => {
       '@/assets/style.css',
     ])
   })
+
+  it('should insert flex addons after quasar css', () => {
+    const css = [
+      '@/assets/style.css',
+      quasarCssPath,
+      '@/assets/variables.css',
+    ]
+    const options: ModuleOptions = {
+      cssAddon: true,
+    }
+    const result = setupCss(css, options)
+    expect(result).toEqual([
+      '@/assets/style.css',
+      'quasar/dist/quasar.css',
+      'quasar/src/css/flex-addon.sass',
+      '@/assets/variables.css',
+    ])
+  })
 })
