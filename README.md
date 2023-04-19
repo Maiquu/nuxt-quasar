@@ -99,6 +99,16 @@ Default language pack used by Quasar Components.
 
 Icon set used by Quasar Components. Should also be included in `extra.fontIcons` to take effect.
 
+### cssAddon
+- Type: `boolean`
+- Default: `false`
+
+When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
+
+> Requires `sass` installed.
+
+> **Warning**
+> Note that there will be a noticeable bump in CSS footprint when enabling it. So only do it if you really need it.
 
 ### config
 - Type: `object`
