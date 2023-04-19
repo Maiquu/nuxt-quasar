@@ -80,6 +80,8 @@ List of [quasar plugins]((https://github.com/Maiquu/nuxt-quasar/blob/main/src/ty
 Enables usage of Quasar Sass/SCSS variables. 
 Can optionally be a string which points to a file that contains the variables.
 
+> Requires `sass` installed.
+
 ### quietSassWarnings
 - Type: `boolean`
 - Default: `true`
