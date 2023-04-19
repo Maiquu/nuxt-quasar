@@ -1,9 +1,29 @@
 # Changelog
 
+## v1.7.0
+
+### 🩹 Fixes
+
+  - Tree-shaking for auto imported composables ([18502fe](https://github.com/Maiquu/nuxt-quasar/commit/18502fe))
+
+### 📖 Documentation
+
+  - Added cssAddon docs ([814b65e](https://github.com/Maiquu/nuxt-quasar/commit/814b65e))
+  - Added requires sass label to sassVariables ([dc150d5](https://github.com/Maiquu/nuxt-quasar/commit/dc150d5))
+
+### ✅ Tests
+
+  - CssAddon ([c140dbe](https://github.com/Maiquu/nuxt-quasar/commit/c140dbe))
+
+### 🎨 Styles
+
+  - Re-ordered defaults, explicit lang default ([63cea17](https://github.com/Maiquu/nuxt-quasar/commit/63cea17))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.6.1
-
-[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.6.0...v1.6.1)
-
 
 ### 🩹 Fixes
 
