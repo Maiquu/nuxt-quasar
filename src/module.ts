@@ -98,10 +98,12 @@ export default defineNuxtModule<ModuleOptions>({
     },
   },
   defaults: {
+    lang: 'en-US',
+    iconSet: 'material-icons',
+    cssAddon: false,
     sassVariables: false,
     quietSassWarnings: true,
     plugins: [],
-    iconSet: 'material-icons',
     extras: {},
   },
   async setup(options, nuxt) {
