@@ -208,10 +208,14 @@ export default defineNuxtModule<ModuleOptions>({
       config.optimizeDeps.exclude ??= []
       config.optimizeDeps.exclude.push('quasar')
 
-      config.vue = {
-        template: {
-          transformAssetUrls,
-        },
+      config.vue ??= {}
+      config.vue.template ??= {}
+      if (config.vue.template.transformAssetUrls !== false) {
+        config.vue.template.transformAssetUrls ??= {}
+        config.vue.template.transformAssetUrls = {
+          ...config.vue.template.transformAssetUrls as object,
+          ...transformAssetUrls,
+        }
       }
 
       config.define = {
