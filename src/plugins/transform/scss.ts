@@ -1,6 +1,6 @@
 import { createUnplugin } from 'unplugin'
-import type { ModuleContext } from '../types'
-import { normalizePath } from '../utils'
+import type { ModuleContext } from '../../types'
+import { normalizePath } from '../../utils'
 
 export const transformScssPlugin = createUnplugin(({ options }: ModuleContext) => {
   const sassVariables = typeof options.sassVariables === 'string'
