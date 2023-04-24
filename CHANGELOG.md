@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.7.2
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.1...v1.7.2)
+
+
+### 🩹 Fixes
+
+  - **playground:** Moved models.ts to seperate directory ([bd87745](https://github.com/Maiquu/nuxt-quasar/commit/bd87745))
+  - Explicitly defining moduleSideEffects at resolveId to handle tree-shaking reliably. ([971109f](https://github.com/Maiquu/nuxt-quasar/commit/971109f))
+
+### 🏡 Chore
+
+  - Updated dependencies ([d8e7206](https://github.com/Maiquu/nuxt-quasar/commit/d8e7206))
+  - Moved plugins under seperate directory ([83470a3](https://github.com/Maiquu/nuxt-quasar/commit/83470a3))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.7.1
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.0...v1.7.1)
