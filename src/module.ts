@@ -15,7 +15,8 @@ import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { resolveFont, resolveFontIcon } from './resolve'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
-import { transformImportPlugin } from './transform/import'
+// import { transformImportPlugin } from './plugins/transform/import'
+import { resolveQuasarModuleSideEffectsPlugin } from './plugins/resolveSideEffects'
 
 export interface ModuleOptions {
   /**
@@ -147,37 +148,17 @@ export default defineNuxtModule<ModuleOptions>({
 
     if (nuxt.options.imports.autoImport !== false) {
       for (const composable of imports.composables) {
-        // We use virtual quasar entry file in development.
-        // Without said virtual entry, quasar module would resolve to quasar dist files which are not SSR compatible.
-        // And resolving to actual source files would make auto-imports marked as 'any' since source files are not directly paired with declaration files.
-        if (nuxt.options.dev) {
-          addImports({
-            name: composable.name,
-            from: 'quasar',
-          })
-        } else {
-          addImports({
-            name: 'default',
-            as: composable.name,
-            from: composable.path,
-          })
-        }
+        addImports({
+          name: composable.name,
+          from: 'quasar',
+        })
       }
       if (options.plugins) {
         for (const plugin of options.plugins) {
-          // We use virtual quasar entry in dev. See above for detailed explanation.
-          if (nuxt.options.dev) {
-            addImports({
-              name: plugin,
-              from: 'quasar',
-            })
-          } else {
-            addImports({
-              name: 'default',
-              as: plugin,
-              from: imports.raw[plugin],
-            })
-          }
+          addImports({
+            name: plugin,
+            from: 'quasar',
+          })
         }
       }
 
@@ -236,13 +217,10 @@ export default defineNuxtModule<ModuleOptions>({
         virtualAnimationsPlugin.vite(context),
         virtualBrandPlugin.vite(context),
         transformDirectivesPlugin.vite(context),
+        virtualQuasarEntryPlugin.vite(),
       )
-      if (nuxt.options.dev) {
-        config.plugins.push(virtualQuasarEntryPlugin.vite())
-      } else {
-        // We can no longer use virtual entry plugin because vite will assume quasar has 'sideEffects' which will make vite skip tree-shaking all together.
-        // Since users can still directly import from quasar, we still have to transform quasar imports to their respective source files.
-        config.plugins.push(transformImportPlugin.vite(context))
+      if (!nuxt.options.dev) {
+        config.plugins.push(resolveQuasarModuleSideEffectsPlugin())
       }
       if (options.sassVariables && isClient) {
         config.plugins.push(transformScssPlugin.vite(context))
