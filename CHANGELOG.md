@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.7.1
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.0...v1.7.1)
+
+
+### 🩹 Fixes
+
+  - Overriding user defined vue options ([3c2f30b](https://github.com/Maiquu/nuxt-quasar/commit/3c2f30b))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.7.0
 
 ### 🩹 Fixes
