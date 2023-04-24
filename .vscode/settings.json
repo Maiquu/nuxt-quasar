@@ -3,5 +3,8 @@
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
+  },
+  "files.exclude": {
+    "node_modules/[^q]*": true
   }
 }
