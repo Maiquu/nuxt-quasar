@@ -1,8 +1,30 @@
 # Changelog
 
+## v1.7.3
+
+[Compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.2...v1.7.3)
+
+
+### 💅 Refactors
+
+  - ResolveSideEffect does not interfere with path resolution ([b50c3a7](https://github.com/Maiquu/nuxt-quasar/commit/b50c3a7))
+  - Quasar union types are no longer hard coded ([f04d4c0](https://github.com/Maiquu/nuxt-quasar/commit/f04d4c0))
+
+### 🏡 Chore
+
+  - Removed release script, added changelogen script for convenience ([cc690e1](https://github.com/Maiquu/nuxt-quasar/commit/cc690e1))
+
+### 🎨 Styles
+
+  - Renamed prefix of resolved ids ([eacfa03](https://github.com/Maiquu/nuxt-quasar/commit/eacfa03))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.7.2
 
-[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.1...v1.7.2)
+[Compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.1...v1.7.2)
 
 
 ### 🩹 Fixes
@@ -21,7 +43,7 @@
 
 ## v1.7.1
 
-[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.0...v1.7.1)
+[Compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.0...v1.7.1)
 
 
 ### 🩹 Fixes
