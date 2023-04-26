@@ -1,13 +1,13 @@
 import { readFile } from 'node:fs/promises'
 import { addComponent, addImports, addImportsSources, addPluginTemplate, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
-import type { QuasarAnimations, QuasarFonts, QuasarLanguageCodes } from 'quasar'
+import type { QuasarAnimations, QuasarFonts, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
 import type { Options as SassOptions } from 'sass'
 import { version } from '../package.json'
 import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
-import type { ModuleContext, QuasarFontIconSets, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarPlugins, QuasarSvgIconSets } from './types'
+import type { ModuleContext, QuasarFontIconSets, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSets } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
 import { importJSON, kebabCase } from './utils'
 import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
@@ -45,7 +45,7 @@ export interface ModuleOptions {
    *
    * @see [Documentation](https://quasar.dev/quasar-plugins/)
    **/
-  plugins?: QuasarPlugins[]
+  plugins?: (keyof QuasarPlugins)[]
 
   config?: Omit<QuasarFrameworkInnerConfiguration, 'lang'>
 

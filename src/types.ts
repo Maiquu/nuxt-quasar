@@ -1,49 +1,13 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { App as VueApp } from 'vue'
-import type { QVueGlobals, QuasarIconSet, QuasarLanguage, VueClassProp, VueStyleProp } from 'quasar'
+import type { QVueGlobals, QuasarIconSet, QuasarIconSets, QuasarLanguage, VueClassProp, VueStyleProp } from 'quasar'
 import type { ModuleOptions } from './module'
 
-export type QuasarPlugins =
-  | 'AddressbarColor'
-  | 'AppFullscreen'
-  | 'AppVisibility'
-  | 'BottomSheet'
-  | 'Cookies'
-  | 'Dark'
-  | 'Dialog'
-  | 'Loading'
-  | 'LoadingBar'
-  | 'LocalStorage'
-  | 'Meta'
-  | 'Notify'
+type ExtractFont<T extends string> = T extends `svg-${string}` ? never : T
+type ExtractSvg<T extends string> = T extends `svg-${infer F}` ? F : never
 
-/** Icon collections provided by `@quasar/extras` */
-type QuasarCommonIconSets =
-  | 'bootstrap-icons'
-  | 'eva-icons'
-  | 'fontawesome-v5'
-  | 'fontawesome-v6'
-  | 'ionicons-v4'
-  | 'line-awesome'
-  | 'material-icons'
-  | 'material-icons-outlined'
-  | 'material-icons-round'
-  | 'material-icons-sharp'
-  | 'material-symbols-outlined'
-  | 'material-symbols-rounded'
-  | 'material-symbols-sharp'
-  | 'mdi-v4'
-  | 'mdi-v5'
-  | 'mdi-v6'
-  | 'mdi-v7'
-  | 'themify'
-
-export type QuasarFontIconSets = QuasarCommonIconSets
-| 'mdi-v3'
-
-export type QuasarSvgIconSets = QuasarCommonIconSets
-| 'svg-ionicons-v5'
-| 'svg-ionicons-v6'
+export type QuasarFontIconSets = ExtractFont<QuasarIconSets>
+export type QuasarSvgIconSets = ExtractSvg<QuasarIconSets>
 
 export interface QuasarImports {
   raw: Record<string, string>
