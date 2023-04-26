@@ -2,7 +2,7 @@ import { createUnplugin } from 'unplugin'
 import { importJSON } from '../../utils'
 
 const QUASAR_ENTRY = 'quasar'
-const QUASAR_VIRTUAL_ENTRY = `\0${QUASAR_ENTRY}`
+const QUASAR_VIRTUAL_ENTRY = '/__quasar/entry.mjs'
 
 export const virtualQuasarEntryPlugin = createUnplugin(() => {
   return {
