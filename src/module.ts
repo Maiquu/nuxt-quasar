@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises'
-import { addComponent, addImports, addImportsSources, addPluginTemplate, defineNuxtModule, resolvePath } from '@nuxt/kit'
+import { addComponent, addImports, addImportsSources, addPlugin, addPluginTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
@@ -108,12 +108,16 @@ export default defineNuxtModule<ModuleOptions>({
     extras: {},
   },
   async setup(options, nuxt) {
+    const { resolve } = createResolver(import.meta.url)
     const { version: quasarVersion } = await importJSON('quasar/package.json')
     const importMap = await importJSON('quasar/dist/transforms/import-map.json') as Record<string, string>
     const transformAssetUrls = await importJSON('quasar/dist/transforms/loader-asset-urls.json') as AssetURLOptions
     const imports = await categorizeImports(importMap)
 
     setupCss(nuxt.options.css, options)
+
+    // `addPlugin` unshifts plugins by default. Since `provide` depends on `quasar-plugin` template, we add it first.
+    addPlugin(resolve('./runtime/provide'))
 
     addPluginTemplate({
       mode: 'client',
