@@ -1,10 +1,11 @@
 import type { ModuleContext } from './types'
 import { omit } from './utils'
 
-const when = (condition: any, content: string | (() => string)) =>
-  condition
+function when(condition: any, content: string | (() => string)) {
+  return condition
     ? typeof content === 'function' ? content() : content
     : ''
+}
 
 export function vuePluginTemplate(context: ModuleContext, ssr: boolean): string {
   const isServer = context.mode === 'server'

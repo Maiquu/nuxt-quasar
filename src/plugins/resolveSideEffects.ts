@@ -2,7 +2,7 @@ import type { Plugin as VitePlugin } from 'vite'
 
 const QUASAR_PURE_RE = /([\\\/])node_modules\1quasar\1src\1(components|composables|directives)\1/
 
-export const resolveQuasarModuleSideEffectsPlugin = (): VitePlugin => {
+export function resolveQuasarModuleSideEffectsPlugin(): VitePlugin {
   return {
     name: 'quasar:resolve-side-effects',
     enforce: 'pre',

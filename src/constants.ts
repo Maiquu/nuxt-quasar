@@ -1,4 +1,5 @@
 import type { QuasarAnimations } from 'quasar'
+
 export const quasarFontsPath = 'quasar/fonts'
 export const quasarAnimationsPath = 'quasar/animations'
 export const quasarIconsPath = 'quasar/icons'
