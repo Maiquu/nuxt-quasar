@@ -1,6 +1,6 @@
 import type { Plugin as VitePlugin } from 'vite'
 
-const QUASAR_PURE_RE = /([\\\/])node_modules\1quasar\1src\1(components|composables|directives)\1/
+const QUASAR_PURE_RE = /(?:([\\\/])node_modules\1|^)quasar(?=\1)([\\\/])src\2(components|composables|directives)\2/
 
 export function resolveQuasarModuleSideEffectsPlugin(): VitePlugin {
   return {
