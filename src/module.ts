@@ -15,8 +15,6 @@ import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { resolveFont, resolveFontIcon } from './resolve'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
-
-// import { transformImportPlugin } from './plugins/transform/import'
 import { resolveQuasarModuleSideEffectsPlugin } from './plugins/resolveSideEffects'
 
 export interface ModuleOptions {
