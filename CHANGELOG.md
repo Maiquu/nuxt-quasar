@@ -1,5 +1,33 @@
 # Changelog
 
+## v1.8.0
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.3...v1.8.0)
+
+
+### 🚀 Enhancements
+
+  - `nuxtApp.$q`, close #53 ([#53](https://github.com/Maiquu/nuxt-quasar/issues/53))
+
+### 🩹 Fixes
+
+  - `resolveSideEffect` regexp ([a14871f](https://github.com/Maiquu/nuxt-quasar/commit/a14871f))
+
+### 🏡 Chore
+
+  - Updated dependencies ([427d21c](https://github.com/Maiquu/nuxt-quasar/commit/427d21c))
+  - Added `packageManager` field ([1d84d8b](https://github.com/Maiquu/nuxt-quasar/commit/1d84d8b))
+  - Updated workflows ([9210a12](https://github.com/Maiquu/nuxt-quasar/commit/9210a12))
+  - Fix workflow errors ([dcdffea](https://github.com/Maiquu/nuxt-quasar/commit/dcdffea))
+
+### 🎨 Styles
+
+  - Updated eslint config, applied lint fixes ([bfe7b40](https://github.com/Maiquu/nuxt-quasar/commit/bfe7b40))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.7.3
 
 [Compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.2...v1.7.3)
