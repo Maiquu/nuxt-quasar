@@ -1,7 +1,9 @@
-name: Release new version
+name: Release
 
 on:
-  workflow_dispatch
+  push:
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
@@ -27,7 +29,7 @@ jobs:
       - run: pnpm test
 
       - name: Create release # Bumps package version, adds versions tags and pushes to git
-        run: npx changelogen --release --push
+        run: npx changelogen gh release
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
