@@ -3,6 +3,9 @@ name: Run tests
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**/*.md'
+      - '.vscode/*'
   pull_request:
     branches: [main]
 
@@ -19,7 +22,7 @@ jobs:
 
       - run: pnpm install
       - run: pnpm lint
-        # dev:prepare is needed since we extend from the ./playground/.nuxt/tsconfig.json in ./tsconfig.json
+      # dev:prepare is needed since we extend from the ./playground/.nuxt/tsconfig.json in ./tsconfig.json
       - name: Prepare tsconfig
         run: pnpm dev:prepare
 

@@ -1,7 +1,5 @@
 name: Release new version
 
-# package.json version up, version up, create release, publish npm
-
 on:
   workflow_dispatch
 
