@@ -1,0 +1,39 @@
+name: Release new version
+
+# package.json version up, version up, create release, publish npm
+
+on:
+  workflow_dispatch
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: corepack enable
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm lint
+
+      - name: Prepare tsconfig
+        run: pnpm dev:prepare
+
+      - run: pnpm typecheck
+      - run: pnpm test
+
+      - name: Create release # Bumps package version, adds versions tags and pushes to git
+        run: npx changelogen --release --push
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - run: pnpm prepack
+      - uses: JS-DevTools/npm-publish@v2
+        with:
+          token: ${{ secrets.NPM_TOKEN }}

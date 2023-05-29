@@ -1,0 +1,27 @@
+name: Run tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: corepack enable
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm lint
+        # dev:prepare is needed since we extend from the ./playground/.nuxt/tsconfig.json in ./tsconfig.json
+      - name: Prepare tsconfig
+        run: pnpm dev:prepare
+
+      - run: pnpm typecheck
+      - run: pnpm test
