@@ -28,7 +28,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
 
-      - name: Create release # Bumps package version, adds versions tags and pushes to git
+      - name: Create release
         run: npx changelogen gh release
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
