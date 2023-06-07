@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.8.0
+## v1.7.4
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.3...v1.8.0)
 
