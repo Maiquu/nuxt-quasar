@@ -1,6 +1,6 @@
 import { createUnplugin } from 'unplugin'
 import { logger } from '@nuxt/kit'
-import { allAnimationValues, quasarAnimationsPath } from '../../constants'
+import { quasarAnimationsPath } from '../../constants'
 import { resolveAnimation } from '../../resolve'
 import type { ModuleContext } from '../../types'
 import { readFileMemoized } from '../../utils'
@@ -25,7 +25,10 @@ export const virtualAnimationsPlugin = createUnplugin((context: ModuleContext) =
     async load() {
       let animations = context.options.extras?.animations || []
       if (animations === 'all') {
-        animations = allAnimationValues
+        if (animations === 'all') {
+          const { generalAnimations, inAnimations, outAnimations } = await import('@quasar/extras/animate/animate-list.mjs')
+          animations = [...generalAnimations, ...inAnimations, ...outAnimations]
+        }
       }
 
       const animationsCSS = await Promise.all(
