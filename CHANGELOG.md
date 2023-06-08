@@ -1,5 +1,52 @@
 # Changelog
 
+## v2.0.0-rc.0
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.4...v2.0.0-rc.0)
+
+
+### 🚀 Enhancements
+
+  - Accept `iconSet` object ([3503262](https://github.com/Maiquu/nuxt-quasar/commit/3503262))
+  - Auto insert selected font icon set to `extras.fontIcons` ([5316695](https://github.com/Maiquu/nuxt-quasar/commit/5316695))
+  - **experimental:** Configurable component defaults ([a9fcca6](https://github.com/Maiquu/nuxt-quasar/commit/a9fcca6))
+
+### 🔥 Performance
+
+  - Reduced number of resolvePath calls ([1903e2c](https://github.com/Maiquu/nuxt-quasar/commit/1903e2c))
+
+### 🩹 Fixes
+
+  - Allow svg sets for `iconSets` option ([5d5109b](https://github.com/Maiquu/nuxt-quasar/commit/5d5109b))
+  - `resolveAnimation` ([689495c](https://github.com/Maiquu/nuxt-quasar/commit/689495c))
+  - Quasar resolvers ([508f48b](https://github.com/Maiquu/nuxt-quasar/commit/508f48b))
+
+### 💅 Refactors
+
+  - Animation list dynamically imported from extras instead of const array ([465354a](https://github.com/Maiquu/nuxt-quasar/commit/465354a))
+
+### 📖 Documentation
+
+  - Updated README ([56242c6](https://github.com/Maiquu/nuxt-quasar/commit/56242c6))
+
+### 🏡 Chore
+
+  - Updated release workflow ([5216095](https://github.com/Maiquu/nuxt-quasar/commit/5216095))
+  - Update release.yml ([5038a42](https://github.com/Maiquu/nuxt-quasar/commit/5038a42))
+  - Fixed version numbers due to CI error ([45bb37e](https://github.com/Maiquu/nuxt-quasar/commit/45bb37e))
+  - Bumped pnpm version ([5b6e719](https://github.com/Maiquu/nuxt-quasar/commit/5b6e719))
+  - Updated dependencies ([5b7b314](https://github.com/Maiquu/nuxt-quasar/commit/5b7b314))
+  - ⚠️  Added `@quasar/extras` as `peerDependency` ([9150348](https://github.com/Maiquu/nuxt-quasar/commit/9150348))
+  - Updated playground ([f3256cf](https://github.com/Maiquu/nuxt-quasar/commit/f3256cf))
+
+#### ⚠️  Breaking Changes
+
+  - ⚠️  Added `@quasar/extras` as `peerDependency` ([9150348](https://github.com/Maiquu/nuxt-quasar/commit/9150348))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v1.7.4
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.3...v1.8.0)
