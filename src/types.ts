@@ -6,8 +6,8 @@ import type { ModuleOptions } from './module'
 type ExtractFont<T extends string> = T extends `svg-${string}` ? never : T
 type ExtractSvg<T extends string> = T extends `svg-${infer F}` ? F : never
 
-export type QuasarFontIconSets = ExtractFont<QuasarIconSets>
-export type QuasarSvgIconSets = ExtractSvg<QuasarIconSets>
+
+export type ResolveFn = (...paths: string[]) => string
 
 export interface QuasarImports {
   raw: Record<string, string>
@@ -26,6 +26,8 @@ export interface ModuleContext {
   imports: QuasarImports
   options: ModuleOptions
   mode: 'server' | 'client'
+  resolveQuasar: ResolveFn
+  resolveQuasarExtras: ResolveFn
 }
 
 /**
