@@ -56,10 +56,10 @@ export interface ModuleOptions {
   lang?: QuasarLanguageCodes
 
   /**
-   * Icon Set used by Quasar Components. Don't forget to add selected iconSet to `extras.fontIcons`
+   * Icon Set used by Quasar Components. If its a font icon set, it should be included in `extras.fontIcons`.
    * @default 'material-icons'
    */
-  iconSet?: QuasarFontIconSets
+  iconSet?: QuasarIconSets
 
   /**
    * When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
