@@ -35,8 +35,8 @@
     "test:watch": "vitest watch"
   },
   "peerDependencies": {
-    "quasar": "^2.8.0",
-    "@quasar/extras": "^1"
+    "@quasar/extras": "^1",
+    "quasar": "^2.8.0"
   },
   "dependencies": {
     "@nuxt/kit": "^3.5.3",
