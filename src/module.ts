@@ -7,15 +7,16 @@ import type { Options as SassOptions } from 'sass'
 import { version } from '../package.json'
 import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
-import type { ModuleContext, QuasarFontIconSets, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSets } from './types'
+import type { ImportData, ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
-import { kebabCase, readFileMemoized, readJSON } from './utils'
+import { hasKeys, kebabCase, readFileMemoized, readJSON } from './utils'
 import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
 import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { resolveFont, resolveFontIcon } from './resolve'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 import { resolveQuasarModuleSideEffectsPlugin } from './plugins/resolveSideEffects'
+import { transformDefaultUtilsPlugin, transformDefaultsPlugin } from './plugins/transform/defaults'
 
 export interface ModuleOptions {
   /**
@@ -91,6 +92,26 @@ export interface ModuleOptions {
     animations?: QuasarAnimations[] | 'all'
   }
 
+  /**
+   * EXPERIMENTAL
+   *
+   * Component Settings
+   */
+  components?: {
+    /** Set defaults for quasar components */
+    defaults?: QuasarComponentDefaults
+    /**
+     * When `true`, defaults will be applied to components that aren't used directly.
+     * For example, if defaults for `QBtn` are set, it will affect all components that use `QBtn`. (For example: `QBtnDropdown`, `QEditor`)
+     *
+     * Currently not very stable in development environment since vite will set `Cache-Control` headers for files located in `node_modules`
+     * and changes made may not effect without resetting cache.
+     *
+     * @default false
+     *
+     **/
+    deepDefaults?: boolean
+  }
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -109,6 +130,10 @@ export default defineNuxtModule<ModuleOptions>({
     cssAddon: false,
     sassVariables: false,
     quietSassWarnings: true,
+    components: {
+      defaults: {},
+      deepDefaults: true,
+    },
     plugins: [],
     extras: {},
   },
@@ -246,6 +271,12 @@ export default defineNuxtModule<ModuleOptions>({
         transformDirectivesPlugin.vite(context),
         virtualQuasarEntryPlugin.vite(context),
       )
+      if (hasKeys(options.components?.defaults)) {
+        config.plugins.unshift(
+          transformDefaultUtilsPlugin(),
+          transformDefaultsPlugin(context),
+        )
+      }
       if (!nuxt.options.dev) {
         config.plugins.push(resolveQuasarModuleSideEffectsPlugin())
       }
