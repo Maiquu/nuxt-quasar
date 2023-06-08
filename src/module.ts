@@ -9,7 +9,7 @@ import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
 import type { ModuleContext, QuasarFontIconSets, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSets } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
-import { importJSON, kebabCase } from './utils'
+import { kebabCase, readFileMemoized, readJSON } from './utils'
 import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
 import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
@@ -107,23 +107,31 @@ export default defineNuxtModule<ModuleOptions>({
     extras: {},
   },
   async setup(options, nuxt) {
-    const { resolve } = createResolver(import.meta.url)
-    const { version: quasarVersion } = await importJSON('quasar/package.json')
-    const importMap = await importJSON('quasar/dist/transforms/import-map.json') as Record<string, string>
-    const transformAssetUrls = await importJSON('quasar/dist/transforms/loader-asset-urls.json') as AssetURLOptions
-    const imports = await categorizeImports(importMap)
+    const { resolve: resolveLocal } = createResolver(import.meta.url)
+    const { resolve: resolveQuasar } = createResolver(await resolvePath('quasar'))
+    const { resolve: resolveQuasarExtras } = createResolver(await resolvePath('@quasar/extras'))
+
+    const { version: quasarVersion } = await readJSON(resolveQuasar('package.json'))
+    const importMap = await readJSON(resolveQuasar('dist/transforms/import-map.json')) as Record<string, string>
+    const transformAssetUrls = await readJSON(resolveQuasar('dist/transforms/loader-asset-urls.json')) as AssetURLOptions
+    const imports = categorizeImports(importMap, resolveQuasar)
+    const baseContext: Omit<ModuleContext, 'mode'> = {
+      imports,
+      options,
+      resolveQuasar,
+      resolveQuasarExtras,
+    }
 
     setupCss(nuxt.options.css, options)
 
     // `addPlugin` unshifts plugins by default. Since `provide` depends on `quasar-plugin` template, we add it first.
-    addPlugin(resolve('./runtime/provide'))
+    addPlugin(resolveLocal('./runtime/provide'))
 
     addPluginTemplate({
       mode: 'client',
       filename: 'quasar-plugin.mjs',
       getContents: () => vuePluginTemplate({
-        imports,
-        options,
+        ...baseContext,
         mode: 'client',
       }, nuxt.options.ssr),
     })
@@ -132,8 +140,7 @@ export default defineNuxtModule<ModuleOptions>({
         mode: 'server',
         filename: 'quasar-plugin.server.mjs',
         getContents: () => vuePluginTemplate({
-          imports,
-          options,
+          ...baseContext,
           mode: 'server',
         }, nuxt.options.ssr),
       })
@@ -167,7 +174,7 @@ export default defineNuxtModule<ModuleOptions>({
 
       if (options.extras?.svgIcons) {
         for (const iconSet of options.extras.svgIcons) {
-          const icons = await getIconsFromIconset(iconSet)
+          const icons = await getIconsFromIconset(iconSet, resolveQuasarExtras)
           addImportsSources({
             from: `@quasar/extras/${iconSet}`,
             imports: icons,
@@ -183,8 +190,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hook('vite:extendConfig', (config: ViteConfig, { isClient, isServer }) => {
       const ssr = nuxt.options.ssr
       const context: ModuleContext = {
-        imports,
-        options,
+        ...baseContext,
         mode: isServer ? 'server' : 'client',
       }
 
@@ -220,7 +226,7 @@ export default defineNuxtModule<ModuleOptions>({
         virtualAnimationsPlugin.vite(context),
         virtualBrandPlugin.vite(context),
         transformDirectivesPlugin.vite(context),
-        virtualQuasarEntryPlugin.vite(),
+        virtualQuasarEntryPlugin.vite(context),
       )
       if (!nuxt.options.dev) {
         config.plugins.push(resolveQuasarModuleSideEffectsPlugin())
@@ -242,8 +248,8 @@ export default defineNuxtModule<ModuleOptions>({
       config.externals ??= {}
       config.externals.inline ??= []
       config.externals.inline.push(
-        await resolvePath('quasar/lang/en-US'),
-        await resolvePath('quasar/icon-set/material-icons'),
+        resolveQuasar('lang/en-US'),
+        resolveQuasar('icon-set/material-icons'),
       )
     })
 
@@ -261,7 +267,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
 })
 
-async function categorizeImports(importMap: Record<string, string>): Promise<QuasarImports> {
+function categorizeImports(importMap: Record<string, string>, quasarResolve: ResolveFn): QuasarImports {
   const imports: QuasarImports = {
     raw: importMap,
     components: [],
@@ -271,27 +277,21 @@ async function categorizeImports(importMap: Record<string, string>): Promise<Qua
   }
 
   for (const [name, path] of Object.entries(importMap)) {
+    const importData: ImportData = {
+      name,
+      path: quasarResolve(path),
+    }
     if (path.includes('/components/') && !path.includes('/__tests__/')) {
-      imports.components.push({
-        name,
-        path: await resolvePath(`quasar/${path}`),
-      })
+      imports.components.push(importData)
     } else if (path.includes('/composables/')) {
-      imports.composables.push({
-        name,
-        path: await resolvePath(`quasar/${path}`),
-      })
+      imports.composables.push(importData)
     } else if (path.includes('/directives/')) {
       imports.directives.push({
-        name,
-        path: await resolvePath(`quasar/${path}`),
+        ...importData,
         kebabCase: kebabCase(name),
       })
     } else if (path.includes('/plugins/')) {
-      imports.plugins.push({
-        name,
-        path: await resolvePath(`quasar/${path}`),
-      })
+      imports.plugins.push(importData)
     }
   }
 
@@ -300,14 +300,14 @@ async function categorizeImports(importMap: Record<string, string>): Promise<Qua
 
 const iconDeclarationPattern = /^export declare const ([a-zA-Z\d]+): string;?$/gm
 
-async function getIconsFromIconset(iconSet: QuasarSvgIconSets): Promise<string[]> {
+async function getIconsFromIconset(iconSet: QuasarSvgIconSets, resolveQuasarExtras: ResolveFn): Promise<string[]> {
   try {
-    const icons = await importJSON(`@quasar/extras/${iconSet}/icons.json`) as string[]
+    const icons = await readJSON(resolveQuasarExtras(`${iconSet}/icons.json`)) as string[]
     return icons
   } catch {
     // Some icon sets does not provide `icons.json`, so we check `index.d.ts`
-    const path = await resolvePath(`@quasar/extras/${iconSet}/index.d.ts`)
-    const dts = await readFile(path, 'utf-8')
+    const path = resolveQuasarExtras(`${iconSet}/index.d.ts`)
+    const dts = await readFileMemoized(path)
     const icons = [...dts.matchAll(iconDeclarationPattern)].map(arr => arr[1])
 
     return icons

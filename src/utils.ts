@@ -2,7 +2,6 @@ import path from 'node:path'
 import os from 'node:os'
 import { readFile } from 'node:fs/promises'
 import pMemoize from 'p-memoize'
-import { resolvePath } from '@nuxt/kit'
 
 export const isWindows = os.platform() === 'win32'
 
@@ -29,13 +28,11 @@ export function omit(object: Record<string, any>, keys: string[]): Record<string
 }
 
 export const readFileMemoized = pMemoize(async (path: string) => {
-  const resolvedPath = await resolvePath(path)
-  return readFile(resolvedPath, 'utf-8')
+  return readFile(path, 'utf-8')
 })
 
-export const importJSON = pMemoize(async (path: string) => {
-  const resolvedPath = await resolvePath(path)
-  return JSON.parse(await readFile(resolvedPath, 'utf-8'))
+export const readJSON = pMemoize(async (path: string) => {
+  return JSON.parse(await readFile(path, 'utf-8'))
 })
 
 const PASCAL_CASE = /[a-z][A-Z]|^[A-Z]/g
