@@ -45,3 +45,26 @@ export function kebabCase(string: string): string {
       : `${match[0]}-${match[1].toLowerCase()}`,
   )
 }
+
+const FS_PREFIX = '/@fs'
+const VOLUME_RE = /^[A-Z]:/i
+const POSTFIX_RE = /[?#].*$/s
+
+export function cleanUrl(url: string): string {
+  return url.replace(POSTFIX_RE, '')
+}
+
+export function fsPathFromId(id: string): string {
+  const fsPath = normalizePath(
+    id.startsWith(FS_PREFIX) ? id.slice(FS_PREFIX.length) : id,
+  )
+  return (fsPath[0] === '/' || fsPath.match(VOLUME_RE)) ? fsPath : `/${fsPath}`
+}
+
+export function fsPathFromUrl(url: string): string {
+  return fsPathFromId(cleanUrl(url))
+}
+
+export function hasKeys(object?: object): boolean {
+  return Object.keys(object || {}).length > 0
+}

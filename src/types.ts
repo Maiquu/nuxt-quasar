@@ -1,6 +1,8 @@
+/* eslint-disable import/no-duplicates */
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { App as VueApp } from 'vue'
-import type { QVueGlobals, QuasarIconSet, QuasarIconSets, QuasarLanguage, VueClassProp, VueStyleProp } from 'quasar'
+import type { QuasarIconSets as QuasarIconSet } from 'quasar'
+import type * as _ from 'quasar'
 import type { ModuleOptions } from './module'
 
 type ExtractFont<T extends string> = T extends `svg-${string}` ? never : T
@@ -37,9 +39,9 @@ export interface ModuleContext {
  **/
 export interface QuasarPluginClientContext {
   parentApp: VueApp<any>
-  $q: QVueGlobals
-  lang: QuasarLanguage
-  iconSet: QuasarIconSet
+  $q: _.QVueGlobals
+  lang: _.QuasarLanguage
+  iconSet: _.QuasarIconSet
   onSSRHydrated: (() => void)[]
 }
 
@@ -48,9 +50,9 @@ export interface QuasarPluginClientContext {
  **/
 export interface QuasarPluginServerContext {
   parentApp: VueApp<any>
-  $q: QVueGlobals
-  lang: QuasarLanguage
-  iconSet: QuasarIconSet
+  $q: _.QVueGlobals
+  lang: _.QuasarLanguage
+  iconSet: _.QuasarIconSet
   ssrContext: any
 }
 
@@ -130,10 +132,10 @@ export interface QuasarFrameworkInnerConfiguration {
     badgeColor?: string
     badgeTextColor?: string
     badgePosition?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-    badgeStyle?: VueStyleProp
-    badgeClass?: VueClassProp
+    badgeStyle?: _.VueStyleProp
+    badgeClass?: _.VueClassProp
     progress?: boolean
-    progressClass?: VueClassProp
+    progressClass?: _.VueClassProp
     classes?: string
     attrs?: object
     timeout?: number
@@ -141,4 +143,185 @@ export interface QuasarFrameworkInnerConfiguration {
     multiLine?: boolean
     actions?: { icon: string; color: string }[]
   }
+}
+
+//
+
+type KeysMatching<T, V> = {
+  [K in keyof T]-?: T[K] extends V ? K : never
+}[keyof T] & keyof T
+
+type OptionalKeys<T> = {
+  [K in keyof T]: (T[K] & undefined) extends never ? never : K
+}[keyof T] & keyof T
+
+type OmitMatching<T extends object, V> = Omit<T, KeysMatching<T, V>>
+
+type OmitFnProps<T extends object> = OmitMatching<T, ((...args: any[]) => any) | undefined>
+
+type PickOptionalProps<T extends object> = Pick<T, OptionalKeys<T>>
+
+interface QuasarComponents {
+  QAjaxBar: _.QAjaxBarProps
+  QAvatar: _.QAvatarProps
+  QBadge: _.QBadgeProps
+  QBanner: _.QBannerProps
+  QBar: _.QBarProps
+  QBreadcrumbs: _.QBreadcrumbsProps
+  QBreadcrumbsEl: _.QBreadcrumbsElProps
+  QBtn: _.QBtnProps
+  QBtnDropdown: _.QBtnDropdownProps
+  QBtnGroup: _.QBtnGroupProps
+  QBtnToggle: _.QBtnToggleProps
+  QCard: _.QCardProps
+  QCardActions: _.QCardActionsProps
+  QCardSection: _.QCardSectionProps
+  QCarousel: _.QCarouselProps
+  QCarouselControl: _.QCarouselControlProps
+  QCarouselSlide: _.QCarouselSlideProps
+  QChatMessage: _.QChatMessageProps
+  QCheckbox: _.QCheckboxProps
+  QChip: _.QChipProps
+  QCircularProgress: _.QCircularProgressProps
+  QColor: _.QColorProps
+  QDate: _.QDateProps
+  QDialog: _.QDialogProps
+  QDrawer: _.QDrawerProps
+  QEditor: _.QEditorProps
+  QExpansionItem: _.QExpansionItemProps
+  QFab: _.QFabProps
+  QFabAction: _.QFabActionProps
+  QField: _.QFieldProps
+  QFile: _.QFileProps
+  QFooter: _.QFooterProps
+  QForm: _.QFormProps
+  QFormChildMixin: _.QFormChildMixinProps
+  QHeader: _.QHeaderProps
+  QIcon: _.QIconProps
+  QImg: _.QImgProps
+  QInfiniteScroll: _.QInfiniteScrollProps
+  QInnerLoading: _.QInnerLoadingProps
+  QInput: _.QInputProps
+  QIntersection: _.QIntersectionProps
+  QItem: _.QItemProps
+  QItemLabel: _.QItemLabelProps
+  QItemSection: _.QItemSectionProps
+  QList: _.QListProps
+  QKnob: _.QKnobProps
+  QLayout: _.QLayoutProps
+  QLinearProgress: _.QLinearProgressProps
+  QMarkupTable: _.QMarkupTableProps
+  QMenu: _.QMenuProps
+  QNoSsr: _.QNoSsrProps
+  QOptionGroup: _.QOptionGroupProps
+  QPage: _.QPageProps
+  QPageContainer: _.QPageContainerProps
+  QPageScroller: _.QPageScrollerProps
+  QPageSticky: _.QPageStickyProps
+  QPagination: _.QPaginationProps
+  QParallax: _.QParallaxProps
+  QPopupEdit: _.QPopupEditProps
+  QPopupProxy: _.QPopupProxyProps
+  QPullToRefresh: _.QPullToRefreshProps
+  QRadio: _.QRadioProps
+  QRange: _.QRangeProps
+  QRating: _.QRatingProps
+  QResizeObserver: _.QResizeObserverProps
+  QResponsive: _.QResponsiveProps
+  QScrollArea: _.QScrollAreaProps
+  QScrollObserver: _.QScrollObserverProps
+  QSelect: _.QSelectProps
+  QSeparator: _.QSeparatorProps
+  QSkeleton: _.QSkeletonProps
+  QSlideItem: _.QSlideItemProps
+  QSlideTransition: _.QSlideTransitionProps
+  QSlider: _.QSliderProps
+  QSpace: _.QSpaceProps
+  QSpinner: _.QSpinnerProps
+  QSpinnerAudio: _.QSpinnerAudioProps
+  QSpinnerBall: _.QSpinnerBallProps
+  QSpinnerBars: _.QSpinnerBarsProps
+  QSpinnerBox: _.QSpinnerBoxProps
+  QSpinnerClock: _.QSpinnerClockProps
+  QSpinnerComment: _.QSpinnerCommentProps
+  QSpinnerCube: _.QSpinnerCubeProps
+  QSpinnerDots: _.QSpinnerDotsProps
+  QSpinnerFacebook: _.QSpinnerFacebookProps
+  QSpinnerGears: _.QSpinnerGearsProps
+  QSpinnerGrid: _.QSpinnerGridProps
+  QSpinnerHearts: _.QSpinnerHeartsProps
+  QSpinnerHourglass: _.QSpinnerHourglassProps
+  QSpinnerInfinity: _.QSpinnerInfinityProps
+  QSpinnerIos: _.QSpinnerIosProps
+  QSpinnerOrbit: _.QSpinnerOrbitProps
+  QSpinnerOval: _.QSpinnerOvalProps
+  QSpinnerPie: _.QSpinnerPieProps
+  QSpinnerPuff: _.QSpinnerPuffProps
+  QSpinnerRadio: _.QSpinnerRadioProps
+  QSpinnerRings: _.QSpinnerRingsProps
+  QSpinnerTail: _.QSpinnerTailProps
+  QSplitter: _.QSplitterProps
+  QStep: _.QStepProps
+  QStepper: _.QStepperProps
+  QStepperNavigation: _.QStepperNavigationProps
+  QTabPanel: _.QTabPanelProps
+  QTabPanels: _.QTabPanelsProps
+  QTable: _.QTableProps
+  QTd: _.QTdProps
+  QTh: _.QThProps
+  QTr: _.QTrProps
+  QRouteTab: _.QRouteTabProps
+  QTab: _.QTabProps
+  QTabs: _.QTabsProps
+  QTime: _.QTimeProps
+  QTimeline: _.QTimelineProps
+  QTimelineEntry: _.QTimelineEntryProps
+  QToggle: _.QToggleProps
+  QToolbar: _.QToolbarProps
+  QToolbarTitle: _.QToolbarTitleProps
+  QTooltip: _.QTooltipProps
+  QTree: _.QTreeProps
+  QUploader: _.QUploaderProps
+  QUploaderAddTrigger: _.QUploaderAddTriggerProps
+  QVideo: _.QVideoProps
+  QVirtualScroll: _.QVirtualScrollProps
+}
+
+export type QuasarComponentDefaults = {
+  [K in keyof QuasarComponents]?: PickOptionalProps<OmitFnProps<QuasarComponents[K]>>
+}
+
+export interface QuasarMetadata {
+  mixins?: string[]
+  props?: Record<string, QuasarPropMetadata>
+}
+
+export type QuasarPropType =
+  | 'Boolean'
+  | 'Number'
+  | 'String'
+  | 'Array'
+  | 'Object'
+  | 'File'
+  | 'FileList'
+  | 'Element'
+  | 'Function'
+  | 'Any'
+  | 'null'
+  | 'undefined'
+
+export interface QuasarPropMetadata {
+  type: QuasarPropType | QuasarPropType[]
+  default?: string
+  required?: boolean
+  values?: string[]
+  extends?: string
+  category?: string
+  desc?: string
+  examples?: string[]
+  addedIn?: string
+  tsType?: string
+  transformAssetUrls?: boolean
+  syncable?: boolean
+  internal?: boolean
 }
