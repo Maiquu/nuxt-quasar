@@ -20,7 +20,7 @@ ${context.options.plugins
     .join('\n') || ''
 }
 ${when(lang, () => `import lang from "quasar/lang/${lang}"`)}
-${when(iconSet, () => `import iconSet from "quasar/icon-set/${iconSet}"`)}
+${when(typeof iconSet === 'string', () => `import iconSet from "quasar/icon-set/${iconSet}"`)}
 
 export default defineNuxtPlugin((nuxt) => {\n${
   when(isServer, () => `\
@@ -86,7 +86,9 @@ export default defineNuxtPlugin((nuxt) => {\n${
 
   nuxt.vueApp.use(Quasar, {
     ${when(lang, 'lang,')}
-    ${when(iconSet, 'iconSet,')}
+    ${typeof iconSet === 'string'
+      ? 'iconSet'
+      : `iconSet: ${iconSet ? JSON.stringify(iconSet) : 'material-icons'}`},
     plugins: {${when(ssr, 'NuxtPlugin, ')
       + (context.options.plugins?.join(',') || '')
     }},
