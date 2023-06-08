@@ -96,7 +96,7 @@ Enabling this option silences these deprecation warnings.
 Default language pack used by Quasar Components.
 
 ### iconSet
-- Type: `string`
+- Type: `string | QuasarIconSet`
 - Default: `'material-icons'`
 
 Icon set used by Quasar Components. Should also be included in `extra.fontIcons` to take effect.
@@ -179,7 +179,8 @@ export default defineNuxtConfig({
 ```
 
 
-## Regarding Meta tags
+## Notes
+
 Avoid using quasar plugins and composables that manipulate `<meta>` tags.
 Use [`useHead`](https://nuxt.com/docs/api/composables/use-head) instead.
 
@@ -188,21 +189,6 @@ List of known plugins/composables that do this:
 - [`Meta`](https://quasar.dev/quasar-plugins/meta)
 - [`useMeta`](https://quasar.dev/vue-composables/use-meta)
 
-## Regarding Component Icons
-
-By default, icons are not packaged with `quasar` module.
-You will have to install `@quasar/extras` and append `'material-icons'` (or value used in `iconSet` if defined) to `extras.fontIcons` in your `nuxt.config.ts` file for icons to take effect.
-
-```ts 
-// nuxt.config.ts
-export default {
-  quasar: {
-    extras: {
-      fontIcons: ['material-icons']
-    }
-  }
-}
-```
 
 ## Development
 
@@ -225,9 +211,6 @@ npm run lint
 # Run Vitest
 npm run test
 npm run test:watch
-
-# Release new version
-npm run release
 ```
 
 <!-- Badges -->
