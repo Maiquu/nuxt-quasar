@@ -62,6 +62,12 @@ export interface ModuleOptions {
   iconSet?: QuasarIconSet | QuasarIconSetObject
 
   /**
+   * If selected quasar `iconSet` is a font set, it will automatically be included in `extras.fontIcons`.
+   * @default true
+   */
+  autoIncludeIconSet?: boolean
+
+  /**
    * When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
    *
    * @see [Documentation](https://quasar.dev/layout/grid/introduction-to-flexbox#flex-addons)
@@ -120,6 +126,18 @@ export default defineNuxtModule<ModuleOptions>({
       options,
       resolveQuasar,
       resolveQuasarExtras,
+    }
+
+    // Include `iconSet` if its missing from `extras.fontIcons`
+    if (
+      options.autoIncludeIconSet
+      && typeof options.iconSet === 'string'
+      && isFontIconSet(options.iconSet)
+      && !options.extras?.fontIcons?.includes(options.iconSet)
+    ) {
+      options.extras ??= {}
+      options.extras.fontIcons ??= []
+      options.extras.fontIcons.push(options.iconSet)
     }
 
     setupCss(nuxt.options.css, options)
@@ -266,6 +284,10 @@ export default defineNuxtModule<ModuleOptions>({
     })
   },
 })
+
+function isFontIconSet(iconSet: QuasarIconSet): iconSet is QuasarFontIconSet {
+  return iconSet.startsWith('svg-')
+}
 
 function categorizeImports(importMap: Record<string, string>, quasarResolve: ResolveFn): QuasarImports {
   const imports: QuasarImports = {
