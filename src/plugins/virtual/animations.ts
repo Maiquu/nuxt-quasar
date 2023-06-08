@@ -1,7 +1,6 @@
 import { createUnplugin } from 'unplugin'
 import { logger } from '@nuxt/kit'
 import { quasarAnimationsPath } from '../../constants'
-import { resolveAnimation } from '../../resolve'
 import type { ModuleContext } from '../../types'
 import { readFileMemoized } from '../../utils'
 
@@ -9,7 +8,7 @@ import { readFileMemoized } from '../../utils'
 const RESOLVED_ID = '/__quasar/animations.css'
 const RESOLVED_ID_WITH_QUERY_RE = /([\/\\])__quasar\1animations\.css(\?.*)?$/
 
-export const virtualAnimationsPlugin = createUnplugin((context: ModuleContext) => {
+export const virtualAnimationsPlugin = createUnplugin(({ options, resolveQuasarExtras }: ModuleContext) => {
   return {
     name: 'quasar:animations',
 
@@ -23,7 +22,7 @@ export const virtualAnimationsPlugin = createUnplugin((context: ModuleContext) =
     loadInclude: id => RESOLVED_ID_WITH_QUERY_RE.test(id),
 
     async load() {
-      let animations = context.options.extras?.animations || []
+      let animations = options.extras?.animations || []
       if (animations === 'all') {
         if (animations === 'all') {
           const { generalAnimations, inAnimations, outAnimations } = await import('@quasar/extras/animate/animate-list.mjs')
@@ -34,7 +33,7 @@ export const virtualAnimationsPlugin = createUnplugin((context: ModuleContext) =
       const animationsCSS = await Promise.all(
         animations.map(async (animation) => {
           try {
-            return await readFileMemoized(resolveAnimation(animation))
+            return await readFileMemoized(resolveQuasarExtras(`animate/${animation}.css`))
           } catch {
             logger.error(`Invalid quasar animation: ${animation}`)
             return ''
