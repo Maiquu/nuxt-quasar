@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { addComponent, addImports, addImportsSources, addPlugin, addPluginTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
-import type { QuasarAnimations, QuasarFonts, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
+import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
 import type { Options as SassOptions } from 'sass'
 import { version } from '../package.json'
@@ -56,10 +56,10 @@ export interface ModuleOptions {
   lang?: QuasarLanguageCodes
 
   /**
-   * Icon Set used by Quasar Components. If its a font icon set, it should be included in `extras.fontIcons`.
+   * Icon Set used by Quasar Components.
    * @default 'material-icons'
    */
-  iconSet?: QuasarIconSets
+  iconSet?: QuasarIconSet | QuasarIconSetObject
 
   /**
    * When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
@@ -75,9 +75,9 @@ export interface ModuleOptions {
   extras?: {
     font?: QuasarFonts | null
     /** Icons that are imported as webfont. */
-    fontIcons?: QuasarFontIconSets[]
+    fontIcons?: QuasarFontIconSet[]
     /** Automaticly import selected svg icon sets provided by `@quasar/extras`. */
-    svgIcons?: QuasarSvgIconSets[]
+    svgIcons?: QuasarSvgIconSet[]
     /** Animations provided by quasar.
      *
      * @see [Documentation](https://quasar.dev/options/animations)
@@ -300,7 +300,7 @@ function categorizeImports(importMap: Record<string, string>, quasarResolve: Res
 
 const iconDeclarationPattern = /^export declare const ([a-zA-Z\d]+): string;?$/gm
 
-async function getIconsFromIconset(iconSet: QuasarSvgIconSets, resolveQuasarExtras: ResolveFn): Promise<string[]> {
+async function getIconsFromIconset(iconSet: QuasarSvgIconSet, resolveQuasarExtras: ResolveFn): Promise<string[]> {
   try {
     const icons = await readJSON(resolveQuasarExtras(`${iconSet}/icons.json`)) as string[]
     return icons

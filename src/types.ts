@@ -6,6 +6,8 @@ import type { ModuleOptions } from './module'
 type ExtractFont<T extends string> = T extends `svg-${string}` ? never : T
 type ExtractSvg<T extends string> = T extends `svg-${infer F}` ? F : never
 
+export type QuasarFontIconSet = ExtractFont<QuasarIconSet>
+export type QuasarSvgIconSet = ExtractSvg<QuasarIconSet>
 
 export type ResolveFn = (...paths: string[]) => string
 
