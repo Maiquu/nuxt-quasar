@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises'
+import { dirname } from 'node:path'
 import { addComponent, addImports, addImportsSources, addPlugin, addPluginTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
@@ -108,8 +108,8 @@ export default defineNuxtModule<ModuleOptions>({
   },
   async setup(options, nuxt) {
     const { resolve: resolveLocal } = createResolver(import.meta.url)
-    const { resolve: resolveQuasar } = createResolver(await resolvePath('quasar'))
-    const { resolve: resolveQuasarExtras } = createResolver(await resolvePath('@quasar/extras'))
+    const { resolve: resolveQuasar } = createResolver(dirname(await resolvePath('quasar/package.json')))
+    const { resolve: resolveQuasarExtras } = createResolver(dirname(await resolvePath('@quasar/extras/package.json')))
 
     const { version: quasarVersion } = await readJSON(resolveQuasar('package.json'))
     const importMap = await readJSON(resolveQuasar('dist/transforms/import-map.json')) as Record<string, string>
