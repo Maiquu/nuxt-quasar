@@ -63,6 +63,7 @@ function toggleLeftDrawer() {
           round
           icon="menu"
           aria-label="Menu"
+          :glossy="false"
           @click="toggleLeftDrawer"
         />
 

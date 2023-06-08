@@ -1,3 +1,6 @@
+import materialIcons from 'quasar/icon-set/svg-material-icons'
+import materialIconsRound from 'quasar/icon-set/svg-material-icons-round'
+
 export default defineNuxtConfig({
   modules: [
     '../src/module',
@@ -12,6 +15,10 @@ export default defineNuxtConfig({
       'LoadingBar',
       'Notify',
     ],
+    iconSet: {
+      ...materialIcons,
+      colorPicker: materialIconsRound.colorPicker,
+    },
     extras: {
       font: 'roboto-font',
       fontIcons: ['material-icons'],
@@ -19,6 +26,13 @@ export default defineNuxtConfig({
     },
     config: {
       dark: true,
+    },
+    components: {
+      defaults: {
+        QBtn: {
+          glossy: true,
+        },
+      },
     },
   },
 })
