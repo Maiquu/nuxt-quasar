@@ -1,10 +1,9 @@
 import { dirname, isAbsolute, relative, resolve } from 'node:path'
 import { readFile } from 'node:fs/promises'
-import type { VitePlugin } from 'unplugin'
 import { builders, generateCode, loadFile } from 'magicast'
 import { getDefaultExportOptions } from 'magicast/helpers'
 import { logger } from '@nuxt/kit'
-import type { ModuleContext, QuasarComponentDefaults, QuasarMetadata, QuasarPropMetadata } from '../../types'
+import type { Plugin as VitePlugin } from 'vite'
 import { fsPathFromUrl, readJSON } from '../../utils'
 
 const QUASAR_COMPONENT_RE = /(?:([\\\/])node_modules\1|^)quasar(?=\1)([\\\/])src\2components\2[a-z-]+?\2(Q[a-zA-Z]+?)\.js(\?.*)?$/

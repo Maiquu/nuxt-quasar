@@ -1,5 +1,5 @@
-import { createUnplugin } from 'unplugin'
 import { logger } from '@nuxt/kit'
+import type { Plugin as VitePlugin } from 'vite'
 import { quasarAnimationsPath } from '../../constants'
 import type { ModuleContext } from '../../types'
 import { readFileMemoized } from '../../utils'
@@ -8,7 +8,7 @@ import { readFileMemoized } from '../../utils'
 const RESOLVED_ID = '/__quasar/animations.css'
 const RESOLVED_ID_WITH_QUERY_RE = /([\/\\])__quasar\1animations\.css(\?.*)?$/
 
-export const virtualAnimationsPlugin = createUnplugin(({ options, resolveQuasarExtras }: ModuleContext) => {
+export function virtualAnimationsPlugin({ options, resolveQuasarExtras }: ModuleContext): VitePlugin {
   return {
     name: 'quasar:animations',
 
@@ -19,9 +19,10 @@ export const virtualAnimationsPlugin = createUnplugin(({ options, resolveQuasarE
         return RESOLVED_ID
     },
 
-    loadInclude: id => RESOLVED_ID_WITH_QUERY_RE.test(id),
+    async load(id) {
+      if (!RESOLVED_ID_WITH_QUERY_RE.test(id))
+        return
 
-    async load() {
       let animations = options.extras?.animations || []
       if (animations === 'all') {
         if (animations === 'all') {
@@ -44,4 +45,4 @@ export const virtualAnimationsPlugin = createUnplugin(({ options, resolveQuasarE
       return animationsCSS.join('\n')
     },
   }
-})
+}
