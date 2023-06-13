@@ -266,10 +266,10 @@ export default defineNuxtModule<ModuleOptions>({
 
       config.plugins ??= []
       config.plugins.push(
-        virtualAnimationsPlugin.vite(context),
-        virtualBrandPlugin.vite(context),
-        transformDirectivesPlugin.vite(context),
-        virtualQuasarEntryPlugin.vite(context),
+        virtualAnimationsPlugin(context),
+        virtualBrandPlugin(context),
+        transformDirectivesPlugin(context),
+        virtualQuasarEntryPlugin(context),
       )
       if (hasKeys(options.components?.defaults)) {
         config.plugins.unshift(
@@ -281,7 +281,7 @@ export default defineNuxtModule<ModuleOptions>({
         config.plugins.push(resolveQuasarModuleSideEffectsPlugin())
       }
       if (options.sassVariables && isClient) {
-        config.plugins.push(transformScssPlugin.vite(context))
+        config.plugins.push(transformScssPlugin(context))
       }
     })
 

@@ -1,10 +1,10 @@
-import { createUnplugin } from 'unplugin'
+import type { Plugin as VitePlugin } from 'vite'
 import type { ModuleContext } from '../../types'
 
 const QUASAR_ENTRY = 'quasar'
 const QUASAR_VIRTUAL_ENTRY = '/__quasar/entry.mjs'
 
-export const virtualQuasarEntryPlugin = createUnplugin((context: ModuleContext) => {
+export function virtualQuasarEntryPlugin(context: ModuleContext): VitePlugin {
   return {
     name: 'quasar:entry',
     enforce: 'pre',
@@ -14,14 +14,13 @@ export const virtualQuasarEntryPlugin = createUnplugin((context: ModuleContext) 
         return QUASAR_VIRTUAL_ENTRY
     },
 
-    loadInclude: id => id === QUASAR_VIRTUAL_ENTRY,
-
-    async load() {
-      return Object
-        .entries(context.imports.raw)
-        .filter(([, path]) => !path.includes('/__tests__/'))
-        .map(([name, path]) => `export { default as ${name} } from "quasar/${path}"`)
-        .join('\n')
+    async load(id) {
+      if (id === QUASAR_VIRTUAL_ENTRY)
+        return Object
+          .entries(context.imports.raw)
+          .filter(([, path]) => !path.includes('/__tests__/'))
+          .map(([name, path]) => `export { default as ${name} } from "quasar/${path}"`)
+          .join('\n')
     },
   }
-})
+}

@@ -1,11 +1,11 @@
 import MagicString from 'magic-string'
 import { useNuxt } from '@nuxt/kit'
-import { createUnplugin } from 'unplugin'
+import type { Plugin as VitePlugin } from 'vite'
 import type { ModuleContext } from '../../types'
 
 const directivesRegExp = /(?<=[ (])_?resolveDirective\(\s*["']([^'"]*?)["'][\s,]*[^)]*\)/g
 
-export const transformDirectivesPlugin = createUnplugin((context: ModuleContext) => {
+export function transformDirectivesPlugin(context: ModuleContext): VitePlugin {
   const { sourcemap } = useNuxt().options
   return {
     name: 'quasar:directive',
@@ -57,4 +57,4 @@ export const transformDirectivesPlugin = createUnplugin((context: ModuleContext)
       }
     },
   }
-})
+}

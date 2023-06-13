@@ -1,5 +1,5 @@
 import { createFilter } from '@rollup/pluginutils'
-import { createUnplugin } from 'unplugin'
+import type { Plugin as VitePlugin } from 'vite'
 import type { ModuleContext } from '../../types'
 
 interface VueQuery {
@@ -70,32 +70,34 @@ function parseVueRequest(id: string): {
   }
 }
 
-export const transformImportPlugin = createUnplugin((context: ModuleContext) => {
+const transformInclude = createFilter(
+  [// include:
+    /\.vue$/,
+    /\.vue\?vue/,
+    /\.vue\?v=/,
+    /\.((c|m)?j|t)sx?$/,
+  ],
+  [// exclude:
+    /[\\/]node_modules[\\/]/,
+    /[\\/]\.git[\\/]/,
+    /[\\/]\.nuxt[\\/]/,
+  ],
+)
+
+export function transformImportPlugin(context: ModuleContext): VitePlugin {
   return {
     name: 'quasar:import',
 
-    transformInclude: createFilter(
-      [// include:
-        /\.vue$/,
-        /\.vue\?vue/,
-        /\.vue\?v=/,
-        /\.((c|m)?j|t)sx?$/,
-      ],
-      [// exclude:
-        /[\\/]node_modules[\\/]/,
-        /[\\/]\.git[\\/]/,
-        /[\\/]\.nuxt[\\/]/,
-      ],
-    ),
-
     transform(code, id) {
-      const { query } = parseVueRequest(id)
-      if (!query.vue || (query.vue && query.type === 'script')) {
-        return {
-          code: mapQuasarImports(code, context.imports.raw),
-          map: null,
+      if (transformInclude(id)) {
+        const { query } = parseVueRequest(id)
+        if (!query.vue || (query.vue && query.type === 'script')) {
+          return {
+            code: mapQuasarImports(code, context.imports.raw),
+            map: null,
+          }
         }
       }
     },
   }
-})
+}

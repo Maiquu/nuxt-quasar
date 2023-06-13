@@ -1,8 +1,8 @@
-import { createUnplugin } from 'unplugin'
+import type { Plugin as VitePlugin } from 'vite'
 import type { ModuleContext } from '../../types'
 import { normalizePath } from '../../utils'
 
-export const transformScssPlugin = createUnplugin(({ options }: ModuleContext) => {
+export function transformScssPlugin({ options }: ModuleContext): VitePlugin {
   const sassVariables = typeof options.sassVariables === 'string'
     ? normalizePath(options.sassVariables)
     : options.sassVariables
@@ -34,7 +34,7 @@ export const transformScssPlugin = createUnplugin(({ options }: ModuleContext) =
       return null
     },
   }
-})
+}
 
 function createScssTransform(fileExtension: string, sassVariables?: string | boolean): (code: string) => string {
   const sassImportCode = ['@import \'quasar/src/css/variables.sass\'', '']

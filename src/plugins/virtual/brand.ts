@@ -1,4 +1,4 @@
-import { createUnplugin } from 'unplugin'
+import type { Plugin as VitePlugin } from 'vite'
 import { quasarBrandPath } from '../../constants'
 import type { ModuleContext } from '../../types'
 
@@ -6,7 +6,7 @@ import type { ModuleContext } from '../../types'
 const RESOLVED_ID = '/__quasar/brand.css'
 const RESOLVED_ID_WITH_QUERY_RE = /([\/\\])__quasar\1brand\.css(\?.*)?$/
 
-export const virtualBrandPlugin = createUnplugin((context: ModuleContext) => {
+export function virtualBrandPlugin(context: ModuleContext): VitePlugin {
   return {
     name: 'quasar:brand',
 
@@ -17,16 +17,15 @@ export const virtualBrandPlugin = createUnplugin((context: ModuleContext) => {
         return RESOLVED_ID
     },
 
-    loadInclude: id => RESOLVED_ID_WITH_QUERY_RE.test(id),
-
-    load() {
-      return [
-        ':root {',
-        ...Object
-          .entries(context.options.config?.brand || {})
-          .map(([name, color]) => `  --q-${name}: ${color};`),
-        '}',
-      ].join('\n')
+    load(id) {
+      if (RESOLVED_ID_WITH_QUERY_RE.test(id))
+        return [
+          ':root {',
+          ...Object
+            .entries(context.options.config?.brand || {})
+            .map(([name, color]) => `  --q-${name}: ${color};`),
+          '}',
+        ].join('\n')
     },
   }
-})
+}
