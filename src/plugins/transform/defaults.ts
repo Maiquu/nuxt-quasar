@@ -4,16 +4,16 @@ import { builders, generateCode, loadFile } from 'magicast'
 import { getDefaultExportOptions } from 'magicast/helpers'
 import { logger } from '@nuxt/kit'
 import type { Plugin as VitePlugin } from 'vite'
-import { fsPathFromUrl, readJSON } from '../../utils'
+import type { ModuleContext, QuasarComponentDefaults, QuasarComponentMetadata, QuasarPropMetadata, QuasarPropType } from '../../types'
+import { fsPathFromUrl, kebabCase, readJSON } from '../../utils'
 
 const QUASAR_COMPONENT_RE = /(?:([\\\/])node_modules\1|^)quasar(?=\1)([\\\/])src\2components\2[a-z-]+?\2(Q[a-zA-Z]+?)\.js(\?.*)?$/
 const QUASAR_COMPONENT_WITH_DEFAULTS_PREFIX = '/__quasar/components'
 const QUASAR_IMPORT_RE = /([\\\/])node_modules\1quasar\1src\1/
 
-const MAGICAST_UTILS_ID = '/__quasar/magicast-utils.mjs'
-const MERGE_FN = '$$merge'
-const DEFAULT_FN = '$$default'
-const VALUES_FN = '$$values'
+const MERGE_FN = '__merge__'
+const DEFAULT_FN = '__default__'
+const VALUES_FN = '__values__'
 
 interface ResolveMetadata {
   name: string
@@ -21,33 +21,17 @@ interface ResolveMetadata {
   originalPath: string
 }
 
-interface PropOptions {
+export interface BuildContext {
+  imports: Set<string>
+  extended: { props: Record<string, QuasarPropMetadata> }
+  sourcePath: string
+}
+
+export interface PropOptions {
   type?: any
   required?: boolean
   default?: any
   validator?(value: any): boolean
-}
-
-export function transformDefaultUtilsPlugin(): VitePlugin {
-  return {
-    name: 'quasar:magicast-utils',
-
-    resolveId(id) {
-      if (id === MAGICAST_UTILS_ID)
-        return MAGICAST_UTILS_ID
-    },
-
-    load(id) {
-      if (id === MAGICAST_UTILS_ID) {
-        return `\
-const clone = (value) => JSON.parse(JSON.stringify(value))
-export const ${MERGE_FN} = (a,b) => ({ ...a, ...b })
-export const ${DEFAULT_FN} = (value) => () => clone(value)
-export const ${VALUES_FN} = (values) => (value) => values.includes(value)
-`
-      }
-    },
-  }
 }
 
 export function transformDefaultsPlugin(context: ModuleContext): VitePlugin {
@@ -127,85 +111,88 @@ export function transformDefaultsPlugin(context: ModuleContext): VitePlugin {
   }
 }
 
-async function loadComponentWithDefaults({ name, defaults, originalPath }: ResolveMetadata, { resolveQuasar }: ModuleContext): Promise<{ code: string; map?: string }> {
+function isValidConstructor(type: QuasarPropType) {
+  return !['null', 'undefined', 'Any'].includes(type)
+}
+
+export function createPropOptions(context: BuildContext, metadata: QuasarPropMetadata, defaultValue: any): PropOptions {
+  const options: PropOptions = {}
+  if (metadata.extends) {
+    metadata = context.extended.props[metadata.extends]
+  }
+  // type
+  if (Array.isArray(metadata.type)) {
+    const types = metadata.type
+      .filter(isValidConstructor)
+      .map(t => builders.raw(t))
+    if (types.length > 0) {
+      options.type = types
+    }
+  } else if (isValidConstructor(metadata.type)) {
+    options.type = builders.raw(metadata.type)
+  }
+
+  // required
+  if (metadata.required) {
+    options.required = metadata.required
+  }
+  // default
+  if (typeof defaultValue === 'object') {
+    context.imports.add(DEFAULT_FN)
+    options.default = builders.functionCall(DEFAULT_FN, defaultValue)
+  } else {
+    options.default = defaultValue
+  }
+  // validator
+  if (metadata.values) {
+    context.imports.add(VALUES_FN)
+    options.validator = builders.functionCall(VALUES_FN, metadata.values)
+  }
+  return options
+}
+
+export async function getPropMetadata(context: BuildContext, metadata: QuasarComponentMetadata, componentName: string, propName: string): Promise<QuasarPropMetadata> {
+  const propMetadata = metadata.props?.[propName]
+  if (propMetadata) {
+    return propMetadata
+  } else if (metadata.mixins?.length) {
+    for (const mixin of metadata.mixins) {
+      const mixinMetadata = await readJSON(resolve(context.sourcePath, `${mixin}.json`))
+      const propMetadata = await getPropMetadata(context, mixinMetadata, componentName, propName)
+      if (propMetadata)
+        return propMetadata
+    }
+  }
+  throw new Error(`Unknown ${componentName} prop: [${propName}]`)
+}
+
+export async function loadComponentWithDefaults(
+  { name: componentName, defaults, originalPath }: ResolveMetadata,
+  { resolveLocal, resolveQuasar }: ModuleContext,
+): Promise<{ code: string; map?: string }> {
   const module = await loadFile(originalPath)
+  const magicastUtils = resolveLocal('runtime/magicastUtils')
   const sourcePath = resolveQuasar('src')
   const componentRelativePath = relative(sourcePath, originalPath).slice(0, -'.js'.length)
   const componentDefaultEntries = Object.entries(defaults)
   const componentOptions = getDefaultExportOptions(module)
   const componentMetadata = await readJSON(resolve(sourcePath, `${componentRelativePath}.json`))
-  const apiExtends = await readJSON(resolveQuasar('src/api.extends.json')) as Required<QuasarMetadata>
+  const apiExtends = await readJSON(resolveQuasar('src/api.extends.json')) as { props: Record<string, QuasarPropMetadata> }
 
-  const getPropMetadata = async (metadata: QuasarMetadata, propName: string): Promise<QuasarPropMetadata> => {
-    const propMetadata = metadata.props?.[propName]
-    if (propMetadata) {
-      return propMetadata
-    } else if (metadata.mixins?.length) {
-      for (const mixin of metadata.mixins) {
-        const mixinMetadata = await readJSON(resolve(sourcePath, `${mixin}.json`))
-        const propMetadata = await getPropMetadata(mixinMetadata, propName)
-        if (propMetadata)
-          return propMetadata
-      }
-    }
-    throw new Error(`Unknown ${name} prop: [${propName}]`)
-  }
-
-  let importedValuesFn = false
-  let importedDefaultsFn = false
-
-  const createPropOptions = (metadata: QuasarPropMetadata, defaultValue: any): PropOptions => {
-    const options: PropOptions = {}
-    if (metadata.extends) {
-      metadata = apiExtends.props[metadata.extends]
-    }
-    // type
-    options.type = Array.isArray(metadata.type)
-      ? metadata.type.map(t => builders.raw(t))
-      : builders.raw(metadata.type)
-
-    // required
-    if (metadata.required) {
-      options.required = metadata.required
-    }
-    // default
-    if (typeof defaultValue === 'object') {
-      if (!importedDefaultsFn) {
-        importedDefaultsFn = true
-        module.imports.$add({
-          from: MAGICAST_UTILS_ID,
-          imported: DEFAULT_FN,
-        })
-      }
-      options.default = builders.functionCall(DEFAULT_FN, defaultValue)
-    } else {
-      options.default = defaultValue
-    }
-    // validator
-    if (metadata.values) {
-      if (!importedValuesFn) {
-        importedValuesFn = true
-        module.imports.$add({
-          from: MAGICAST_UTILS_ID,
-          imported: VALUES_FN,
-        })
-      }
-      options.validator = builders.functionCall(VALUES_FN, metadata.values)
-    }
-    return options
+  const buildContext: BuildContext = {
+    imports: new Set(),
+    extended: apiExtends,
+    sourcePath,
   }
 
   // If component props are referenced by an identifier, we need to recreate all props by their metadata (ex: QCheckbox, QField)
   if (componentOptions.props.$type === 'identifier') {
-    module.imports.$add({
-      from: MAGICAST_UTILS_ID,
-      imported: MERGE_FN,
-    })
+    buildContext.imports.add(MERGE_FN)
     const newPropOptions = await Promise.all(
       componentDefaultEntries
         .map(async ([propName, defaultValue]) => {
-          const propMetadata = await getPropMetadata(componentMetadata, propName)
-          const propOptions = createPropOptions(propMetadata, defaultValue)
+          const propMetadata = await getPropMetadata(buildContext, componentMetadata, componentName, kebabCase(propName))
+          const propOptions = createPropOptions(buildContext, propMetadata, defaultValue)
           return { name: propName, options: propOptions }
         }),
     )
@@ -220,13 +207,7 @@ async function loadComponentWithDefaults({ name, defaults, originalPath }: Resol
       const propOptions = componentProps[propName]
       if (propOptions) {
         if (typeof defaultValue === 'object') {
-          if (!importedDefaultsFn) {
-            importedDefaultsFn = true
-            module.imports.$add({
-              imported: DEFAULT_FN,
-              from: MAGICAST_UTILS_ID,
-            })
-          }
+          buildContext.imports.add(DEFAULT_FN)
           defaultValue = builders.functionCall(DEFAULT_FN, defaultValue)
         }
 
@@ -242,16 +223,23 @@ async function loadComponentWithDefaults({ name, defaults, originalPath }: Resol
             default: defaultValue,
           }
         } else {
-          throw new Error(`Unexpected prop definition type used at ${name}.props.${propName}, please open an issue.`)
+          throw new Error(`Unexpected prop definition type used at ${componentName}.props.${propName}, please open an issue.`)
         }
       } else {
-        const propMetadata = await getPropMetadata(componentMetadata, propName)
-        const propOptions = createPropOptions(propMetadata, defaultValue)
+        const propMetadata = await getPropMetadata(buildContext, componentMetadata, componentName, kebabCase(propName))
+        const propOptions = createPropOptions(buildContext, propMetadata, defaultValue)
         componentProps[propName] = propOptions
       }
     }
   } else {
-    throw new Error(`Unexpected props definition type used at ${name}.props, please open an issue.`)
+    throw new Error(`Unexpected props definition type used at ${componentName}.props, please open an issue.`)
+  }
+
+  for (const imported of buildContext.imports) {
+    module.imports.$add({
+      from: magicastUtils,
+      imported,
+    })
   }
 
   return generateCode(module)
