@@ -68,3 +68,7 @@ export function fsPathFromUrl(url: string): string {
 export function hasKeys(object?: object): boolean {
   return Object.keys(object || {}).length > 0
 }
+
+export function isDef<T>(value?: T): value is T {
+  return typeof value !== 'undefined'
+}
