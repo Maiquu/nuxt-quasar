@@ -30,6 +30,7 @@ export interface ModuleContext {
   imports: QuasarImports
   options: ModuleOptions
   mode: 'server' | 'client'
+  resolveLocal: ResolveFn
   resolveQuasar: ResolveFn
   resolveQuasarExtras: ResolveFn
 }
@@ -291,7 +292,7 @@ export type QuasarComponentDefaults = {
   [K in keyof QuasarComponents]?: PickOptionalProps<OmitFnProps<QuasarComponents[K]>>
 }
 
-export interface QuasarMetadata {
+export interface QuasarComponentMetadata {
   mixins?: string[]
   props?: Record<string, QuasarPropMetadata>
 }
@@ -312,7 +313,7 @@ export type QuasarPropType =
 
 export interface QuasarPropMetadata {
   type: QuasarPropType | QuasarPropType[]
-  default?: string
+  default?: any
   required?: boolean
   values?: string[]
   extends?: string
