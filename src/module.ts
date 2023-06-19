@@ -320,7 +320,7 @@ export default defineNuxtModule<ModuleOptions>({
 })
 
 function isFontIconSet(iconSet: QuasarIconSet): iconSet is QuasarFontIconSet {
-  return iconSet.startsWith('svg-')
+  return !iconSet.startsWith('svg-')
 }
 
 function categorizeImports(importMap: Record<string, string>, quasarResolve: ResolveFn): QuasarImports {
