@@ -129,6 +129,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     lang: 'en-US',
     iconSet: 'material-icons',
+    autoIncludeIconSet: true,
     cssAddon: false,
     sassVariables: false,
     quietSassWarnings: true,
