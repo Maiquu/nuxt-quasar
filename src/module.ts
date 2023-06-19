@@ -93,12 +93,14 @@ export interface ModuleOptions {
   }
 
   /**
-   * EXPERIMENTAL
-   *
    * Component Settings
    */
   components?: {
-    /** Set defaults for quasar components */
+    /**
+     * EXPERIMENTAL
+     *
+     * Set defaults for quasar components
+     **/
     defaults?: QuasarComponentDefaults
     /**
      * When `true`, defaults will be applied to components that aren't used directly.

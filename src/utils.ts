@@ -37,7 +37,7 @@ export const readJSON = pMemoize(async (path: string) => {
 
 const PASCAL_CASE = /[a-z][A-Z]|^[A-Z]/g
 
-/** Convert `PascalCase` to `kebab-case` */
+/** Convert `PascalCase`/`camelCase` to `kebab-case` */
 export function kebabCase(string: string): string {
   return string.replaceAll(PASCAL_CASE,
     match => match.length === 1
