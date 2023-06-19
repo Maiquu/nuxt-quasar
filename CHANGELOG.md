@@ -1,5 +1,28 @@
 # Changelog
 
+## v2.0.0
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.0-rc.0...v2.0.0)
+
+
+### 💅 Refactors
+
+  - `defaults.ts` ([922714b](https://github.com/Maiquu/nuxt-quasar/commit/922714b))
+
+### 🏡 Chore
+
+  - Removed unplugin ([b334e05](https://github.com/Maiquu/nuxt-quasar/commit/b334e05))
+  - Added checks, added/moved jsdoc comments ([885a4d6](https://github.com/Maiquu/nuxt-quasar/commit/885a4d6))
+
+### ✅ Tests
+
+  - Component defaults functionality ([cb2a99c](https://github.com/Maiquu/nuxt-quasar/commit/cb2a99c))
+  - Component default e2e tests ([c56f2c5](https://github.com/Maiquu/nuxt-quasar/commit/c56f2c5))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.0.0-rc.0
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v1.7.4...v2.0.0-rc.0)
