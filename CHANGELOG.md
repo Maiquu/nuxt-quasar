@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.0.1
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.0...v2.0.1)
+
+### 🩹 Fixes
+
+  - `autoIncludeIconSet` default value ([0d46524](https://github.com/Maiquu/nuxt-quasar/commit/0d46524))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.0.0
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.0-rc.0...v2.0.0)

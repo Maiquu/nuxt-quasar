@@ -1,7 +1,7 @@
 {
   "name": "nuxt-quasar-ui",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "packageManager": "pnpm@8.6.0",
   "description": "Quasar Module for Nuxt (Unofficial)",
   "license": "MIT",
@@ -27,7 +27,7 @@
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
     "dev:preview": "nuxi preview playground",
-    "changelogen": "changelogen --release --no-tag --no-commit",
+    "changelogen": "changelogen --release --no-tag --no-commit && eslint . --fix",
     "typecheck": "tsc --project playground/.nuxt/tsconfig.json --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
