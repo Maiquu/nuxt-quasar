@@ -56,6 +56,7 @@
     "changelogen": "^0.5.3",
     "eslint": "^8.42.0",
     "eslint-define-config": "^1.20.0",
+    "happy-dom": "^9.20.3",
     "nuxt": "^3.5.3",
     "quasar": "^2.12.0",
     "sass": "^1.62.1",
