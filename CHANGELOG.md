@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.2
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.1...v2.0.2)
+
+
+### 🩹 Fixes
+
+  - `isFontIconSet` typo ([6e93721](https://github.com/Maiquu/nuxt-quasar/commit/6e93721))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.0.1
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.0...v2.0.1)
