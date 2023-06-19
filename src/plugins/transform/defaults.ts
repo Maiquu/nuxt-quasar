@@ -166,10 +166,18 @@ export async function getPropMetadata(context: BuildContext, metadata: QuasarCom
   throw new Error(`Unknown ${componentName} prop: [${propName}]`)
 }
 
+function assertDefaults(defaults: Record<string, any>) {
+  for (const value of Object.values(defaults)) {
+    if (typeof value === 'function')
+      throw new TypeError('Component defaults does not support default values that are functions')
+  }
+}
+
 export async function loadComponentWithDefaults(
   { name: componentName, defaults, originalPath }: ResolveMetadata,
   { resolveLocal, resolveQuasar }: ModuleContext,
 ): Promise<{ code: string; map?: string }> {
+  assertDefaults(defaults)
   const module = await loadFile(originalPath)
   const magicastUtils = resolveLocal('runtime/magicastUtils')
   const sourcePath = resolveQuasar('src')
@@ -185,7 +193,21 @@ export async function loadComponentWithDefaults(
     sourcePath,
   }
 
-  // If component props are referenced by an identifier, we need to recreate all props by their metadata (ex: QCheckbox, QField)
+  /**
+   * If component props are referenced by an identifier, we need to recreate all props by their metadata (ex: QCheckbox, QField)
+   *
+   * @example
+   *
+   * import { useCheckboxProps } from './composables'
+   *
+   * export default defineComponentDefaults({
+   *   name: 'checkbox',
+   *   props: useCheckboxProps
+   *   setup() {
+   *     // ...
+   *   }
+   * })
+   */
   if (componentOptions.props.$type === 'identifier') {
     buildContext.imports.add(MERGE_FN)
     const newPropOptions = await Promise.all(
@@ -193,7 +215,10 @@ export async function loadComponentWithDefaults(
         .map(async ([propName, defaultValue]) => {
           const propMetadata = await getPropMetadata(buildContext, componentMetadata, componentName, kebabCase(propName))
           const propOptions = createPropOptions(buildContext, propMetadata, defaultValue)
-          return { name: propName, options: propOptions }
+          return {
+            name: propName,
+            options: propOptions,
+          }
         }),
     )
     componentOptions.props = builders.functionCall(MERGE_FN,
