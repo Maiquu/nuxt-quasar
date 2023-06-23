@@ -155,7 +155,7 @@ Import animations provided by `@quasar/extras`.
 
 > **Experimental**
 
-Set default prop values for quasar components. Uses [magicast](https://github.com/unjs/magicast) to modify component props.
+Set default prop values for quasar components. Uses [magicast](https://github.com/unjs/magicast) to modify component prop definitions.
 Does not support props that accepts function values.
 
 ### components.deepDefaults
