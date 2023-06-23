@@ -107,7 +107,7 @@ export interface ModuleOptions {
      * For example, if defaults for `QBtn` are set, it will affect all components that use `QBtn`. (For example: `QBtnDropdown`, `QEditor`)
      *
      * Currently not very stable in development environment since vite will set `Cache-Control` headers for files located in `node_modules`
-     * and changes made may not effect without resetting cache.
+     * and changes made may not take effect without resetting the cache.
      *
      * @default false
      *

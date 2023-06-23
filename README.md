@@ -77,7 +77,7 @@ List of [quasar plugins]((https://github.com/Maiquu/nuxt-quasar/blob/main/src/ty
 - Type: `boolean | string`
 - Default: `false`
 
-Enables usage of Quasar Sass/SCSS variables. 
+Enables usage of Quasar Sass/SCSS variables.
 Can optionally be a string which points to a file that contains the variables.
 
 > Requires `sass` installed.
@@ -86,7 +86,7 @@ Can optionally be a string which points to a file that contains the variables.
 - Type: `boolean`
 - Default: `true`
 
-Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings, polluting the console log when running Nuxt. 
+Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings, polluting the console log when running Nuxt.
 Enabling this option silences these deprecation warnings.
 
 ### lang
@@ -149,8 +149,29 @@ Auto-import svg icon sets provided by `@quasar/extras`.
 
 Import animations provided by `@quasar/extras`.
 
+### components.defaults
+- Type: `object`
+- Default: `{}`
+
+> **Experimental**
+
+Set default prop values for quasar components. Uses [magicast](https://github.com/unjs/magicast) to modify component props.
+Does not support props that accepts function values.
+
+### components.deepDefaults
+- Type: `boolean`
+- Default: `false`
+
+> **Experimental**
+
+When `true`, defaults will be applied to components that aren't used directly.
+For example, if defaults for `QBtn` are set, it will affect all components that use `QBtn`. (For example: `QBtnDropdown`, `QEditor`)
+
+Currently not very stable in development environment since vite will set `Cache-Control` headers for files located in `node_modules`
+and changes made may not take effect without resetting the cache.
 
 ## CSS Import Ordering
+
 
 Module will import css in following order:
 
