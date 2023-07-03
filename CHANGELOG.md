@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.0.3
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.2...v2.0.3)
+
+
+### 🩹 Fixes
+
+  - Using quasar sass variables from SFC ([6570562](https://github.com/Maiquu/nuxt-quasar/commit/6570562))
+  - Unresolved virtual css when `experimental.inlineSSRStyles` is `true`, closes #66 ([#66](https://github.com/Maiquu/nuxt-quasar/issues/66))
+
+### 📖 Documentation
+
+  - Component defaults ([1851867](https://github.com/Maiquu/nuxt-quasar/commit/1851867))
+  - Rephrase ([e63de9c](https://github.com/Maiquu/nuxt-quasar/commit/e63de9c))
+  - Comments ([f530f4a](https://github.com/Maiquu/nuxt-quasar/commit/f530f4a))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.0.2
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.1...v2.0.2)
