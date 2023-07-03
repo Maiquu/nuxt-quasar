@@ -13,7 +13,9 @@ export function virtualBrandPlugin(context: ModuleContext): VitePlugin {
     resolveId(id) {
       if (id.match(RESOLVED_ID_WITH_QUERY_RE))
         return id
-      if (id === quasarBrandPath)
+
+      const [path] = id.split('?')
+      if (path === quasarBrandPath)
         return RESOLVED_ID
     },
 

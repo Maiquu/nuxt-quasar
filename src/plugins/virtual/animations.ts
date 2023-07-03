@@ -15,7 +15,9 @@ export function virtualAnimationsPlugin({ options, resolveQuasarExtras }: Module
     resolveId(id) {
       if (id.match(RESOLVED_ID_WITH_QUERY_RE))
         return id
-      if (id === quasarAnimationsPath)
+
+      const [path] = id.split('?')
+      if (path === quasarAnimationsPath)
         return RESOLVED_ID
     },
 
