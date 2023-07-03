@@ -8,6 +8,7 @@
 ### 🩹 Fixes
 
   - Using quasar sass variables from SFC ([6570562](https://github.com/Maiquu/nuxt-quasar/commit/6570562))
+  - Variables not being overridden in production environments with SSR enabled ([6570562](https://github.com/Maiquu/nuxt-quasar/commit/6570562))
   - Unresolved virtual css when `experimental.inlineSSRStyles` is `true`, closes #66 ([#66](https://github.com/Maiquu/nuxt-quasar/issues/66))
 
 ### 📖 Documentation
@@ -262,7 +263,7 @@
 ### 🩹 Fixes
 
   - Types for auto-imports via virtual entry ([e4565c4](https://github.com/Maiquu/nuxt-quasar/commit/e4565c4))
-  
+
 ### 📖 Documentation
 
   - Updated README with latest changes, fixed formating ([3afb7c2](https://github.com/Maiquu/nuxt-quasar/commit/3afb7c2))
@@ -359,7 +360,7 @@
 ### 🩹 Fixes
 
   - Dark, Screen plugins (e21010e)
-  
+
 ### ✅ Tests
 
   - Added several tests to confirm setupCss is working (cfd40bd)
