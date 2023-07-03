@@ -72,3 +72,24 @@ export function hasKeys(object?: object): boolean {
 export function isDef<T>(value?: T): value is T {
   return typeof value !== 'undefined'
 }
+
+export interface VueQuery {
+  vue?: boolean
+  type?: 'script' | 'template' | 'style' | 'custom'
+  [key: `lang.${string}`]: string
+}
+
+export function parseVueRequest(id: string): {
+  filename: string
+  query: VueQuery
+} {
+  const [filename, rawQuery] = id.split('?', 2)
+  const query = Object.fromEntries(new URLSearchParams(rawQuery)) as VueQuery
+  if (query.vue != null) {
+    query.vue = true
+  }
+  return {
+    filename,
+    query,
+  }
+}

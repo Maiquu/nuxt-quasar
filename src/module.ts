@@ -283,7 +283,7 @@ export default defineNuxtModule<ModuleOptions>({
       if (!nuxt.options.dev) {
         config.plugins.push(resolveQuasarModuleSideEffectsPlugin())
       }
-      if (options.sassVariables && isClient) {
+      if (options.sassVariables) {
         config.plugins.push(transformScssPlugin(context))
       }
     })

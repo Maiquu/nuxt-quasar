@@ -1,6 +1,6 @@
 import type { Plugin as VitePlugin } from 'vite'
 import type { ModuleContext } from '../../types'
-import { normalizePath } from '../../utils'
+import { normalizePath, parseVueRequest } from '../../utils'
 
 export function transformScssPlugin({ options }: ModuleContext): VitePlugin {
   const sassVariables = typeof options.sassVariables === 'string'
@@ -15,23 +15,30 @@ export function transformScssPlugin({ options }: ModuleContext): VitePlugin {
     enforce: 'pre',
 
     transform(src, id) {
-      const [filename] = id.split('?', 2)
+      const { filename, query } = parseVueRequest(id)
+      let code: string | undefined
 
-      if (filename.endsWith('.scss')) {
-        return {
-          code: scssTransform(src),
-          map: null,
+      if (query.vue && query.type === 'style') {
+        const lang = Object.keys(query).find(k => k.startsWith('lang.'))
+
+        if (lang?.endsWith('.scss')) {
+          code = scssTransform(src)
+        } else if (lang?.endsWith('.sass')) {
+          code = sassTransform(src)
         }
       }
 
-      if (filename.endsWith('.sass')) {
-        return {
-          code: sassTransform(src),
-          map: null,
+      if (!query.vue) {
+        if (filename.endsWith('.scss')) {
+          code = scssTransform(src)
+        } else if (filename.endsWith('.sass')) {
+          code = sassTransform(src)
         }
       }
 
-      return null
+      if (code) {
+        return { code, map: null }
+      }
     },
   }
 }
