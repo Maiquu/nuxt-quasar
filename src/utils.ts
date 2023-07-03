@@ -73,6 +73,7 @@ export function isDef<T>(value?: T): value is T {
   return typeof value !== 'undefined'
 }
 
+// Note: There are more properties in vue query strings but these are the only ones currently used
 export interface VueQuery {
   vue?: boolean
   type?: 'script' | 'template' | 'style' | 'custom'

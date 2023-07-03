@@ -28,7 +28,7 @@ export interface ModuleOptions {
    *   - `'src/my-variables.sass'`
    *      --> yes, and I'd also like to customize those variables
    *
-   * **`sass@^1.32.12` required**
+   * **Requires `sass`**
    *
    * @default false
    */
@@ -70,6 +70,8 @@ export interface ModuleOptions {
 
   /**
    * When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
+   *
+   * **Requires `sass`**
    *
    * @see [Documentation](https://quasar.dev/layout/grid/introduction-to-flexbox#flex-addons)
    */
