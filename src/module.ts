@@ -3,7 +3,6 @@ import { addComponent, addImports, addImportsSources, addPlugin, addPluginTempla
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
-import type { Options as SassOptions } from 'sass'
 import { version } from '../package.json'
 import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
@@ -13,9 +12,9 @@ import { hasKeys, kebabCase, readFileMemoized, readJSON } from './utils'
 import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
 import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
-import { resolveFont, resolveFontIcon } from './resolve'
-import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 import { transformDefaultsPlugin } from './plugins/transform/defaults'
+import { setupCss } from './setupCss'
+import { enableQuietSassWarnings } from './quietSassWarnings'
 
 export interface ModuleOptions {
   /**
@@ -266,7 +265,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       if (options.quietSassWarnings) {
-        muteQuasarSassWarnings(config)
+        enableQuietSassWarnings(config)
       }
 
       config.plugins ??= []
@@ -366,123 +365,5 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSet, resolveQuasarExtra
     const icons = [...dts.matchAll(iconDeclarationPattern)].map(arr => arr[1])
 
     return icons
-  }
-}
-
-/**
- * Inject the Quasar css into the nuxt.options.css array.
- * It takes into account the order of the css array when the user has specified it.
- * Example:
- *  css: [
- *   'quasar/fonts',
- *   'quasar/animations',
- *   'quasar/icons',
- *   '@/assets/style.css',
- *   'quasar/css',
- *   'quasar/brand',
- * ]
- * @param css
- * @param options
- */
-export function setupCss(css: string[], options: ModuleOptions) {
-  const brand = options.config?.brand || {}
-  if (!css.includes(quasarBrandPath) && Object.keys(brand).length) {
-    css.unshift(quasarBrandPath)
-  }
-
-  const quasarCss = [
-    options.sassVariables
-      ? 'quasar/src/css/index.sass'
-      : 'quasar/dist/quasar.css',
-  ]
-  if (options.cssAddon) {
-    quasarCss.push('quasar/src/css/flex-addon.sass')
-  }
-
-  const index = css.indexOf(quasarCssPath)
-  if (index !== -1) {
-    css.splice(index, 1, ...quasarCss)
-  } else {
-    css.unshift(...quasarCss)
-  }
-
-  const animations = options.extras?.animations || []
-  if (!css.includes(quasarAnimationsPath) && animations.length) {
-    css.unshift(quasarAnimationsPath)
-  }
-
-  if (options.extras?.fontIcons) {
-    const i = css.indexOf(quasarIconsPath)
-    if (i !== -1) {
-      css.splice(i, 1, ...options.extras.fontIcons.map(resolveFontIcon))
-    } else {
-      css.unshift(...options.extras.fontIcons.map(resolveFontIcon))
-    }
-  }
-
-  if (options.extras?.font) {
-    const i = css.indexOf(quasarFontsPath)
-    if (i !== -1) {
-      css.splice(i, 1, resolveFont(options.extras.font))
-    } else {
-      css.unshift(resolveFont(options.extras.font))
-    }
-  }
-
-  return css
-}
-
-/**
- * Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings polluting the console log when running Nuxt. This function silences 'Using / for division outside of calc() is deprecated' warnings by routing those log messages to a dump.
- * See an example of this here: https://github.com/quasarframework/quasar/pull/15514#issue-1606006213
- * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007
- *
- * @param config
- */
-export function muteQuasarSassWarnings(config: ViteConfig) {
-  // Source of this fix: https://github.com/quasarframework/quasar/pull/12034#issuecomment-1021503176
-  const silenceSomeSassDeprecationWarnings: SassOptions<'sync'> = {
-    verbose: true,
-    logger: {
-      warn(logMessage, logOptions) {
-        const { stderr } = process
-        const span = logOptions.span ?? undefined
-        const stack = (logOptions.stack === 'null' ? undefined : logOptions.stack) ?? undefined
-
-        if (logOptions.deprecation) {
-          if (logMessage.startsWith('Using / for division outside of calc() is deprecated')) {
-            // silences above deprecation warning
-            return
-          }
-          stderr.write('DEPRECATION ')
-        }
-        stderr.write(`WARNING: ${logMessage}\n`)
-
-        if (span !== undefined) {
-          // output the snippet that is causing this warning
-          stderr.write(`\n"${span.text}"\n`)
-        }
-
-        if (stack !== undefined) {
-          // indent each line of the stack
-          stderr.write(`    ${stack.toString().trimEnd().replace(/\n/gm, '\n    ')}\n`)
-        }
-
-        stderr.write('\n')
-      },
-    },
-  }
-
-  config.css ??= {}
-  config.css.preprocessorOptions ??= {}
-
-  const types = ['scss', 'sass'] as const
-
-  for (const type of types) {
-    const userConfig = config.css.preprocessorOptions[type]
-    config.css.preprocessorOptions[type] = {
-      ...silenceSomeSassDeprecationWarnings,
-      ...userConfig,
-    }
   }
 }

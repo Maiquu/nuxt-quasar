@@ -1,0 +1,75 @@
+import type { QuasarFonts } from 'quasar'
+import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
+import type { ModuleOptions } from './module'
+import type { QuasarFontIconSet } from './types'
+
+/**
+ * Inject the Quasar css into the nuxt.options.css array.
+ * It takes into account the order of the css array when the user has specified it.
+ * Example:
+ *  css: [
+ *   'quasar/fonts',
+ *   'quasar/animations',
+ *   'quasar/icons',
+ *   '@/assets/style.css',
+ *   'quasar/css',
+ *   'quasar/brand',
+ * ]
+ * @param css
+ * @param options
+ */
+export function setupCss(css: string[], options: ModuleOptions) {
+  const brand = options.config?.brand || {}
+  if (!css.includes(quasarBrandPath) && Object.keys(brand).length) {
+    css.unshift(quasarBrandPath)
+  }
+
+  const quasarCss = [
+    options.sassVariables
+      ? 'quasar/src/css/index.sass'
+      : 'quasar/dist/quasar.css',
+  ]
+  if (options.cssAddon) {
+    quasarCss.push('quasar/src/css/flex-addon.sass')
+  }
+
+  const index = css.indexOf(quasarCssPath)
+  if (index !== -1) {
+    css.splice(index, 1, ...quasarCss)
+  } else {
+    css.unshift(...quasarCss)
+  }
+
+  const animations = options.extras?.animations || []
+  if (!css.includes(quasarAnimationsPath) && animations.length) {
+    css.unshift(quasarAnimationsPath)
+  }
+
+  if (options.extras?.fontIcons) {
+    const i = css.indexOf(quasarIconsPath)
+    if (i !== -1) {
+      css.splice(i, 1, ...options.extras.fontIcons.map(resolveFontIcon))
+    } else {
+      css.unshift(...options.extras.fontIcons.map(resolveFontIcon))
+    }
+  }
+
+  if (options.extras?.font) {
+    const i = css.indexOf(quasarFontsPath)
+    if (i !== -1) {
+      css.splice(i, 1, resolveFont(options.extras.font))
+    } else {
+      css.unshift(resolveFont(options.extras.font))
+    }
+  }
+
+  return css
+}
+
+function resolveFontIcon(icon: QuasarFontIconSet): string {
+  return `@quasar/extras/${icon}/${icon}.css`
+}
+
+function resolveFont(font: QuasarFonts): string {
+  return `@quasar/extras/${font}/${font}.css`
+}

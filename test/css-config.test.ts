@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ModuleOptions } from '../src/module'
-import { setupCss } from '../src/module'
+import { setupCss } from '../src/setupCss'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from '../src/constants'
 
 describe('Quasar CSS injection', async () => {
