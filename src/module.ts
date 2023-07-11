@@ -135,7 +135,7 @@ export default defineNuxtModule<ModuleOptions>({
     quietSassWarnings: true,
     components: {
       defaults: {},
-      deepDefaults: true,
+      deepDefaults: false,
     },
     plugins: [],
     extras: {},
