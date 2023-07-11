@@ -57,6 +57,7 @@
     "changelogen": "^0.5.4",
     "eslint": "^8.44.0",
     "eslint-define-config": "^1.21.0",
+    "fast-folder-size": "^2.1.0",
     "jsdom": "^22.1.0",
     "nuxt": "^3.6.2",
     "quasar": "^2.12.2",
