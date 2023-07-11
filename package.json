@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.6.2",
-    "@rollup/pluginutils": "^5.0.2",
     "magic-string": "^0.30.1",
     "magicast": "^0.2.9",
     "p-memoize": "^7.1.1"

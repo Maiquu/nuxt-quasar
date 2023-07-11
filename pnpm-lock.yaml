@@ -8,9 +8,6 @@ dependencies:
   '@nuxt/kit':
     specifier: ^3.6.2
     version: 3.6.2(rollup@3.26.2)
-  '@rollup/pluginutils':
-    specifier: ^5.0.2
-    version: 5.0.2(rollup@3.26.2)
   magic-string:
     specifier: ^0.30.1
     version: 0.30.1
