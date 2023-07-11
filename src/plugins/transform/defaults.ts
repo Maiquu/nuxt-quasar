@@ -77,6 +77,7 @@ export function transformDefaultsPlugin(context: ModuleContext): VitePlugin {
                 : resolution.id,
             )
             resolution.id = `${QUASAR_COMPONENT_WITH_DEFAULTS_PREFIX}/${name}.js`
+            resolution.external = false
             if (!resolveMetadata.has(resolution.id)) {
               resolveMetadata.set(resolution.id, {
                 name,
