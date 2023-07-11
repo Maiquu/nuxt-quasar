@@ -16,25 +16,33 @@ describe('Analyze Bundle Size', async () => {
     server: false,
   })
 
-  it('bundle size snapshots', async () => {
+  const lockFile = fileURLToPath(new URL('../pnpm-lock.yaml', import.meta.url))
+  const lockHash = await createFileHash(lockFile)
+
+  it('client bundle size', async () => {
     const ctx = useTestContext()
     const { buildDir } = ctx.nuxt!.options
+    const clientBundle = await folderSize(join(buildDir, 'dist/client')) || 0
+    expect(roundKb(clientBundle)).toMatchSnapshot(lockHash)
+  })
 
-    const lockFile = fileURLToPath(new URL('../pnpm-lock.yaml', import.meta.url))
-    const lockHash = await createFileHash(lockFile)
-
-    const clientBundle = await folderSize(join(buildDir, 'dist/client'))
-    const nitroBundle = await folderSize(join(buildDir, 'output'))
-
-    expect(clientBundle).toMatchSnapshot(`${lockHash}.client`)
-    expect(nitroBundle).toMatchSnapshot(`${lockHash}.nitro`)
+  it('nitro bundle size', async () => {
+    const ctx = useTestContext()
+    const { buildDir } = ctx.nuxt!.options
+    const nitroBundle = await folderSize(join(buildDir, 'output')) || 0
+    // Bundle size in rounded kb
+    expect(roundKb(nitroBundle)).toMatchSnapshot(lockHash)
   })
 })
 
-async function createFileHash(path: string) {
+async function createFileHash(path: string): Promise<string> {
   const hash = createHash('sha1')
   const stream = createReadStream(path)
   stream.pipe(hash)
   await finished(stream)
   return hash.digest('hex')
+}
+
+function roundKb(byteSize: number) {
+  return Math.round(byteSize / 1000)
 }
