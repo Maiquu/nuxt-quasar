@@ -1,8 +1,6 @@
-import { logger } from '@nuxt/kit'
 import type { Plugin as VitePlugin } from 'vite'
 import { quasarAnimationsPath } from '../../constants'
 import type { ModuleContext } from '../../types'
-import { readFileMemoized } from '../../utils'
 
 // Add css suffix so loaded string can be interpreted as a css file
 const RESOLVED_ID = '/__quasar/animations.css'
@@ -33,18 +31,9 @@ export function virtualAnimationsPlugin({ options, resolveQuasarExtras }: Module
         }
       }
 
-      const animationsCSS = await Promise.all(
-        animations.map(async (animation) => {
-          try {
-            return await readFileMemoized(resolveQuasarExtras(`animate/${animation}.css`))
-          } catch {
-            logger.error(`Invalid quasar animation: ${animation}`)
-            return ''
-          }
-        }),
-      )
-
-      return animationsCSS.join('\n')
+      return animations
+        .map(animation => `@import '${resolveQuasarExtras(`animate/${animation}.css`)}';`)
+        .join('\n')
     },
   }
 }
