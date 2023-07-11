@@ -1,5 +1,33 @@
 # Changelog
 
+## v2.0.4
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.3...v2.0.4)
+
+### 🩹 Fixes
+
+- Mark `quasar` entry as side effect free ([bd90297](https://github.com/Maiquu/nuxt-quasar/commit/bd90297))
+- Mark components with defaults as non-external modules ([4cede0d](https://github.com/Maiquu/nuxt-quasar/commit/4cede0d))
+- Incorrect `deepDefaults` default ([cb58ced](https://github.com/Maiquu/nuxt-quasar/commit/cb58ced))
+- **test:** Brittle `analyzeBundleSize` test ([d748c36](https://github.com/Maiquu/nuxt-quasar/commit/d748c36))
+
+### 🏡 Chore
+
+- Updated CHANGELOG.md ([8235f2f](https://github.com/Maiquu/nuxt-quasar/commit/8235f2f))
+- Updated dependencies ([d12a626](https://github.com/Maiquu/nuxt-quasar/commit/d12a626))
+- Remove unused dependencies/files ([64cba17](https://github.com/Maiquu/nuxt-quasar/commit/64cba17))
+- Simpler animation handling ([66da408](https://github.com/Maiquu/nuxt-quasar/commit/66da408))
+- Moved named exports in `module.ts` to seperate files due to output code exposing them ([f2769b8](https://github.com/Maiquu/nuxt-quasar/commit/f2769b8))
+- Renamed tests ([0da655b](https://github.com/Maiquu/nuxt-quasar/commit/0da655b))
+
+### ✅ Tests
+
+- `analyzeBundleSize` ([24eb937](https://github.com/Maiquu/nuxt-quasar/commit/24eb937))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.0.3
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.2...v2.0.3)
