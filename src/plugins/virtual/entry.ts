@@ -10,8 +10,12 @@ export function virtualQuasarEntryPlugin(context: ModuleContext): VitePlugin {
     enforce: 'pre',
 
     resolveId(id) {
-      if (id === QUASAR_ENTRY)
-        return QUASAR_VIRTUAL_ENTRY
+      if (id === QUASAR_ENTRY) {
+        return {
+          id: QUASAR_VIRTUAL_ENTRY,
+          moduleSideEffects: false,
+        }
+      }
     },
 
     async load(id) {

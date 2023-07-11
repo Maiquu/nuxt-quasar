@@ -15,7 +15,6 @@ import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { resolveFont, resolveFontIcon } from './resolve'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
-import { resolveQuasarModuleSideEffectsPlugin } from './plugins/resolveSideEffects'
 import { transformDefaultsPlugin } from './plugins/transform/defaults'
 
 export interface ModuleOptions {
@@ -282,9 +281,7 @@ export default defineNuxtModule<ModuleOptions>({
           transformDefaultsPlugin(context),
         )
       }
-      if (!nuxt.options.dev) {
-        config.plugins.push(resolveQuasarModuleSideEffectsPlugin())
-      }
+
       if (options.sassVariables) {
         config.plugins.push(transformScssPlugin(context))
       }
