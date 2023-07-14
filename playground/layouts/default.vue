@@ -94,7 +94,7 @@ function toggleLeftDrawer() {
     </q-drawer>
 
     <q-page-container>
-      <NuxtPage />
+      <slot />
     </q-page-container>
   </q-layout>
 </template>
