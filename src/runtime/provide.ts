@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from 'nuxt/app'
+import { defineNuxtPlugin } from '#imports'
 import { useQuasar } from 'quasar'
 
 export default defineNuxtPlugin(() => {
