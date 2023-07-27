@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.5
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.4...v2.0.5)
+
+### 🩹 Fixes
+
+- **playground:** Page/layout ([46ab87f](https://github.com/Maiquu/nuxt-quasar/commit/46ab87f))
+- Import `defineNuxtPlugin` from `#imports` ([fd7f005](https://github.com/Maiquu/nuxt-quasar/commit/fd7f005))
+
+### ❤️  Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.0.4
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.3...v2.0.4)
