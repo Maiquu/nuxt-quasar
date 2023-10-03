@@ -6,5 +6,10 @@
   },
   "files.exclude": {
     "node_modules/[^q]*": true
-  }
+  },
+  "eslint.validate": [
+    "typescript",
+    "json",
+    "jsonc"
+  ]
 }
