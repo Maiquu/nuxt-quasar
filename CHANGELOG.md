@@ -7,7 +7,7 @@
 ### 🩹 Fixes
 
 - Non-unique arrays in options ([3ae9281](https://github.com/Maiquu/nuxt-quasar/commit/3ae9281))
-- Missing auto-imported composable types caused by nuxt/nuxt#22476 ([#22476](https://github.com/Maiquu/nuxt-quasar/issues/22476))
+- Missing auto-imported composable types caused by nuxt/nuxt#22476 ([e427d4](https://github.com/Maiquu/nuxt-quasar/commit/e427d4))
 
 ### 🏡 Chore
 
