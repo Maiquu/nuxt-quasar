@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.0.6
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.5...v2.0.6)
+
+### 🩹 Fixes
+
+- Non-unique arrays in options ([3ae9281](https://github.com/Maiquu/nuxt-quasar/commit/3ae9281))
+- Missing auto-imported composable types caused by nuxt/nuxt#22476 ([#22476](https://github.com/Maiquu/nuxt-quasar/issues/22476))
+
+### 🏡 Chore
+
+- Updated dependencies ([01d9a2a](https://github.com/Maiquu/nuxt-quasar/commit/01d9a2a))
+- Remove unused devDependencies ([df8797e](https://github.com/Maiquu/nuxt-quasar/commit/df8797e))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.0.5
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.4...v2.0.5)
