@@ -1,5 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Analyze Bundle Size > client bundle size > e7a375265d7bbc05627f6431e3306dc1a25a91f0 1`] = `436`;
+exports[`Analyze Bundle Size > client bundle size > 8120849120334ee86365993423700fe09f5f012e 1`] = `437`;
 
-exports[`Analyze Bundle Size > nitro bundle size > e7a375265d7bbc05627f6431e3306dc1a25a91f0 1`] = `3917`;
+exports[`Analyze Bundle Size > nitro bundle size > 8120849120334ee86365993423700fe09f5f012e 1`] = `3138`;
