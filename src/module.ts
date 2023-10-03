@@ -207,14 +207,14 @@ export default defineNuxtModule<ModuleOptions>({
       for (const composable of imports.composables) {
         addImports({
           name: composable.name,
-          from: 'quasar',
+          from: resolveLocal('./runtime/adapter'),
         })
       }
       if (options.plugins) {
         for (const plugin of uniq(options.plugins)) {
           addImports({
             name: plugin,
-            from: 'quasar',
+            from: resolveLocal('./runtime/adapter'),
           })
         }
       }
