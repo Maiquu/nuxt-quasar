@@ -8,7 +8,7 @@ import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
 import type { ImportData, ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
-import { hasKeys, kebabCase, readFileMemoized, readJSON } from './utils'
+import { hasKeys, kebabCase, readFileMemoized, readJSON, uniq } from './utils'
 import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
 import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
@@ -211,7 +211,7 @@ export default defineNuxtModule<ModuleOptions>({
         })
       }
       if (options.plugins) {
-        for (const plugin of options.plugins) {
+        for (const plugin of uniq(options.plugins)) {
           addImports({
             name: plugin,
             from: 'quasar',
@@ -220,7 +220,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       if (options.extras?.svgIcons) {
-        for (const iconSet of options.extras.svgIcons) {
+        for (const iconSet of uniq(options.extras.svgIcons)) {
           const icons = await getIconsFromIconset(iconSet, resolveQuasarExtras)
           addImportsSources({
             from: `@quasar/extras/${iconSet}`,

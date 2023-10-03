@@ -1,5 +1,5 @@
 import type { ModuleContext } from './types'
-import { omit } from './utils'
+import { omit, uniq } from './utils'
 
 function when(condition: any, content: string | (() => string)) {
   return condition
@@ -10,13 +10,14 @@ function when(condition: any, content: string | (() => string)) {
 export function vuePluginTemplate(context: ModuleContext, ssr: boolean): string {
   const isServer = context.mode === 'server'
   const isClient = !isServer
+  const plugins = uniq(context.options.plugins || [])
   const { config, lang, iconSet } = context.options
   return `\
 import { ref, computed, useHead } from "#imports"
 import { defineNuxtPlugin } from "#app"
 import Quasar from "quasar/src/vue-plugin.js"
-${context.options.plugins
-    ?.map(plugin => `import ${plugin} from "quasar/${context.imports.raw[plugin]}"`)
+${plugins
+    .map(plugin => `import ${plugin} from "quasar/${context.imports.raw[plugin]}"`)
     .join('\n') || ''
 }
 ${when(lang, () => `import lang from "quasar/lang/${lang}"`)}
@@ -90,7 +91,7 @@ export default defineNuxtPlugin((nuxt) => {\n${
       ? 'iconSet'
       : `iconSet: ${iconSet ? JSON.stringify(iconSet) : 'material-icons'}`},
     plugins: {${when(ssr, 'NuxtPlugin, ')
-      + (context.options.plugins?.join(',') || '')
+      + (plugins.join(',') || '')
     }},
     ${when(config, () => `config: ${JSON.stringify(omit(context.options.config || {}, ['brand']))},`)}
   }${when(isServer, ', ssrContext')})

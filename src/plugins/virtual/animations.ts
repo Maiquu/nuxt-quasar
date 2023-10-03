@@ -1,6 +1,7 @@
 import type { Plugin as VitePlugin } from 'vite'
 import { quasarAnimationsPath } from '../../constants'
 import type { ModuleContext } from '../../types'
+import { uniq } from '../../utils'
 
 // Add css suffix so loaded string can be interpreted as a css file
 const RESOLVED_ID = '/__quasar/animations.css'
@@ -25,10 +26,10 @@ export function virtualAnimationsPlugin({ options, resolveQuasarExtras }: Module
 
       let animations = options.extras?.animations || []
       if (animations === 'all') {
-        if (animations === 'all') {
-          const { generalAnimations, inAnimations, outAnimations } = await import('@quasar/extras/animate/animate-list.mjs')
-          animations = [...generalAnimations, ...inAnimations, ...outAnimations]
-        }
+        const { generalAnimations, inAnimations, outAnimations } = await import('@quasar/extras/animate/animate-list.mjs')
+        animations = [...generalAnimations, ...inAnimations, ...outAnimations]
+      } else {
+        animations = uniq(animations)
       }
 
       return animations

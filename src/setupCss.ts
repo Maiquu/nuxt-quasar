@@ -2,6 +2,7 @@ import type { QuasarFonts } from 'quasar'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 import type { ModuleOptions } from './module'
 import type { QuasarFontIconSet } from './types'
+import { uniq } from './utils'
 
 /**
  * Inject the Quasar css into the nuxt.options.css array.
@@ -48,9 +49,9 @@ export function setupCss(css: string[], options: ModuleOptions) {
   if (options.extras?.fontIcons) {
     const i = css.indexOf(quasarIconsPath)
     if (i !== -1) {
-      css.splice(i, 1, ...options.extras.fontIcons.map(resolveFontIcon))
+      css.splice(i, 1, ...uniq(options.extras.fontIcons).map(resolveFontIcon))
     } else {
-      css.unshift(...options.extras.fontIcons.map(resolveFontIcon))
+      css.unshift(...uniq(options.extras.fontIcons).map(resolveFontIcon))
     }
   }
 
