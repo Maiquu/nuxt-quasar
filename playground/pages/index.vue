@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { QBtnProps, QNotifyOptions, useQuasar } from 'quasar';
+import { useQuasar } from 'quasar';
+import type { QBtnProps, QNotifyOptions } from 'quasar'
 
 const { dialog, fullscreen, bottomSheet, loading, loadingBar, notify, dark } = useQuasar()
 
