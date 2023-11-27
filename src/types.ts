@@ -152,9 +152,9 @@ type KeysMatching<T, V> = {
   [K in keyof T]-?: T[K] extends V ? K : never
 }[keyof T] & keyof T
 
-type OptionalKeys<T> = {
-  [K in keyof T]: (T[K] & undefined) extends never ? never : K
-}[keyof T] & keyof T
+type OptionalKeys<T extends object> = Exclude<{
+  [K in keyof T]: T extends Record<K, T[K]> ? never : K
+}[keyof T], undefined>
 
 type OmitMatching<T extends object, V> = Omit<T, KeysMatching<T, V>>
 
