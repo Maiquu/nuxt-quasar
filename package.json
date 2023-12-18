@@ -1,7 +1,7 @@
 {
   "name": "nuxt-quasar-ui",
   "type": "module",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "packageManager": "pnpm@8.11.0",
   "description": "Quasar Module for Nuxt (Unofficial)",
   "license": "MIT",

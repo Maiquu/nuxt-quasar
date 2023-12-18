@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.0.7
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.6...v2.0.7)
+
+### 🩹 Fixes
+
+- **playground:** Modified imports according to ([73759a5](https://github.com/Maiquu/nuxt-quasar/commit/73759a5))
+- Type error related to configuring defaults of component with required props ([eae5606](https://github.com/Maiquu/nuxt-quasar/commit/eae5606))
+- Added missing brand property "dark-page" ([4b499c9](https://github.com/Maiquu/nuxt-quasar/commit/4b499c9))
+
+### 📖 Documentation
+
+- **fix:** Incorrect commit ref link ([1aa42e6](https://github.com/Maiquu/nuxt-quasar/commit/1aa42e6))
+- Remove broken link ([568bd9f](https://github.com/Maiquu/nuxt-quasar/commit/568bd9f))
+
+### 🏡 Chore
+
+- Updated dependencies ([7d1f6fd](https://github.com/Maiquu/nuxt-quasar/commit/7d1f6fd))
+
+### ❤️ Contributors
+
+- Arthur Buravlev <buravlev-arthur@yandex.ru>
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.0.6
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.5...v2.0.6)
