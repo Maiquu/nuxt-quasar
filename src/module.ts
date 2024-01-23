@@ -82,9 +82,9 @@ export interface ModuleOptions {
   extras?: {
     font?: QuasarFonts | null
     /** Icons that are imported as webfont. */
-    fontIcons?: QuasarFontIconSet[]
-    /** Automaticly import selected svg icon sets provided by `@quasar/extras`. */
-    svgIcons?: QuasarSvgIconSet[]
+    fontIcons?: QuasarFontIconSets[]
+    /** Automatically import selected svg icon sets provided by `@quasar/extras`. */
+    svgIcons?: QuasarSvgIconSets[]
     /** Animations provided by quasar.
      *
      * @see [Documentation](https://quasar.dev/options/animations)
