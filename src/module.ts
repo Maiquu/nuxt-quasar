@@ -273,7 +273,6 @@ export default defineNuxtModule<ModuleOptions>({
         virtualAnimationsPlugin(context),
         virtualBrandPlugin(context),
         transformDirectivesPlugin(context),
-        virtualQuasarEntryPlugin(context),
       )
       if (hasKeys(options.components?.defaults)) {
         config.plugins.unshift(
