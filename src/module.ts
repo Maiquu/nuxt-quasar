@@ -204,7 +204,10 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     if (nuxt.options.imports.autoImport !== false) {
-      for (const composable of imports.composables) {
+      // Quasar 2.15.0 introduces `useId` and `useHydrate` functions which are also provided by nuxt.
+      // These functions should not be auto-imported in favor of nuxt.
+      const ignoredComposables = ['useId', 'useHydration']
+      for (const composable of imports.composables.filter(c => !ignoredComposables.includes(c.name))) {
         addImports({
           name: composable.name,
           from: resolveLocal('./runtime/adapter'),
