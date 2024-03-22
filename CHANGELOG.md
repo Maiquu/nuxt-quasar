@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.0.8
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.7...v2.0.8)
+
+### 🩹 Fixes
+
+- Remove `useId` and `useHydration` from auto-imports, closes #90 ([#90](https://github.com/Maiquu/nuxt-quasar/issues/90))
+
+### 🏡 Chore
+
+- Update dependencies ([c985cd8](https://github.com/Maiquu/nuxt-quasar/commit/c985cd8))
+- Update snapshot ([71e12b3](https://github.com/Maiquu/nuxt-quasar/commit/71e12b3))
+
+### ❤️ Contributors
+
+- Ege İliklier <ege.iliklier@eliarge.com>
+
 ## v2.0.7
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.6...v2.0.7)
