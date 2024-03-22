@@ -210,6 +210,8 @@ List of known plugins/composables that do this:
 - [`Meta`](https://quasar.dev/quasar-plugins/meta)
 - [`useMeta`](https://quasar.dev/vue-composables/use-meta)
 
+- Quasar 2.15.0 introduces `useId` and `useHydrate` functions which are also provided by nuxt. These functions are not auto-imported in favor of nuxt. If you want to use them for some reason, you need to explicity import them.
+
 
 ## Development
 
