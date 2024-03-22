@@ -15,7 +15,7 @@
 
 ### ❤️ Contributors
 
-- Ege İliklier <ege.iliklier@eliarge.com>
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
 
 ## v2.0.7
 
