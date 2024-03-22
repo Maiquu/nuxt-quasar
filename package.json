@@ -40,8 +40,8 @@
     "quasar": "^2.8.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.8.2",
-    "magic-string": "^0.30.5",
+    "@nuxt/kit": "^3.11.1",
+    "magic-string": "^0.30.8",
     "magicast": "^0.2.11",
     "p-memoize": "^7.1.1"
   },
@@ -49,20 +49,20 @@
     "@antfu/eslint-config-ts": "0.39.5",
     "@nuxt/devtools": "latest",
     "@nuxt/module-builder": "^0.4.0",
-    "@nuxt/schema": "^3.8.2",
-    "@nuxt/test-utils": "^3.8.1",
-    "@quasar/extras": "^1.16.8",
+    "@nuxt/schema": "^3.11.1",
+    "@nuxt/test-utils": "^3.12.0",
+    "@quasar/extras": "^1.16.9",
     "@types/jsdom": "^21.1.6",
     "changelogen": "^0.5.5",
-    "eslint": "^8.54.0",
+    "eslint": "^8.57.0",
     "fast-folder-size": "^2.2.0",
     "jsdom": "^22.1.0",
-    "nuxt": "^3.8.2",
-    "quasar": "^2.14.0",
-    "sass": "^1.69.5",
-    "typescript": "^5.3.2",
-    "vite": "^4.5.0",
+    "nuxt": "^3.11.1",
+    "quasar": "^2.15.1",
+    "sass": "^1.72.0",
+    "typescript": "^5.4.3",
+    "vite": "^4.5.2",
     "vitest": "^0.31.4",
-    "vue": "^3.3.9"
+    "vue": "^3.4.21"
   }
 }
