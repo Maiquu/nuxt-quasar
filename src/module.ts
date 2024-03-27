@@ -9,7 +9,6 @@ import { transformDirectivesPlugin } from './plugins/transform/directives'
 import type { ImportData, ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
 import { hasKeys, kebabCase, readFileMemoized, readJSON, uniq } from './utils'
-import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
 import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { transformDefaultsPlugin } from './plugins/transform/defaults'
@@ -276,7 +275,6 @@ export default defineNuxtModule<ModuleOptions>({
         virtualAnimationsPlugin(context),
         virtualBrandPlugin(context),
         transformDirectivesPlugin(context),
-        virtualQuasarEntryPlugin(context),
       )
       if (hasKeys(options.components?.defaults)) {
         config.plugins.unshift(
