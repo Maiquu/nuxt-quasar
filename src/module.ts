@@ -1,10 +1,9 @@
 import { dirname } from 'node:path'
-import { addComponent, addImports, addImportsSources, addPlugin, addPluginTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
+import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
 import { version } from '../package.json'
-import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
 import type { ImportData, ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
@@ -15,6 +14,7 @@ import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { transformDefaultsPlugin } from './plugins/transform/defaults'
 import { setupCss } from './setupCss'
 import { enableQuietSassWarnings } from './quietSassWarnings'
+import { generateTemplateQuasarConfig } from './template'
 
 export interface ModuleOptions {
   /**
@@ -171,27 +171,13 @@ export default defineNuxtModule<ModuleOptions>({
 
     setupCss(nuxt.options.css, options)
 
-    // `addPlugin` unshifts plugins by default. Since `provide` depends on `quasar-plugin` template, we add it first.
-    addPlugin(resolveLocal('./runtime/provide'))
+    addPlugin(resolveLocal('./runtime/plugin'))
 
-    addPluginTemplate({
-      mode: 'client',
-      filename: 'quasar-plugin.mjs',
-      getContents: () => vuePluginTemplate({
-        ...baseContext,
-        mode: 'client',
-      }, nuxt.options.ssr),
+    addTemplate({
+      write: true,
+      filename: 'quasar.config.mjs',
+      getContents: () => generateTemplateQuasarConfig(baseContext),
     })
-    if (nuxt.options.ssr) {
-      addPluginTemplate({
-        mode: 'server',
-        filename: 'quasar-plugin.server.mjs',
-        getContents: () => vuePluginTemplate({
-          ...baseContext,
-          mode: 'server',
-        }, nuxt.options.ssr),
-      })
-    }
 
     if (nuxt.options.components !== false) {
       for (const component of imports.components) {
