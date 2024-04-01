@@ -26,7 +26,7 @@
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:analyze": "nuxi analyze playground",
-    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "dev:preview": "nuxi preview playground",
     "changelogen": "changelogen --release --no-tag --no-commit && eslint . --fix",
     "typecheck": "tsc --project playground/.nuxt/tsconfig.json --noEmit",
@@ -48,7 +48,7 @@
   "devDependencies": {
     "@antfu/eslint-config-ts": "0.39.5",
     "@nuxt/devtools": "latest",
-    "@nuxt/module-builder": "^0.4.0",
+    "@nuxt/module-builder": "^0.5.5",
     "@nuxt/schema": "^3.11.1",
     "@nuxt/test-utils": "^3.12.0",
     "@quasar/extras": "^1.16.9",
