@@ -27,7 +27,7 @@ describe('Prop Builder', () => {
     expect(generate(propOptions)).toMatchInlineSnapshot(`
       "{
         type: String,
-        default: \\"text\\"
+        default: "text"
       }"
     `)
   })
@@ -69,7 +69,7 @@ describe('Prop Builder', () => {
       "{
         type: String,
         required: true,
-        default: \\"test\\"
+        default: "test"
       }"
     `)
   })
@@ -85,8 +85,8 @@ describe('Prop Builder', () => {
     expect(generate(propOptions)).toMatchInlineSnapshot(`
       "{
         type: String,
-        default: \\"left\\",
-        validator: __values__([\\"left\\", \\"right\\"])
+        default: "left",
+        validator: __values__(["left", "right"])
       }"
     `)
   })
@@ -100,7 +100,7 @@ describe('Prop Builder', () => {
     expect(generate(propOptions)).toMatchInlineSnapshot(`
       "{
         type: String,
-        default: \\"item\\"
+        default: "item"
       }"
     `)
   })
