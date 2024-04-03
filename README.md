@@ -25,15 +25,15 @@
 ```bash
 # Using pnpm
 pnpm add quasar @quasar/extras
-pnpm add -D nuxt-quasar-ui
+npx nuxi@latest module add quasar
 
 # Using yarn
 yarn add quasar @quasar/extras
-yarn add --dev nuxt-quasar-ui
+npx nuxi@latest module add quasar
 
 # Using npm
 npm install quasar @quasar/extras
-npm install --save-dev nuxt-quasar-ui
+npx nuxi@latest module add quasar
 ```
 
 2. Add `nuxt-quasar-ui` to the `modules` section of `nuxt.config.ts`
