@@ -39,6 +39,11 @@
     "@quasar/extras": "^1",
     "quasar": "^2.8.0"
   },
+  "peerDependenciesMeta": {
+    "@quasar/extras": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@nuxt/kit": "^3.11.1",
     "magic-string": "^0.30.8",
