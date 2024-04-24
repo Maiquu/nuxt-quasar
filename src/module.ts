@@ -6,13 +6,12 @@ import type { AssetURLOptions } from 'vue/compiler-sfc'
 import satisfies from 'semver/functions/satisfies'
 import { version } from '../package.json'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
-import type { ImportData, ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
+import type { ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImportData, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
-import { hasKeys, kebabCase, readFileMemoized, readJSON, uniq } from './utils'
+import { kebabCase, readFileMemoized, readJSON, uniq } from './utils'
 import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
 import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
-import { transformDefaultsPlugin } from './plugins/transform/defaults'
 import { setupCss } from './setupCss'
 import { enableQuietSassWarnings } from './quietSassWarnings'
 import { generateTemplateQuasarConfig } from './template'
@@ -155,7 +154,10 @@ export default defineNuxtModule<ModuleOptions>({
     const importMap = await readJSON(resolveQuasar('dist/transforms/import-map.json')) as Record<string, string>
     const transformAssetUrls = await readJSON(resolveQuasar('dist/transforms/loader-asset-urls.json')) as AssetURLOptions
     const imports = categorizeImports(importMap, resolveQuasar)
+
     const baseContext: Omit<ModuleContext, 'mode'> = {
+      ssr: nuxt.options.ssr,
+      dev: nuxt.options.dev,
       imports,
       options,
       resolveLocal,
@@ -273,11 +275,6 @@ export default defineNuxtModule<ModuleOptions>({
         transformDirectivesPlugin(context),
         virtualQuasarEntryPlugin(context),
       )
-      if (hasKeys(options.components?.defaults)) {
-        config.plugins.unshift(
-          transformDefaultsPlugin(context),
-        )
-      }
 
       if (options.sassVariables) {
         config.plugins.push(transformScssPlugin(context))
@@ -329,7 +326,7 @@ function categorizeImports(importMap: Record<string, string>, quasarResolve: Res
   }
 
   for (const [name, path] of Object.entries(importMap)) {
-    const importData: ImportData = {
+    const importData: QuasarImportData = {
       name,
       path: quasarResolve(path),
     }

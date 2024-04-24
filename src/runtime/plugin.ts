@@ -1,13 +1,12 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
-import Quasar from 'quasar/src/vue-plugin.js'
-import useQuasar from 'quasar/src/composables/use-quasar.js'
+import { Quasar, useQuasar } from 'quasar'
 import type { QuasarClientPlugin, QuasarSSRContext, QuasarServerPlugin } from './types'
 import { omit } from './utils'
 import { computed, defineNuxtPlugin, ref, useHead } from '#imports'
-import { quasarNuxtConfig } from '#build/quasar.config.mjs'
+import { componentsWithDefaults, quasarNuxtConfig } from '#build/quasar.config.mjs'
 
 export default defineNuxtPlugin((nuxt) => {
-  const { lang, iconSet, plugins, config = {} } = quasarNuxtConfig
+  const { lang, iconSet, plugins, config = {}, components } = quasarNuxtConfig
   let ssrContext: { req: IncomingMessage; res: ServerResponse } | undefined
   let quasarProxy: QuasarServerPlugin | QuasarClientPlugin
 
@@ -78,9 +77,27 @@ export default defineNuxtPlugin((nuxt) => {
       ...plugins,
     },
     config: omit(config, ['brand']),
+  // @ts-expect-error Private Argument
   }, ssrContext)
 
   const quasar = useQuasar()
+
+  const asDefault = (value: unknown) => typeof value === 'object' ? () => value : value
+
+  for (const [name, propDefaults] of Object.entries(components.defaults || {})) {
+    const component = componentsWithDefaults[name]
+    for (const [propName, defaultValue] of Object.entries(propDefaults)) {
+      const propConfig = component.props[propName]
+      if (typeof propConfig === 'object') {
+        propConfig.default = asDefault(defaultValue)
+      } else if (typeof propConfig === 'function') {
+        component.props[propName] = {
+          type: propConfig,
+          default: asDefault(defaultValue),
+        }
+      }
+    }
+  }
 
   return {
     provide: {

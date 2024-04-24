@@ -9,20 +9,22 @@ function when(condition: any, content: string | (() => string)) {
 
 export function generateTemplateQuasarConfig(context: Pick<ModuleContext, 'options' | 'imports'>): string {
   const plugins = uniq(context.options.plugins || [])
-  const { config, lang, iconSet } = context.options
+  const { config, lang, iconSet, components } = context.options
+  const componentsWithDefaults = Object.keys(components?.defaults || {})
   return `\
 ${when(lang, () => `import lang from "quasar/lang/${lang}.mjs"`)}
 ${when(typeof iconSet === 'string', () => `import iconSet from "quasar/icon-set/${iconSet}.mjs"`)}
-${plugins
-  .map(plugin => `import ${plugin} from "quasar/${context.imports.raw[plugin]}"`)
-  .join('\n') || ''
-}
+${when(plugins.length, () => `import { ${plugins} } from "quasar"`)}
+${when(componentsWithDefaults.length, () => `import { ${componentsWithDefaults} } from "quasar"`)}
+
+export const componentsWithDefaults = { ${componentsWithDefaults} }
 
 export const quasarNuxtConfig = {
   ${when(lang, 'lang,')}
   ${typeof iconSet === 'string'
     ? 'iconSet'
     : `iconSet: ${iconSet ? JSON.stringify(iconSet) : '"material-icons"'}`},
+  components: ${JSON.stringify(components || {})},
   plugins: {${
     plugins.join(',') || ''
   }},

@@ -11,9 +11,6 @@ dependencies:
   magic-string:
     specifier: ^0.30.8
     version: 0.30.8
-  magicast:
-    specifier: ^0.3.3
-    version: 0.3.3
   p-memoize:
     specifier: ^7.1.1
     version: 7.1.1
@@ -6302,6 +6299,7 @@ packages:
       '@babel/parser': 7.24.1
       '@babel/types': 7.24.0
       source-map-js: 1.2.0
+    dev: true
 
   /make-dir@1.3.0:
     resolution: {integrity: sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==}
@@ -8399,6 +8397,7 @@ packages:
   /source-map-js@1.2.0:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /source-map-support@0.5.21:
     resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==}

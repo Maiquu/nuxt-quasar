@@ -15,18 +15,20 @@ export type ResolveFn = (...paths: string[]) => string
 
 export interface QuasarImports {
   raw: Record<string, string>
-  components: ImportData[]
-  composables: ImportData[]
-  directives: (ImportData & { kebabCase: string })[]
-  plugins: ImportData[]
+  components: QuasarImportData[]
+  composables: QuasarImportData[]
+  directives: (QuasarImportData & { kebabCase: string })[]
+  plugins: QuasarImportData[]
 }
 
-export interface ImportData {
+export interface QuasarImportData {
   name: string
   path: string
 }
 
 export interface ModuleContext {
+  ssr: boolean
+  dev: boolean
   imports: QuasarImports
   options: ModuleOptions
   mode: 'server' | 'client'
