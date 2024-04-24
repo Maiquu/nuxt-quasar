@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises'
 import type { Plugin as VitePlugin } from 'vite'
 import { quasarAnimationsPath } from '../../constants'
 import type { ModuleContext } from '../../types'
@@ -32,9 +33,12 @@ export function virtualAnimationsPlugin({ options, resolveQuasarExtras }: Module
         animations = uniq(animations)
       }
 
-      return animations
-        .map(animation => `@import '${resolveQuasarExtras(`animate/${animation}.css`)}';`)
-        .join('\n')
+      const cssArray = await Promise.all(
+        animations.map(animation =>
+          readFile(resolveQuasarExtras(`animate/${animation}.css`), 'utf8'),
+        ),
+      )
+      return cssArray.join('\n')
     },
   }
 }
