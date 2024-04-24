@@ -2,6 +2,9 @@ import type { ViteConfig } from '@nuxt/schema'
 import type { Options as SassOptions } from 'sass'
 
 /**
+ *
+ * Note: Following only applies to quasar <=2.13
+ *
  * Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings polluting the console log when running Nuxt. This function silences 'Using / for division outside of calc() is deprecated' warnings by routing those log messages to a dump.
  * See an example of this here: https://github.com/quasarframework/quasar/pull/15514#issue-1606006213
  * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007

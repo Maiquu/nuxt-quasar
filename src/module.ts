@@ -3,6 +3,7 @@ import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, cr
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
+import satisfies from 'semver/functions/satisfies'
 import { version } from '../package.json'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
 import type { ImportData, ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
@@ -33,9 +34,14 @@ export interface ModuleOptions {
   sassVariables?: string | boolean
 
   /**
+   *
    * Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings polluting the console log when running Nuxt. This function silences 'Using / for division outside of calc() is deprecated' warnings by routing those log messages to a dump.
+   *
    * See an example of this here: https://github.com/quasarframework/quasar/pull/15514#issue-1606006213
+   *
    * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007
+   *
+   * @default false // true if quasar version is <=2.13
    */
   quietSassWarnings?: boolean
 
@@ -156,6 +162,9 @@ export default defineNuxtModule<ModuleOptions>({
       resolveQuasar,
       resolveQuasarExtras,
     }
+
+    // sass version is no longer pinned since v2.14
+    options.quietSassWarnings ??= satisfies(quasarVersion, '<=2.13')
 
     // Include `iconSet` if its missing from `extras.fontIcons`
     if (

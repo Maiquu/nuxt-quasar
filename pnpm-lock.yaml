@@ -17,6 +17,9 @@ dependencies:
   p-memoize:
     specifier: ^7.1.1
     version: 7.1.1
+  semver:
+    specifier: ^7.6.0
+    version: 7.6.0
 
 devDependencies:
   '@antfu/eslint-config-ts':
