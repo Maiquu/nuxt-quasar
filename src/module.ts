@@ -3,7 +3,7 @@ import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, cr
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
-import satisfies from 'semver/functions/satisfies'
+import satisfies from 'semver/functions/satisfies.js'
 import { version } from '../package.json'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
 import type { ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImportData, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
