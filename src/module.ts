@@ -194,8 +194,8 @@ export default defineNuxtModule<ModuleOptions>({
       for (const component of imports.components) {
         addComponent({
           name: component.name,
-          export: 'default',
-          filePath: component.path,
+          export: component.name,
+          filePath: 'quasar',
         })
       }
     }
@@ -207,15 +207,18 @@ export default defineNuxtModule<ModuleOptions>({
       for (const composable of imports.composables.filter(c => !ignoredComposables.includes(c.name))) {
         addImports({
           name: composable.name,
-          from: resolveLocal('./runtime/adapter'),
+          from: 'quasar',
         })
       }
       if (options.plugins) {
         for (const plugin of uniq(options.plugins)) {
+          const pluginPath = imports.plugins.find(p => p.name === plugin)?.path
+          if (pluginPath) {
           addImports({
             name: plugin,
-            from: resolveLocal('./runtime/adapter'),
+              from: 'quasar',
           })
+          }
         }
       }
 
