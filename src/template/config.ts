@@ -1,5 +1,5 @@
-import type { ModuleContext } from './types'
-import { uniq } from './utils'
+import type { ModuleContext } from '../types'
+import { hasKeys, uniq } from '../utils'
 
 function when(condition: any, content: string | (() => string)) {
   return condition
@@ -10,7 +10,11 @@ function when(condition: any, content: string | (() => string)) {
 export function generateTemplateQuasarConfig(context: Pick<ModuleContext, 'options' | 'imports'>): string {
   const plugins = uniq(context.options.plugins || [])
   const { config, lang, iconSet, components } = context.options
-  const componentsWithDefaults = Object.keys(components?.defaults || {})
+  const componentsWithDefaults = Object
+    .entries(components?.defaults || {})
+    .filter(([_, props]) => hasKeys(props))
+    .map(([name]) => name)
+
   return `\
 ${when(lang, () => `import lang from "quasar/lang/${lang}.mjs"`)}
 ${when(typeof iconSet === 'string', () => `import iconSet from "quasar/icon-set/${iconSet}.mjs"`)}

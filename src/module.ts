@@ -1,12 +1,12 @@
 import { dirname } from 'node:path'
-import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
+import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
 import satisfies from 'semver/functions/satisfies.js'
 import { version } from '../package.json'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
-import type { ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImportData, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
+import type { ModuleContext, QuasarFontIconSet, QuasarImportData, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
 import { kebabCase, readFileMemoized, readJSON, uniq } from './utils'
 import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
@@ -14,7 +14,10 @@ import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { setupCss } from './setupCss'
 import { enableQuietSassWarnings } from './quietSassWarnings'
-import { generateTemplateQuasarConfig } from './template'
+import { generateTemplateQuasarConfig } from './template/config'
+import { generateTemplateComponentsShim } from './template/shims'
+
+export interface QuasarComponentDefaults {}
 
 export interface ModuleOptions {
   /**
@@ -190,6 +193,11 @@ export default defineNuxtModule<ModuleOptions>({
       getContents: () => generateTemplateQuasarConfig(baseContext),
     })
 
+    addTypeTemplate({
+      filename: 'quasar.components.d.ts',
+      getContents: () => generateTemplateComponentsShim(baseContext),
+    })
+
     if (nuxt.options.components !== false) {
       for (const component of imports.components) {
         addComponent({
@@ -214,10 +222,10 @@ export default defineNuxtModule<ModuleOptions>({
         for (const plugin of uniq(options.plugins)) {
           const pluginPath = imports.plugins.find(p => p.name === plugin)?.path
           if (pluginPath) {
-          addImports({
-            name: plugin,
+            addImports({
+              name: plugin,
               from: 'quasar',
-          })
+            })
           }
         }
       }
