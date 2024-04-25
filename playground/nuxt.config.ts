@@ -26,8 +26,12 @@ export default defineNuxtConfig({
       fontIcons: ['material-icons'],
       animations: 'all',
     },
+    appConfigKey: 'nuxtQuasarCustom',
     config: {
       dark: true,
+      brand: {
+        primary: '#ff0000',
+      },
     },
     components: {
       defaults: {

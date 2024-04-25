@@ -1,7 +1,7 @@
 import { moduleName } from '../constants'
 import type { ModuleContext } from '../types'
 
-export async function generateTemplateComponentsShim(context: Omit<ModuleContext, 'mode'>): Promise<string> {
+export async function generateTemplateShims(context: Omit<ModuleContext, 'mode'>): Promise<string> {
   const componentNames = context.imports.components.map(c => c.name)
   return `\
 type KeysMatching<T, V> = {
@@ -22,6 +22,15 @@ declare module '${moduleName}' {
   interface QuasarComponentDefaults {\n${componentNames.map(name => `\
     ${name}?: PickOptionalProps<OmitFnProps<import("quasar").${name}Props>>`,
   ).join('\n')}
+  }
+}
+
+declare module 'nuxt/schema' {
+  interface AppConfigInput {
+    [${JSON.stringify(context.options.appConfigKey)}]?: import("nuxt-quasar-ui").QuasarUIConfiguration
+  }
+  interface AppConfig {
+    [${JSON.stringify(context.options.appConfigKey)}]?: import("nuxt-quasar-ui").QuasarUIConfiguration
   }
 }
 

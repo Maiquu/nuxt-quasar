@@ -1,12 +1,12 @@
 import { dirname } from 'node:path'
 import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
-import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins, QuasarUIConfiguration } from 'quasar'
+import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
 import satisfies from 'semver/functions/satisfies.js'
 import { version } from '../package.json'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
-import type { ModuleContext, QuasarFontIconSet, QuasarImportData, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
+import type { ModuleContext, QuasarFontIconSet, QuasarImportData, QuasarImports, QuasarSvgIconSet, QuasarUIConfiguration, ResolveFn } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
 import { kebabCase, readFileMemoized, readJSON, uniq } from './utils'
 import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
@@ -15,9 +15,11 @@ import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { setupCss } from './setupCss'
 import { enableQuietSassWarnings } from './quietSassWarnings'
 import { generateTemplateQuasarConfig } from './template/config'
-import { generateTemplateComponentsShim } from './template/shims'
+import { generateTemplateShims } from './template/shims'
 
 export interface QuasarComponentDefaults {}
+
+export type { QuasarUIConfiguration }
 
 export interface ModuleOptions {
   /**
@@ -55,7 +57,7 @@ export interface ModuleOptions {
    **/
   plugins?: (keyof QuasarPlugins)[]
 
-  config?: Omit<QuasarUIConfiguration, 'lang' | 'capacitor' | 'cordova'>
+  config?: QuasarUIConfiguration
 
   /**
    * Default Language pack used by Quasar
@@ -75,6 +77,13 @@ export interface ModuleOptions {
    * @default true
    */
   autoIncludeIconSet?: boolean
+
+  /**
+   * App Config Key
+   *
+   * @default 'nuxtQuasar'
+   */
+  appConfigKey?: string
 
   /**
    * When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
@@ -140,6 +149,7 @@ export default defineNuxtModule<ModuleOptions>({
     autoIncludeIconSet: true,
     cssAddon: false,
     sassVariables: false,
+    appConfigKey: 'nuxtQuasar',
     components: {
       defaults: {},
       deepDefaults: false,

@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.11.1",
+    "defu": "^6.1.4",
     "magic-string": "^0.30.8",
     "p-memoize": "^7.1.1",
     "semver": "^7.6.0"
@@ -64,7 +65,7 @@
     "jsdom": "^24.0.0",
     "nuxt": "^3.11.1",
     "quasar": "^2.15.2",
-    "sass": "^1.72.0",
+    "sass": "^1.75.0",
     "typescript": "^5.4.3",
     "vite": "^5.2.7",
     "vitest": "^1.4.0",

@@ -1,4 +1,4 @@
-import type { QuasarIconSets as QuasarIconSet } from 'quasar'
+import type { QuasarIconSets as QuasarIconSet, QuasarUIConfiguration as _QuasarUIConfiguration } from 'quasar'
 import type { ModuleOptions } from './module'
 
 type ExtractFont<T extends string> = T extends `svg-${string}` ? never : T
@@ -20,6 +20,13 @@ export interface QuasarImports {
 export interface QuasarImportData {
   name: string
   path: string
+}
+
+export type QuasarUIConfiguration = Omit<_QuasarUIConfiguration, 'lang' | 'capacitor' | 'cordova'> & {
+  addressbarColor?: string
+  brand?: {
+    'dark-page'?: string
+  }
 }
 
 export interface ModuleContext {

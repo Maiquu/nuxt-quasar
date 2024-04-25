@@ -59,11 +59,11 @@ function toggleLeftDrawer() {
       <q-toolbar>
         <q-btn
           flat
+          color="white"
           dense
           round
           icon="menu"
           aria-label="Menu"
-          :glossy="false"
           @click="toggleLeftDrawer"
         />
 

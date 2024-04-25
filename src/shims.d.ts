@@ -22,6 +22,8 @@ declare module '#build/quasar.config.mjs' {
       Notify?: Notify
     }
   }
+
+  export const appConfigKey: string
 }
 
 declare module 'quasar/src/composables/use-quasar.js' {

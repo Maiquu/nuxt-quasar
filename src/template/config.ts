@@ -23,6 +23,8 @@ ${when(componentsWithDefaults.length, () => `import { ${componentsWithDefaults} 
 
 export const componentsWithDefaults = { ${componentsWithDefaults} }
 
+export const appConfigKey = ${JSON.stringify(context.options.appConfigKey)}
+
 export const quasarNuxtConfig = {
   ${when(lang, 'lang,')}
   ${typeof iconSet === 'string'

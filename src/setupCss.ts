@@ -20,7 +20,6 @@ import { uniq } from './utils'
  * @param options
  */
 export function setupCss(css: string[], options: ModuleOptions) {
-  // TODO: Deprecate writing `quasar/brand` to css array
   const brand = options.config?.brand || {}
   if (!css.includes(quasarBrandPath) && Object.keys(brand).length) {
     css.unshift(quasarBrandPath)

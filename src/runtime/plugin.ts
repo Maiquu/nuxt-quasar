@@ -1,9 +1,12 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { Quasar, useQuasar } from 'quasar'
+import type { UseHeadInput } from 'unhead'
 import type { QVueGlobals, QuasarIconSet, QuasarLanguage } from 'quasar'
 import type { App as VueApp } from 'vue'
-import { computed, defineNuxtPlugin, ref, useHead } from '#imports'
-import { componentsWithDefaults, quasarNuxtConfig } from '#build/quasar.config.mjs'
+import { defuFn } from 'defu'
+import type { QuasarUIConfiguration } from '../types'
+import { computed, defineNuxtPlugin, reactive, useAppConfig, useHead, watch } from '#imports'
+import { appConfigKey, componentsWithDefaults, quasarNuxtConfig } from '#build/quasar.config.mjs'
 
 interface QuasarPluginClientContext {
   parentApp: VueApp<any>
@@ -46,6 +49,18 @@ interface QuasarClientPlugin {
   install(context: QuasarPluginClientContext): void
 }
 
+function getUpdatedDefaults<T extends object>(cfg: T, prevCfg: T) {
+  const prevKeys = Object.keys(prevCfg)
+  return {
+    ...Object.fromEntries(prevKeys.map(k => [k, undefined])),
+    ...cfg,
+  }
+}
+
+function getPrimaryColor() {
+  return getComputedStyle(document.body).getPropertyValue('--q-primary').trim()
+}
+
 function omit<T extends object, K extends keyof T & string>(object: T, keys: K[]): Omit<T, K>
 function omit(object: Record<string, any>, keys: string[]): Record<string, any> {
   return Object.keys(object).reduce((output, key) => {
@@ -57,27 +72,43 @@ function omit(object: Record<string, any>, keys: string[]): Record<string, any> 
 }
 
 export default defineNuxtPlugin((nuxt) => {
-  const { lang, iconSet, plugins, config = {}, components } = quasarNuxtConfig
+  const quasarAppConfig = useAppConfig()[appConfigKey] as QuasarUIConfiguration
+  const { lang, iconSet, plugins, components } = quasarNuxtConfig
   let ssrContext: { req: IncomingMessage; res: ServerResponse } | undefined
   let quasarProxy: QuasarServerPlugin | QuasarClientPlugin
+  // Since brand used in `nuxt.config` is pushed to `nuxt.options.css`, we exclude it here
+  let config = defuFn(quasarAppConfig, omit(quasarNuxtConfig.config, ['brand']))
 
   if (import.meta.server) {
-    const bodyClasses = ref('')
-    const htmlAttrs = ref('')
+    const BRAND_RE = /--q-(?:.+?):(?:.+?);/g
+    const meta = reactive({
+      bodyClasses: '',
+      htmlAttrs: '',
+      endingHeadTags: '',
+    })
+    type MetaKey = keyof typeof meta
     const htmlAttrsRecord = computed(() =>
       Object.fromEntries(
-        htmlAttrs.value
+        meta.htmlAttrs
           .split(' ')
           .map(attr => attr.split('=')),
       ),
     )
+    // NOTE: Quasar currently only appends `endingHeadTags` with brand variables, this may break in future
+    const bodyStyles = computed(() => {
+      return [...meta.endingHeadTags.matchAll(BRAND_RE)]
+        .map(match => match[0])
+        .join('')
+    })
+
     useHead(
       computed(() => ({
         bodyAttrs: {
-          class: bodyClasses.value,
+          class: meta.bodyClasses,
+          style: bodyStyles.value,
         },
         htmlAttrs: htmlAttrsRecord.value,
-      })),
+      } as UseHeadInput<any>)),
     )
     ssrContext = {
       req: nuxt.ssrContext!.event.node.req,
@@ -85,23 +116,16 @@ export default defineNuxtPlugin((nuxt) => {
     }
     quasarProxy = {
       install({ ssrContext }) {
-        bodyClasses.value = ssrContext._meta.bodyClasses
-        htmlAttrs.value = ssrContext._meta.htmlAttrs
+        meta.bodyClasses = ssrContext._meta.bodyClasses
+        meta.htmlAttrs = ssrContext._meta.htmlAttrs
+        meta.endingHeadTags = ssrContext._meta.endingHeadTags
         ssrContext._meta = new Proxy({} as Record<string | symbol, any>, {
           get(target, key) {
-            if (key === 'bodyClasses') {
-              return bodyClasses.value
-            } else if (key === 'htmlAttrs') {
-              return htmlAttrs.value
-            } else {
-              return target[key]
-            }
+            return meta[key as MetaKey] ?? target[key]
           },
           set(target, key, value) {
-            if (key === 'bodyClasses') {
-              bodyClasses.value = value
-            } else if (key === 'htmlAttrs') {
-              htmlAttrs.value = value
+            if (typeof meta[key as MetaKey] === 'string') {
+              meta[key as MetaKey] = value
             } else {
               target[key] = value
             }
@@ -127,7 +151,7 @@ export default defineNuxtPlugin((nuxt) => {
       quasarProxy,
       ...plugins,
     },
-    config: omit(config, ['brand']),
+    config,
   // @ts-expect-error Private Argument
   }, ssrContext)
 
@@ -148,6 +172,44 @@ export default defineNuxtPlugin((nuxt) => {
         }
       }
     }
+  }
+
+  if (import.meta.dev && import.meta.client) {
+    watch(
+      () => quasarAppConfig,
+      (newAppConfig) => {
+        const prevConfig = config
+        config = defuFn(newAppConfig, quasarNuxtConfig.config)
+        quasar.addressbarColor?.set(config.addressbarColor || getPrimaryColor())
+        const modifiedBrand = getUpdatedDefaults(
+          config.brand || {},
+          prevConfig.brand || {},
+        )
+        for (const [name, color] of Object.entries(modifiedBrand)) {
+          if (!color) {
+            document.body.style.removeProperty(`--q-${name}`)
+          } else {
+            document.body.style.setProperty(`--q-${name}`, color)
+          }
+        }
+        if (prevConfig.dark !== config.dark) {
+          quasar.dark.set(config.dark || false)
+        }
+        quasar.loading?.setDefaults(getUpdatedDefaults(
+          config.loading || {},
+          prevConfig.loading || {},
+        ))
+        quasar.loadingBar?.setDefaults(getUpdatedDefaults(
+          config.loadingBar || {},
+          prevConfig.loadingBar || {},
+        ))
+        plugins.Notify?.setDefaults(getUpdatedDefaults(
+          config.loadingBar || {},
+          prevConfig.loadingBar || {},
+        ))
+      },
+      { deep: true },
+    )
   }
 
   return {
