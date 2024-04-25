@@ -1,7 +1,7 @@
 import { dirname } from 'node:path'
 import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
-import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
+import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins, QuasarUIConfiguration } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
 import satisfies from 'semver/functions/satisfies.js'
 import { version } from '../package.json'
@@ -55,7 +55,7 @@ export interface ModuleOptions {
    **/
   plugins?: (keyof QuasarPlugins)[]
 
-  config?: Omit<QuasarFrameworkInnerConfiguration, 'lang'>
+  config?: Omit<QuasarUIConfiguration, 'lang' | 'capacitor' | 'cordova'>
 
   /**
    * Default Language pack used by Quasar
@@ -140,7 +140,6 @@ export default defineNuxtModule<ModuleOptions>({
     autoIncludeIconSet: true,
     cssAddon: false,
     sassVariables: false,
-    quietSassWarnings: true,
     components: {
       defaults: {},
       deepDefaults: false,
