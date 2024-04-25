@@ -1,10 +1,9 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { Quasar, useQuasar } from 'quasar'
 import type { UseHeadInput } from 'unhead'
-import type { QVueGlobals, QuasarIconSet, QuasarLanguage } from 'quasar'
+import type { QVueGlobals, QuasarIconSet, QuasarLanguage, QuasarUIConfiguration } from 'quasar'
 import type { App as VueApp } from 'vue'
 import { defuFn } from 'defu'
-import type { QuasarUIConfiguration } from '../types'
 import { computed, defineNuxtPlugin, reactive, useAppConfig, useHead, watch } from '#imports'
 import { appConfigKey, componentsWithDefaults, quasarNuxtConfig } from '#build/quasar.config.mjs'
 
@@ -72,7 +71,7 @@ function omit(object: Record<string, any>, keys: string[]): Record<string, any> 
 }
 
 export default defineNuxtPlugin((nuxt) => {
-  const quasarAppConfig = useAppConfig()[appConfigKey] as QuasarUIConfiguration
+  const quasarAppConfig = useAppConfig()[appConfigKey] as QuasarUIConfiguration & { addressbarColor?: string }
   const { lang, iconSet, plugins, components } = quasarNuxtConfig
   let ssrContext: { req: IncomingMessage; res: ServerResponse } | undefined
   let quasarProxy: QuasarServerPlugin | QuasarClientPlugin
