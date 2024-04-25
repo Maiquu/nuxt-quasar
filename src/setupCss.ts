@@ -27,7 +27,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
 
   const quasarCss = [
     options.sassVariables
-      ? 'quasar/src/css/index.sass'
+      ? 'quasar/dist/quasar.sass'
       : 'quasar/dist/quasar.css',
   ]
   if (options.cssAddon) {
