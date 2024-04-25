@@ -76,8 +76,6 @@ export interface ModuleOptions {
   /**
    * When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
    *
-   * **Requires `sass`**
-   *
    * @see [Documentation](https://quasar.dev/layout/grid/introduction-to-flexbox#flex-addons)
    */
   cssAddon?: boolean

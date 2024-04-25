@@ -31,7 +31,7 @@ export function setupCss(css: string[], options: ModuleOptions) {
       : 'quasar/dist/quasar.css',
   ]
   if (options.cssAddon) {
-    quasarCss.push('quasar/src/css/flex-addon.sass')
+    quasarCss.push('quasar/dist/quasar.addon.css')
   }
 
   const index = css.indexOf(quasarCssPath)
