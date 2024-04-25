@@ -179,7 +179,6 @@ Module will import css in following order:
 2) Icons
 3) Animations
 4) Quasar CSS
-5) Brand
 
 It is possible to change this order via `css` option.
 
@@ -193,7 +192,6 @@ export default defineNuxtConfig({
     'quasar/animations',
     'quasar/icons',
     'quasar/css',
-    'quasar/brand' // If config.brand is used
     // ...
   ]
 })
