@@ -1,9 +1,60 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { Quasar, useQuasar } from 'quasar'
-import type { QuasarClientPlugin, QuasarSSRContext, QuasarServerPlugin } from './types'
-import { omit } from './utils'
+import type { QVueGlobals, QuasarIconSet, QuasarLanguage } from 'quasar'
+import type { App as VueApp } from 'vue'
 import { computed, defineNuxtPlugin, ref, useHead } from '#imports'
 import { componentsWithDefaults, quasarNuxtConfig } from '#build/quasar.config.mjs'
+
+interface QuasarPluginClientContext {
+  parentApp: VueApp<any>
+  $q: QVueGlobals
+  lang: QuasarLanguage
+  iconSet: QuasarIconSet
+  onSSRHydrated: (() => void)[]
+}
+
+interface QuasarPluginServerContext {
+  parentApp: VueApp<any>
+  $q: QVueGlobals
+  lang: QuasarLanguage
+  iconSet: QuasarIconSet
+  ssrContext: QuasarSSRContext
+}
+
+interface QuasarSSRContext {
+  req: IncomingMessage
+  res: ServerResponse
+  $q: any
+  _meta: {
+    htmlAttrs: string
+    headTags: string
+    endingHeadTags: string
+    bodyClasses: string
+    bodyAttrs: string
+    bodyTags: string
+  }
+  _modules: any[]
+  onRendered: ((...args: any[]) => any)[]
+  __qPrevLang: string
+}
+
+interface QuasarServerPlugin {
+  install(context: QuasarPluginServerContext): void
+}
+
+interface QuasarClientPlugin {
+  install(context: QuasarPluginClientContext): void
+}
+
+function omit<T extends object, K extends keyof T & string>(object: T, keys: K[]): Omit<T, K>
+function omit(object: Record<string, any>, keys: string[]): Record<string, any> {
+  return Object.keys(object).reduce((output, key) => {
+    if (!keys.includes(key)) {
+      output[key] = object[key]
+    }
+    return output
+  }, {} as Record<string, any>)
+}
 
 export default defineNuxtPlugin((nuxt) => {
   const { lang, iconSet, plugins, config = {}, components } = quasarNuxtConfig
