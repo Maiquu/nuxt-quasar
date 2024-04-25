@@ -21,11 +21,11 @@ import { uniq } from './utils'
  */
 export function setupCss(css: string[], options: ModuleOptions) {
   const brand = options.config?.brand || {}
-  if (!css.includes(quasarBrandPath) && Object.keys(brand).length) {
-    css.unshift(quasarBrandPath)
-  }
   if (css.includes(quasarBrandPath)) {
     logger.warn('Re-ordering "quasar/brand" is deprecated. In a future version, brand variables will always be defined in body tag.')
+  }
+  if (!css.includes(quasarBrandPath) && Object.keys(brand).length) {
+    css.unshift(quasarBrandPath)
   }
 
   const quasarCss = [
