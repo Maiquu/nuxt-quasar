@@ -139,7 +139,6 @@ export default defineNuxtModule<ModuleOptions>({
     appConfigKey: 'nuxtQuasar',
     components: {
       defaults: {},
-      deepDefaults: false,
     },
     plugins: [],
     extras: {},
@@ -190,8 +189,8 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     addTypeTemplate({
-      filename: 'quasar.components.d.ts',
-      getContents: () => generateTemplateComponentsShim(baseContext),
+      filename: 'quasar.shims.d.ts',
+      getContents: () => generateTemplateShims(baseContext),
     })
 
     if (nuxt.options.components !== false) {
