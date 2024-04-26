@@ -1,5 +1,70 @@
 # Changelog
 
+## v2.1.0
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.8...v2.1.0)
+
+### 🚀 Enhancements
+
+- Quasar ui configurable via `app.config` ([b269497](https://github.com/Maiquu/nuxt-quasar/commit/b269497))
+
+### 🔥 Performance
+
+- Slightly faster loading of animations.css by taking over resolveId step ([da30e25](https://github.com/Maiquu/nuxt-quasar/commit/da30e25))
+- Simpler/faster implemention of component defaults based on !37 ([845650c](https://github.com/Maiquu/nuxt-quasar/commit/845650c))
+- Faster dev experience by reducing amount of network requests ([36f6f3a](https://github.com/Maiquu/nuxt-quasar/commit/36f6f3a))
+- Use distributed quasar.sass file to speed up loading ([63bf95b](https://github.com/Maiquu/nuxt-quasar/commit/63bf95b))
+
+### 🩹 Fixes
+
+- QuietSassWarnings default is false if quasar version is >=2.14 ([5c14746](https://github.com/Maiquu/nuxt-quasar/commit/5c14746))
+- Build error caused by missing file extension ([cd60a22](https://github.com/Maiquu/nuxt-quasar/commit/cd60a22))
+- Use distributed css for cssAddon ([128e15d](https://github.com/Maiquu/nuxt-quasar/commit/128e15d))
+- Use quasar.sass file only if user wants to override sass variables ([8d8ad80](https://github.com/Maiquu/nuxt-quasar/commit/8d8ad80))
+- Removed experimental state from component defaults, removed `deepDefaults` property ([5c085d9](https://github.com/Maiquu/nuxt-quasar/commit/5c085d9))
+- Brand deprecation message ([fe41a40](https://github.com/Maiquu/nuxt-quasar/commit/fe41a40))
+- Type errors ([7c01858](https://github.com/Maiquu/nuxt-quasar/commit/7c01858))
+- Setting prop defaults where prop definition is array of constructors ([864f96f](https://github.com/Maiquu/nuxt-quasar/commit/864f96f))
+
+### 💅 Refactors
+
+- Simplified quasar plugin injection ([1367639](https://github.com/Maiquu/nuxt-quasar/commit/1367639))
+
+### 📖 Documentation
+
+- Update README regarding latest changes ([c59883f](https://github.com/Maiquu/nuxt-quasar/commit/c59883f))
+- Use new `nuxi module add` command in installation ([646a26e](https://github.com/Maiquu/nuxt-quasar/commit/646a26e))
+- Add missing note to quietSassWarnings JSDOC ([8f21975](https://github.com/Maiquu/nuxt-quasar/commit/8f21975))
+
+### 🏡 Chore
+
+- Update changelog ([3b857d8](https://github.com/Maiquu/nuxt-quasar/commit/3b857d8))
+- Update vitest (with jsdom) ([d30e005](https://github.com/Maiquu/nuxt-quasar/commit/d30e005))
+- Update nuxt-module-builder ([651b3f2](https://github.com/Maiquu/nuxt-quasar/commit/651b3f2))
+- Update dependencies ([7a61c1f](https://github.com/Maiquu/nuxt-quasar/commit/7a61c1f))
+- Marked `@quasar/extras` as optional ([ce75131](https://github.com/Maiquu/nuxt-quasar/commit/ce75131))
+- Added playground example from !37 ([2260c66](https://github.com/Maiquu/nuxt-quasar/commit/2260c66))
+- Bump packageManager to pnpm@9 ([1e3600c](https://github.com/Maiquu/nuxt-quasar/commit/1e3600c))
+- Add missing tsconfig to playground ([166324c](https://github.com/Maiquu/nuxt-quasar/commit/166324c))
+- Use explicit build command ([952e239](https://github.com/Maiquu/nuxt-quasar/commit/952e239))
+- Component defaults types are dynamically generated ([aa0d5d3](https://github.com/Maiquu/nuxt-quasar/commit/aa0d5d3))
+- Moved all runtime code under `src/runtime/plugin`, removed unused runtime files ([f87efe0](https://github.com/Maiquu/nuxt-quasar/commit/f87efe0))
+- Updated vscode settings ([bc77aec](https://github.com/Maiquu/nuxt-quasar/commit/bc77aec))
+- Use `QuasarUIConfiguration` interface ([417e0e1](https://github.com/Maiquu/nuxt-quasar/commit/417e0e1))
+- Deprecate re-ordering of `quasar/brand` ([aea6af7](https://github.com/Maiquu/nuxt-quasar/commit/aea6af7))
+- Rename generated shim file ([f852d90](https://github.com/Maiquu/nuxt-quasar/commit/f852d90))
+
+### ✅ Tests
+
+- Removed component default tests ([be41339](https://github.com/Maiquu/nuxt-quasar/commit/be41339))
+- Fix setup css tests ([5809c5e](https://github.com/Maiquu/nuxt-quasar/commit/5809c5e))
+- Skip analyzeBundleSize tests ([9f66f6c](https://github.com/Maiquu/nuxt-quasar/commit/9f66f6c))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v2.0.8
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.7...v2.0.8)
