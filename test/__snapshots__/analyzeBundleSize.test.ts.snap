@@ -2,8 +2,12 @@
 
 exports[`Analyze Bundle Size > client bundle size > 396413586aa87abee0183d93090cf378e4e2619b 1`] = `446`;
 
+exports[`Analyze Bundle Size > client bundle size > cbfa0def0b3444acf63702c5eda5c13337434e51 1`] = `446`;
+
 exports[`Analyze Bundle Size > client bundle size > e858649366ce7dd7d454485a2475021be23f3965 1`] = `441`;
 
 exports[`Analyze Bundle Size > nitro bundle size > 396413586aa87abee0183d93090cf378e4e2619b 1`] = `2562`;
+
+exports[`Analyze Bundle Size > nitro bundle size > cbfa0def0b3444acf63702c5eda5c13337434e51 1`] = `2539`;
 
 exports[`Analyze Bundle Size > nitro bundle size > e858649366ce7dd7d454485a2475021be23f3965 1`] = `3063`;

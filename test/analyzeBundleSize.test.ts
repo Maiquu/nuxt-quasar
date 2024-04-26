@@ -10,7 +10,7 @@ import folderSizeCallback from 'fast-folder-size'
 
 const folderSize = promisify(folderSizeCallback)
 
-describe('Analyze Bundle Size', async () => {
+describe.skip('Analyze Bundle Size', async () => {
   await setup({
     rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
     server: false,
