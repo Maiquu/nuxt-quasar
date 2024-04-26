@@ -2,7 +2,7 @@
   "name": "nuxt-quasar-ui",
   "type": "module",
   "version": "2.0.8",
-  "packageManager": "pnpm@8.11.0",
+  "packageManager": "pnpm@9.0.6",
   "description": "Quasar Module for Nuxt (Unofficial)",
   "license": "MIT",
   "repository": {
@@ -22,7 +22,7 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build",
+    "prepack": "nuxt-module-build build",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:analyze": "nuxi analyze playground",
@@ -39,11 +39,17 @@
     "@quasar/extras": "^1",
     "quasar": "^2.8.0"
   },
+  "peerDependenciesMeta": {
+    "@quasar/extras": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@nuxt/kit": "^3.11.1",
+    "defu": "^6.1.4",
     "magic-string": "^0.30.8",
-    "magicast": "^0.3.3",
-    "p-memoize": "^7.1.1"
+    "p-memoize": "^7.1.1",
+    "semver": "^7.6.0"
   },
   "devDependencies": {
     "@antfu/eslint-config-ts": "0.39.5",
@@ -59,7 +65,7 @@
     "jsdom": "^24.0.0",
     "nuxt": "^3.11.1",
     "quasar": "^2.15.2",
-    "sass": "^1.72.0",
+    "sass": "^1.75.0",
     "typescript": "^5.4.3",
     "vite": "^5.2.7",
     "vitest": "^1.4.0",

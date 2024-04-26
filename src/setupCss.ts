@@ -1,4 +1,5 @@
 import type { QuasarFonts } from 'quasar'
+import { logger } from '@nuxt/kit'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 import type { ModuleOptions } from './module'
 import type { QuasarFontIconSet } from './types'
@@ -14,24 +15,26 @@ import { uniq } from './utils'
  *   'quasar/icons',
  *   '@/assets/style.css',
  *   'quasar/css',
- *   'quasar/brand',
  * ]
  * @param css
  * @param options
  */
 export function setupCss(css: string[], options: ModuleOptions) {
   const brand = options.config?.brand || {}
+  if (css.includes(quasarBrandPath)) {
+    logger.warn('Re-ordering "quasar/brand" is deprecated. In a future version, brand variables will always be defined in body tag.')
+  }
   if (!css.includes(quasarBrandPath) && Object.keys(brand).length) {
     css.unshift(quasarBrandPath)
   }
 
   const quasarCss = [
-    options.sassVariables
-      ? 'quasar/src/css/index.sass'
+    typeof options.sassVariables === 'string'
+      ? 'quasar/dist/quasar.sass'
       : 'quasar/dist/quasar.css',
   ]
   if (options.cssAddon) {
-    quasarCss.push('quasar/src/css/flex-addon.sass')
+    quasarCss.push('quasar/dist/quasar.addon.css')
   }
 
   const index = css.indexOf(quasarCssPath)

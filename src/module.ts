@@ -1,20 +1,25 @@
 import { dirname } from 'node:path'
-import { addComponent, addImports, addImportsSources, addPlugin, addPluginTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
+import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
+import satisfies from 'semver/functions/satisfies.js'
 import { version } from '../package.json'
-import { vuePluginTemplate } from './plugin'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
-import type { ImportData, ModuleContext, QuasarComponentDefaults, QuasarFontIconSet, QuasarFrameworkInnerConfiguration, QuasarImports, QuasarSvgIconSet, ResolveFn } from './types'
+import type { ModuleContext, QuasarFontIconSet, QuasarImportData, QuasarImports, QuasarSvgIconSet, QuasarUIConfiguration, ResolveFn } from './types'
 import { transformScssPlugin } from './plugins/transform/scss'
-import { hasKeys, kebabCase, readFileMemoized, readJSON, uniq } from './utils'
+import { kebabCase, readFileMemoized, readJSON, uniq } from './utils'
 import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
 import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
-import { transformDefaultsPlugin } from './plugins/transform/defaults'
 import { setupCss } from './setupCss'
 import { enableQuietSassWarnings } from './quietSassWarnings'
+import { generateTemplateQuasarConfig } from './template/config'
+import { generateTemplateShims } from './template/shims'
+
+export interface QuasarComponentDefaults {}
+
+export type { QuasarUIConfiguration }
 
 export interface ModuleOptions {
   /**
@@ -33,9 +38,16 @@ export interface ModuleOptions {
   sassVariables?: string | boolean
 
   /**
+   *
+   * Note: Following only applies to quasar <=2.13
+   *
    * Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings polluting the console log when running Nuxt. This function silences 'Using / for division outside of calc() is deprecated' warnings by routing those log messages to a dump.
+   *
    * See an example of this here: https://github.com/quasarframework/quasar/pull/15514#issue-1606006213
+   *
    * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007
+   *
+   * @default false // true if quasar version is <=2.13
    */
   quietSassWarnings?: boolean
 
@@ -45,7 +57,7 @@ export interface ModuleOptions {
    **/
   plugins?: (keyof QuasarPlugins)[]
 
-  config?: Omit<QuasarFrameworkInnerConfiguration, 'lang'>
+  config?: QuasarUIConfiguration
 
   /**
    * Default Language pack used by Quasar
@@ -67,9 +79,14 @@ export interface ModuleOptions {
   autoIncludeIconSet?: boolean
 
   /**
-   * When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
+   * App Config Key
    *
-   * **Requires `sass`**
+   * @default 'nuxtQuasar'
+   */
+  appConfigKey?: string
+
+  /**
+   * When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
    *
    * @see [Documentation](https://quasar.dev/layout/grid/introduction-to-flexbox#flex-addons)
    */
@@ -97,22 +114,9 @@ export interface ModuleOptions {
    */
   components?: {
     /**
-     * EXPERIMENTAL
-     *
      * Set defaults for quasar components
      **/
     defaults?: QuasarComponentDefaults
-    /**
-     * When `true`, defaults will be applied to components that aren't used directly.
-     * For example, if defaults for `QBtn` are set, it will affect all components that use `QBtn`. (For example: `QBtnDropdown`, `QEditor`)
-     *
-     * Currently not very stable in development environment since vite will set `Cache-Control` headers for files located in `node_modules`
-     * and changes made may not take effect without resetting the cache.
-     *
-     * @default false
-     *
-     **/
-    deepDefaults?: boolean
   }
 }
 
@@ -132,10 +136,9 @@ export default defineNuxtModule<ModuleOptions>({
     autoIncludeIconSet: true,
     cssAddon: false,
     sassVariables: false,
-    quietSassWarnings: true,
+    appConfigKey: 'nuxtQuasar',
     components: {
       defaults: {},
-      deepDefaults: false,
     },
     plugins: [],
     extras: {},
@@ -149,13 +152,19 @@ export default defineNuxtModule<ModuleOptions>({
     const importMap = await readJSON(resolveQuasar('dist/transforms/import-map.json')) as Record<string, string>
     const transformAssetUrls = await readJSON(resolveQuasar('dist/transforms/loader-asset-urls.json')) as AssetURLOptions
     const imports = categorizeImports(importMap, resolveQuasar)
+
     const baseContext: Omit<ModuleContext, 'mode'> = {
+      ssr: nuxt.options.ssr,
+      dev: nuxt.options.dev,
       imports,
       options,
       resolveLocal,
       resolveQuasar,
       resolveQuasarExtras,
     }
+
+    // sass version is no longer pinned since v2.14
+    options.quietSassWarnings ??= satisfies(quasarVersion, '<=2.13')
 
     // Include `iconSet` if its missing from `extras.fontIcons`
     if (
@@ -171,34 +180,25 @@ export default defineNuxtModule<ModuleOptions>({
 
     setupCss(nuxt.options.css, options)
 
-    // `addPlugin` unshifts plugins by default. Since `provide` depends on `quasar-plugin` template, we add it first.
-    addPlugin(resolveLocal('./runtime/provide'))
+    addPlugin(resolveLocal('./runtime/plugin'))
 
-    addPluginTemplate({
-      mode: 'client',
-      filename: 'quasar-plugin.mjs',
-      getContents: () => vuePluginTemplate({
-        ...baseContext,
-        mode: 'client',
-      }, nuxt.options.ssr),
+    addTemplate({
+      write: true,
+      filename: 'quasar.config.mjs',
+      getContents: () => generateTemplateQuasarConfig(baseContext),
     })
-    if (nuxt.options.ssr) {
-      addPluginTemplate({
-        mode: 'server',
-        filename: 'quasar-plugin.server.mjs',
-        getContents: () => vuePluginTemplate({
-          ...baseContext,
-          mode: 'server',
-        }, nuxt.options.ssr),
-      })
-    }
+
+    addTypeTemplate({
+      filename: 'quasar.shims.d.ts',
+      getContents: () => generateTemplateShims(baseContext),
+    })
 
     if (nuxt.options.components !== false) {
       for (const component of imports.components) {
         addComponent({
           name: component.name,
-          export: 'default',
-          filePath: component.path,
+          export: component.name,
+          filePath: 'quasar',
         })
       }
     }
@@ -210,15 +210,18 @@ export default defineNuxtModule<ModuleOptions>({
       for (const composable of imports.composables.filter(c => !ignoredComposables.includes(c.name))) {
         addImports({
           name: composable.name,
-          from: resolveLocal('./runtime/adapter'),
+          from: 'quasar',
         })
       }
       if (options.plugins) {
         for (const plugin of uniq(options.plugins)) {
-          addImports({
-            name: plugin,
-            from: resolveLocal('./runtime/adapter'),
-          })
+          const pluginPath = imports.plugins.find(p => p.name === plugin)?.path
+          if (pluginPath) {
+            addImports({
+              name: plugin,
+              from: 'quasar',
+            })
+          }
         }
       }
 
@@ -278,11 +281,6 @@ export default defineNuxtModule<ModuleOptions>({
         transformDirectivesPlugin(context),
         virtualQuasarEntryPlugin(context),
       )
-      if (hasKeys(options.components?.defaults)) {
-        config.plugins.unshift(
-          transformDefaultsPlugin(context),
-        )
-      }
 
       if (options.sassVariables) {
         config.plugins.push(transformScssPlugin(context))
@@ -334,7 +332,7 @@ function categorizeImports(importMap: Record<string, string>, quasarResolve: Res
   }
 
   for (const [name, path] of Object.entries(importMap)) {
-    const importData: ImportData = {
+    const importData: QuasarImportData = {
       name,
       path: quasarResolve(path),
     }

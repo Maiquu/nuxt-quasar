@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '../src/module',
     '@nuxt/devtools',
   ],
+  ssr: true,
   quasar: {
     plugins: [
       'AppFullscreen',
@@ -15,6 +16,7 @@ export default defineNuxtConfig({
       'LoadingBar',
       'Notify',
     ],
+    sassVariables: true,
     iconSet: {
       ...materialIcons,
       colorPicker: materialIconsRound.colorPicker,
@@ -24,13 +26,36 @@ export default defineNuxtConfig({
       fontIcons: ['material-icons'],
       animations: 'all',
     },
+    appConfigKey: 'nuxtQuasarCustom',
     config: {
       dark: true,
+      brand: {
+        primary: '#ff0000',
+      },
     },
     components: {
       defaults: {
         QBtn: {
-          glossy: true,
+          color: 'primary',
+        },
+        QLinearProgress: {
+          color: 'green',
+          size: '15px',
+          stripe: true,
+        },
+        QCircularProgress: {
+          color: 'blue',
+          indeterminate: true,
+        },
+        QSelect: {
+          outlined: true,
+          dense: true,
+        },
+        QInput: {
+          outlined: true,
+        },
+        QToggle: {
+          color: 'red',
         },
       },
     },

@@ -103,7 +103,6 @@ const buttons: QBtnProps[] = [
         :key="idx"
       >
         <q-btn
-          color="primary"
           v-bind="button"
         />
       </q-item>
@@ -112,5 +111,9 @@ const buttons: QBtnProps[] = [
       Directive Showcase
     </p>
     <example-list />
+    <p class="text-h6 q-pt-md">
+      Quasar Default Prop Values
+    </p>
+    <prop-defaults />
   </q-page>
 </template>

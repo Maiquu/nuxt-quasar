@@ -19,8 +19,8 @@ export function transformDirectivesPlugin(context: ModuleContext): VitePlugin {
 
       const s = new MagicString(code)
       const directives: {
+        name: string
         alias: string
-        path: string
       }[] = []
 
       let counter = 0
@@ -30,8 +30,8 @@ export function transformDirectivesPlugin(context: ModuleContext): VitePlugin {
         if (directive) {
           const alias = `__q_directive_${counter++}`
           directives.push({
+            name: directive.name,
             alias,
-            path: directive.path,
           })
           return alias
         } else {
@@ -42,7 +42,7 @@ export function transformDirectivesPlugin(context: ModuleContext): VitePlugin {
       if (directives.length) {
         s.prepend(
           `${directives
-            .map(d => `import ${d.alias} from "${d.path}"`)
+            .map(d => `import { ${d.name} as ${d.alias} } from "quasar"`)
             .join('\n')}\n`,
         )
       }

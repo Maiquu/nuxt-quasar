@@ -5,6 +5,7 @@ const QUASAR_ENTRY = 'quasar'
 const QUASAR_VIRTUAL_ENTRY = '/__quasar/entry.mjs'
 
 export function virtualQuasarEntryPlugin(context: ModuleContext): VitePlugin {
+  const { resolveQuasar } = context
   return {
     name: 'quasar:entry',
     enforce: 'pre',
@@ -12,14 +13,18 @@ export function virtualQuasarEntryPlugin(context: ModuleContext): VitePlugin {
     resolveId(id) {
       if (id === QUASAR_ENTRY) {
         return {
-          id: QUASAR_VIRTUAL_ENTRY,
+          id: context.dev
+            ? context.mode === 'client'
+              ? resolveQuasar('dist/quasar.esm.js')
+              : resolveQuasar('src/index.ssr.js')
+            : QUASAR_VIRTUAL_ENTRY,
           moduleSideEffects: false,
         }
       }
     },
 
     async load(id) {
-      if (id === QUASAR_VIRTUAL_ENTRY)
+      if (!context.dev && id === QUASAR_VIRTUAL_ENTRY)
         return Object
           .entries(context.imports.raw)
           .filter(([, path]) => !path.includes('/__tests__/'))
