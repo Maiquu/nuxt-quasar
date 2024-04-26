@@ -76,7 +76,7 @@ export default defineNuxtPlugin((nuxt) => {
   let ssrContext: { req: IncomingMessage; res: ServerResponse } | undefined
   let quasarProxy: QuasarServerPlugin | QuasarClientPlugin
   // Since brand used in `nuxt.config` is pushed to `nuxt.options.css`, we exclude it here
-  let config = defuFn(quasarAppConfig, omit(quasarNuxtConfig.config, ['brand']))
+  let config = defuFn(quasarAppConfig, omit(quasarNuxtConfig.config || {}, ['brand']))
 
   if (import.meta.server) {
     const BRAND_RE = /--q-(?:.+?):(?:.+?);/g
@@ -156,19 +156,22 @@ export default defineNuxtPlugin((nuxt) => {
 
   const quasar = useQuasar()
 
-  const asDefault = (value: unknown) => typeof value === 'object' ? () => value : value
+  const asDefault = (value: unknown) => (value && typeof value === 'object') ? () => value : value
 
   for (const [name, propDefaults] of Object.entries(components.defaults || {})) {
     const component = componentsWithDefaults[name]
     for (const [propName, defaultValue] of Object.entries(propDefaults)) {
       const propConfig = component.props[propName]
-      if (typeof propConfig === 'object') {
-        propConfig.default = asDefault(defaultValue)
-      } else if (typeof propConfig === 'function') {
+      // Constructor or Array of Constructors
+      if (Array.isArray(propConfig) || typeof propConfig === 'function') {
         component.props[propName] = {
           type: propConfig,
           default: asDefault(defaultValue),
         }
+      } else if (typeof propConfig === 'object') {
+        propConfig.default = asDefault(defaultValue)
+      } else {
+        throw new TypeError(`Unexpected prop definition type used at ${name}.props.${propName}, please open an issue.`)
       }
     }
   }
