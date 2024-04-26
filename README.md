@@ -63,6 +63,38 @@ That's it! You can now use Quasar Nuxt in your Nuxt app ✨
 </template>
 ```
 
+```ts
+// app.config.ts
+export default defineAppConfig({
+  // Configure Quasar's Vue plugin (with HMR support)
+  nuxtQuasar: {
+    brand: {
+      primary: '#3993DD'
+    },
+  }
+})
+```
+
+```ts
+export default defineNuxtConfig({
+  quasar: {
+    // Configurable Component Defaults
+    components: {
+      defaults: {
+        QBtn: {
+          dense: true,
+          flat: true,
+        },
+        QInput: {
+          dense: true
+        }
+      }
+    }
+  }
+})
+```
+
+
 > See detailed usage at [playground](https://github.com/Maiquu/nuxt-quasar/tree/main/playground)
 
 ## Options
@@ -107,16 +139,21 @@ Icon set used by Quasar Components. Should also be included in `extra.fontIcons`
 
 When enabled, it provides breakpoint aware versions for all flex (and display) related CSS classes.
 
-> Requires `sass` installed.
-
 > **Warning**
 > Note that there will be a noticeable bump in CSS footprint when enabling it. So only do it if you really need it.
+
+# appConfigKey
+- Type: `string`
+- Default: `nuxtQuasar`
+
+Config key used to configure quasar plugin.
 
 ### config
 - Type: `object`
 - Default: `{}`
 
 Configurate default settings of UI related plugins and directives (`Dialog`, `Ripple` etc).
+This object can also be configured via `app.config.ts`.
 
 ### config.brand
 - Type: `object`
