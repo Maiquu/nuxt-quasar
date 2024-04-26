@@ -32,7 +32,7 @@ describe('Quasar CSS injection', async () => {
       '@quasar/extras/mdi-v6/mdi-v6.css',
       quasarAnimationsPath,
       '@/assets/style.css',
-      'quasar/src/css/index.sass',
+      'quasar/dist/quasar.sass',
     ])
   })
 
@@ -61,7 +61,7 @@ describe('Quasar CSS injection', async () => {
       '@quasar/extras/mdi-v6/mdi-v6.css',
       quasarAnimationsPath,
       '@/assets/style.css',
-      'quasar/src/css/index.sass',
+      'quasar/dist/quasar.sass',
     ])
   })
 
@@ -111,7 +111,7 @@ describe('Quasar CSS injection', async () => {
     expect(result).toEqual([
       '@/assets/style.css',
       'quasar/dist/quasar.css',
-      'quasar/src/css/flex-addon.sass',
+      'quasar/dist/quasar.addon.css',
       '@/assets/variables.css',
     ])
   })
