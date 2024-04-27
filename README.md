@@ -142,7 +142,7 @@ When enabled, it provides breakpoint aware versions for all flex (and display) r
 > **Warning**
 > Note that there will be a noticeable bump in CSS footprint when enabling it. So only do it if you really need it.
 
-# appConfigKey
+### appConfigKey
 - Type: `string`
 - Default: `nuxtQuasar`
 
