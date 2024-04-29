@@ -190,22 +190,7 @@ Import animations provided by `@quasar/extras`.
 - Type: `object`
 - Default: `{}`
 
-> **Experimental**
-
-Set default prop values for quasar components. Uses [magicast](https://github.com/unjs/magicast) to modify component prop definitions.
-Does not support props that accepts function values.
-
-### components.deepDefaults
-- Type: `boolean`
-- Default: `false`
-
-> **Experimental**
-
-When `true`, defaults will be applied to components that aren't used directly.
-For example, if defaults for `QBtn` are set, it will affect all components that use `QBtn`. (For example: `QBtnDropdown`, `QEditor`)
-
-Currently not very stable in development environment since vite will set `Cache-Control` headers for files located in `node_modules`
-and changes made may not take effect without resetting the cache.
+Set default prop values for quasar components. Does not support props that accepts function values.
 
 ## CSS Import Ordering
 
