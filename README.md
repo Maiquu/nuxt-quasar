@@ -20,7 +20,7 @@
 
 ## Quick Setup
 
-1. Add `nuxt-quasar-ui` dependency to your project
+Add `nuxt-quasar-ui` dependency to your project
 
 ```bash
 # Using pnpm
@@ -34,17 +34,6 @@ npx nuxi@latest module add quasar
 # Using npm
 npm install quasar @quasar/extras
 npx nuxi@latest module add quasar
-```
-
-2. Add `nuxt-quasar-ui` to the `modules` section of `nuxt.config.ts`
-
-```js
-export default defineNuxtConfig({
-  modules: [
-    'nuxt-quasar-ui'
-  ],
-  quasar: { /* */ }
-})
 ```
 
 That's it! You can now use Quasar Nuxt in your Nuxt app ✨
