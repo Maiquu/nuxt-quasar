@@ -65,6 +65,7 @@ export default defineAppConfig({
 ```
 
 ```ts
+// nuxt.config.ts
 export default defineNuxtConfig({
   quasar: {
     // Configurable Component Defaults
