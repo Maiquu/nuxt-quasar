@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.1.1
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.0...v2.1.1)
+
+This patch reverts ([ce75131](https://github.com/Maiquu/nuxt-quasar/commit/ce75131)). This was a breaking change for users who relied on auto installation of peer dependencies.
+
+### 📖 Documentation
+
+- Updated README to reflect component default changes ([72117e2](https://github.com/Maiquu/nuxt-quasar/commit/72117e2))
+- Removed second step from quick setup guide ([f742e4a](https://github.com/Maiquu/nuxt-quasar/commit/f742e4a))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.0
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.0.8...v2.1.0)
