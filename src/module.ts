@@ -299,10 +299,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
       config.externals ??= {}
       config.externals.inline ??= []
-      config.externals.inline.push(
-        resolveQuasar('lang/en-US'),
-        resolveQuasar('icon-set/material-icons'),
-      )
+      config.externals.inline.push('quasar')
     })
 
     nuxt.hook('devtools:customTabs', (tabs) => {
