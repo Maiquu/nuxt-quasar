@@ -158,6 +158,7 @@ export default defineNuxtModule<ModuleOptions>({
       dev: nuxt.options.dev,
       imports,
       options,
+      quasarVersion,
       resolveLocal,
       resolveQuasar,
       resolveQuasarExtras,

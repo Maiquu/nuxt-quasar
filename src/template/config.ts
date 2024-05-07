@@ -1,3 +1,4 @@
+import semver from 'semver'
 import type { ModuleContext } from '../types'
 import { hasKeys, uniq } from '../utils'
 
@@ -7,7 +8,7 @@ function when(condition: any, content: string | (() => string)) {
     : ''
 }
 
-export function generateTemplateQuasarConfig(context: Pick<ModuleContext, 'options' | 'imports'>): string {
+export function generateTemplateQuasarConfig(context: Omit<ModuleContext, 'mode'>): string {
   const plugins = uniq(context.options.plugins || [])
   const { config, lang, iconSet, components } = context.options
   const componentsWithDefaults = Object
@@ -15,9 +16,12 @@ export function generateTemplateQuasarConfig(context: Pick<ModuleContext, 'optio
     .filter(([_, props]) => hasKeys(props))
     .map(([name]) => name)
 
+  // https://github.com/quasarframework/quasar/releases/tag/quasar-v2.16.0
+  const ext = semver.gte(context.quasarVersion, '2.16.0') ? '.js' : '.mjs'
+
   return `\
-${when(lang, () => `import lang from "quasar/lang/${lang}.mjs"`)}
-${when(typeof iconSet === 'string', () => `import iconSet from "quasar/icon-set/${iconSet}.mjs"`)}
+${when(lang, () => `import lang from "quasar/lang/${lang}${ext}"`)}
+${when(typeof iconSet === 'string', () => `import iconSet from "quasar/icon-set/${iconSet}${ext}"`)}
 ${when(plugins.length, () => `import { ${plugins} } from "quasar"`)}
 ${when(componentsWithDefaults.length, () => `import { ${componentsWithDefaults} } from "quasar"`)}
 

@@ -1,11 +1,20 @@
 import type { Plugin as VitePlugin } from 'vite'
+import semver from 'semver'
 import type { ModuleContext } from '../../types'
 
 const QUASAR_ENTRY = 'quasar'
 const QUASAR_VIRTUAL_ENTRY = '/__quasar/entry.mjs'
 
 export function virtualQuasarEntryPlugin(context: ModuleContext): VitePlugin {
-  const { resolveQuasar } = context
+  const { resolveQuasar, quasarVersion } = context
+
+  // https://github.com/quasarframework/quasar/releases/tag/quasar-v2.16.0
+  const clientEntry = semver.gte(quasarVersion, '2.16.0')
+    ? resolveQuasar('dist/quasar.client.js')
+    : resolveQuasar('dist/quasar.esm.js')
+
+  const serverEntry = resolveQuasar('src/index.ssr.js')
+
   return {
     name: 'quasar:entry',
     enforce: 'pre',
@@ -15,8 +24,8 @@ export function virtualQuasarEntryPlugin(context: ModuleContext): VitePlugin {
         return {
           id: context.dev
             ? context.mode === 'client'
-              ? resolveQuasar('dist/quasar.esm.js')
-              : resolveQuasar('src/index.ssr.js')
+              ? clientEntry
+              : serverEntry
             : QUASAR_VIRTUAL_ENTRY,
           moduleSideEffects: false,
         }
