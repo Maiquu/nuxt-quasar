@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.1.2
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.1...v2.1.2)
+
+### 🩹 Fixes
+
+- Resolved quasar paths for v2.16 and above ([870d8ea](https://github.com/Maiquu/nuxt-quasar/commit/870d8ea))
+- Inlined quasar in ssr builds ([86568c2](https://github.com/Maiquu/nuxt-quasar/commit/86568c2))
+
+### 🏡 Chore
+
+- Bumped quasar devDependency ([a308f36](https://github.com/Maiquu/nuxt-quasar/commit/a308f36))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.1
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.0...v2.1.1)
