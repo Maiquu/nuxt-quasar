@@ -126,7 +126,7 @@ export default defineNuxtModule<ModuleOptions>({
     version,
     configKey: 'quasar',
     compatibility: {
-      nuxt: '^3.0.0',
+      nuxt: '>=3.0.0',
       bridge: false,
     },
   },
