@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.1.3
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.2...v2.1.3)
+
+### 🏡 Chore
+
+- Indicate compatibility with new v4 major ([fc39b76](https://github.com/Maiquu/nuxt-quasar/commit/fc39b76))
+- Bump packageManager version ([b6859bb](https://github.com/Maiquu/nuxt-quasar/commit/b6859bb))
+- Update non-major dependencies ([60d529a](https://github.com/Maiquu/nuxt-quasar/commit/60d529a))
+- Updated `@nuxt/module-builder` ([7c5ab7e](https://github.com/Maiquu/nuxt-quasar/commit/7c5ab7e))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v2.1.2
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.1...v2.1.2)
