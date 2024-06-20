@@ -40,30 +40,35 @@
     "quasar": "^2.8.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.11.1",
+    "@nuxt/kit": "^3.12.2",
     "defu": "^6.1.4",
-    "magic-string": "^0.30.8",
+    "magic-string": "^0.30.10",
     "p-memoize": "^7.1.1",
-    "semver": "^7.6.0"
+    "semver": "^7.6.2"
   },
   "devDependencies": {
     "@antfu/eslint-config-ts": "0.39.5",
     "@nuxt/devtools": "latest",
     "@nuxt/module-builder": "^0.5.5",
-    "@nuxt/schema": "^3.11.1",
-    "@nuxt/test-utils": "^3.12.0",
+    "@nuxt/schema": "^3.12.2",
+    "@nuxt/test-utils": "^3.13.1",
     "@quasar/extras": "^1.16.11",
-    "@types/jsdom": "^21.1.6",
+    "@types/jsdom": "^21.1.7",
     "changelogen": "^0.5.5",
     "eslint": "^8.57.0",
     "fast-folder-size": "^2.2.0",
-    "jsdom": "^24.0.0",
-    "nuxt": "^3.11.1",
-    "quasar": "^2.16.1",
-    "sass": "^1.75.0",
-    "typescript": "^5.4.3",
-    "vite": "^5.2.7",
-    "vitest": "^1.4.0",
-    "vue": "^3.4.21"
+    "jsdom": "^24.1.0",
+    "nuxt": "^3.12.2",
+    "quasar": "^2.16.4",
+    "sass": "^1.77.6",
+    "typescript": "^5.4.5",
+    "vite": "^5.3.1",
+    "vitest": "^1.6.0",
+    "vue": "^3.4.29"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowAny": ["@opentelemetry/*"]
+    }
   }
 }
