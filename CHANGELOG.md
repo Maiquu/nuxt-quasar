@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.1.4
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.3...v2.1.4)
+
+### 🏡 Chore
+
+- Update dependencies ([530788a](https://github.com/Maiquu/nuxt-quasar/commit/530788a))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.3
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.2...v2.1.3)
