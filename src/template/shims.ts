@@ -25,7 +25,7 @@ declare module '${moduleName}' {
   }
 }
 
-declare module 'nuxt/schema' {
+declare module '@nuxt/schema' {
   interface AppConfigInput {
     [${JSON.stringify(context.options.appConfigKey)}]?: import("nuxt-quasar-ui").QuasarUIConfiguration
   }
