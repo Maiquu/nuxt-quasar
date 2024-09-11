@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.1.5
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.4...v2.1.5)
+
+### 🩹 Fixes
+
+- Augment `@nuxt/schema` rather than `nuxt/schema` ([9bf66c3](https://github.com/Maiquu/nuxt-quasar/commit/9bf66c3))
+
+### 🏡 Chore
+
+- Update dependencies ([e9aca04](https://github.com/Maiquu/nuxt-quasar/commit/e9aca04))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v2.1.4
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.3...v2.1.4)
