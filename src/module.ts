@@ -200,6 +200,11 @@ export default defineNuxtModule<ModuleOptions>({
           name: component.name,
           export: component.name,
           filePath: 'quasar',
+          // TOFIX: Nuxt v3.13.2 tries to resolve full component paths with following PR: https://github.com/nuxt/nuxt/pull/28843
+          // Since this module has a custom way of resolving quasar, this breaks things.
+          // Adding this property prevents nuxt from resolving components, but since this is an internal property, it might break again in future.
+          // @ts-expect-error untyped internal property
+          _scanned: true,
         })
       }
     }
