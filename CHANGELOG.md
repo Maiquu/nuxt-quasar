@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.1.6
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.5...v2.1.6)
+
+### 🩹 Fixes
+
+- Error caused by incorrect resolving of components, closes #102 ([#102](https://github.com/Maiquu/nuxt-quasar/issues/102))
+
+### 🏡 Chore
+
+- Update nuxt to v3.13.2 ([11768fc](https://github.com/Maiquu/nuxt-quasar/commit/11768fc))
+- Update dependencies ([1f36003](https://github.com/Maiquu/nuxt-quasar/commit/1f36003))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.5
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.4...v2.1.5)
