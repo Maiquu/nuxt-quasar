@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.1.7
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.6...v2.1.7)
+
+### 🩹 Fixes
+
+- Empty runtime/plugin.d.ts, resolves #104 ([#104](https://github.com/Maiquu/nuxt-quasar/issues/104))
+
+### 🏡 Chore
+
+- **ci:** Bump node version to v22 ([af3baf0](https://github.com/Maiquu/nuxt-quasar/commit/af3baf0))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.6
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.5...v2.1.6)
