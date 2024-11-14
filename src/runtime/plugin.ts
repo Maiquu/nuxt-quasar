@@ -4,7 +4,8 @@ import type { UseHeadInput } from 'unhead'
 import type { QVueGlobals, QuasarIconSet, QuasarLanguage, QuasarUIConfiguration } from 'quasar'
 import type { App as VueApp } from 'vue'
 import { defuFn } from 'defu'
-import { computed, defineNuxtPlugin, reactive, useAppConfig, useHead, watch } from '#imports'
+import { defineNuxtPlugin } from '#app'
+import { computed, reactive, useAppConfig, useHead, watch } from '#imports'
 import { appConfigKey, componentsWithDefaults, quasarNuxtConfig } from '#build/quasar.config.mjs'
 
 interface QuasarPluginClientContext {
