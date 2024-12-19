@@ -44,10 +44,10 @@ export function transformScssPlugin({ options }: ModuleContext): VitePlugin {
 }
 
 function createScssTransform(fileExtension: string, sassVariables?: string | boolean): (code: string) => string {
-  const sassImportCode = ['@import \'quasar/src/css/variables.sass\'', '']
+  const sassImportCode = ['@use \'quasar/src/css/variables.sass\' as *', '']
 
   if (typeof sassVariables === 'string') {
-    sassImportCode.unshift(`@import '${sassVariables}'`)
+    sassImportCode.unshift(`@use '${sassVariables}'`)
   }
 
   const prefix = fileExtension === 'sass'
