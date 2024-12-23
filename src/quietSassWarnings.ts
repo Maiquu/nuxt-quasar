@@ -1,49 +1,21 @@
 import type { ViteConfig } from '@nuxt/schema'
-import type { Options as SassOptions } from 'sass'
+import type { LoggerWarnOptions, Options as SassOptions } from 'sass'
+import satisfies from 'semver/functions/satisfies.js'
+import defu from 'defu'
+import type { ModuleContext } from './types'
 
 /**
+ * Suppress sass deprecation warnings caused by quasar by modifying vite preprocessor options.
  *
- * Note: Following only applies to quasar <=2.13
- *
- * Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings polluting the console log when running Nuxt. This function silences 'Using / for division outside of calc() is deprecated' warnings by routing those log messages to a dump.
- * See an example of this here: https://github.com/quasarframework/quasar/pull/15514#issue-1606006213
- * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007
+ * If the installed sass version supports the `silenceDeprecations` option, it uses that. Otherwise, it falls back to a hacky workaround.
+ * Said workaround only tries to suppress `slash-div` deprecation.
  *
  * @param config
  */
-export function enableQuietSassWarnings(config: ViteConfig) {
-  // Source of this fix: https://github.com/quasarframework/quasar/pull/12034#issuecomment-1021503176
-  const silenceSomeSassDeprecationWarnings: SassOptions<'sync'> = {
-    verbose: true,
-    logger: {
-      warn(logMessage, logOptions) {
-        const { stderr } = process
-        const span = logOptions.span ?? undefined
-        const stack = (logOptions.stack === 'null' ? undefined : logOptions.stack) ?? undefined
-
-        if (logOptions.deprecation) {
-          if (logMessage.startsWith('Using / for division outside of calc() is deprecated')) {
-            // silences above deprecation warning
-            return
-          }
-          stderr.write('DEPRECATION ')
-        }
-        stderr.write(`WARNING: ${logMessage}\n`)
-
-        if (span !== undefined) {
-          // output the snippet that is causing this warning
-          stderr.write(`\n"${span.text}"\n`)
-        }
-
-        if (stack !== undefined) {
-          // indent each line of the stack
-          stderr.write(`    ${stack.toString().trimEnd().replace(/\n/gm, '\n    ')}\n`)
-        }
-
-        stderr.write('\n')
-      },
-    },
-  }
+export function enableQuietSassWarnings(context: ModuleContext, config: ViteConfig) {
+  // Use deprecation API if possible: https://github.com/sass/dart-sass/blob/main/CHANGELOG.md#1740
+  const hasDeprecationAPI = context.sassVersion ? satisfies(context.sassVersion, '>=1.74') : false
+  const hasSlashDivUsage = satisfies(context.quasarVersion, '<=2.13')
 
   config.css ??= {}
   config.css.preprocessorOptions ??= {}
@@ -52,9 +24,52 @@ export function enableQuietSassWarnings(config: ViteConfig) {
 
   for (const type of types) {
     const userConfig = config.css.preprocessorOptions[type]
-    config.css.preprocessorOptions[type] = {
-      ...silenceSomeSassDeprecationWarnings,
-      ...userConfig,
+    const sassConfig: SassOptions<'sync'> = {}
+    if (hasDeprecationAPI) {
+      sassConfig.silenceDeprecations = [
+        'import',
+        'global-builtin',
+        'legacy-js-api',
+        ...(satisfies(context.quasarVersion, '<=2.13.0') ? ['slash-div'] as const : []),
+      ]
+    } else if (hasSlashDivUsage) {
+      sassConfig.verbose = true
+      sassConfig.logger = {
+        warn: silenceSlashDivDeprecations,
+      }
     }
+    config.css.preprocessorOptions[type] = defu(userConfig, sassConfig)
   }
+}
+
+/**
+ * Hacky way to silence deprecation warnings pre-deprecation API
+ *
+ * Source: https://github.com/quasarframework/quasar/pull/12034#issuecomment-1021503176
+ */
+function silenceSlashDivDeprecations(logMessage: string, logOptions: LoggerWarnOptions) {
+  const { stderr } = process
+  const span = logOptions.span ?? undefined
+  const stack = (logOptions.stack === 'null' ? undefined : logOptions.stack) ?? undefined
+
+  if (logOptions.deprecation) {
+    if (logMessage.startsWith('Using / for division outside of calc() is deprecated')) {
+      // silences above deprecation warning
+      return
+    }
+    stderr.write('DEPRECATION ')
+  }
+  stderr.write(`WARNING: ${logMessage}\n`)
+
+  if (span !== undefined) {
+    // output the snippet that is causing this warning
+    stderr.write(`\n"${span.text}"\n`)
+  }
+
+  if (stack !== undefined) {
+    // indent each line of the stack
+    stderr.write(`    ${stack.toString().trimEnd().replace(/\n/gm, '\n    ')}\n`)
+  }
+
+  stderr.write('\n')
 }

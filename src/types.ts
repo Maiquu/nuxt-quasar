@@ -36,6 +36,7 @@ export interface ModuleContext {
   options: ModuleOptions
   mode: 'server' | 'client'
   quasarVersion: string
+  sassVersion: string | null
   resolveLocal: ResolveFn
   resolveQuasar: ResolveFn
   resolveQuasarExtras: ResolveFn

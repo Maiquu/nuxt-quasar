@@ -1,9 +1,9 @@
-import { dirname } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
-import satisfies from 'semver/functions/satisfies.js'
+import { parseNodeModulePath } from 'mlly'
 import { version } from '../package.json'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
 import type { ModuleContext, QuasarFontIconSet, QuasarImportData, QuasarImports, QuasarSvgIconSet, QuasarUIConfiguration, ResolveFn } from './types'
@@ -36,18 +36,16 @@ export interface ModuleOptions {
    * @default false
    */
   sassVariables?: string | boolean
-
   /**
    *
-   * Note: Following only applies to quasar <=2.13
+   * Suppress sass deprecation warnings caused by quasar by modifying vite preprocessor options.
    *
-   * Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings polluting the console log when running Nuxt. This function silences 'Using / for division outside of calc() is deprecated' warnings by routing those log messages to a dump.
+   * If the installed sass version supports the `silenceDeprecations` option, it uses that. Otherwise, it falls back to a hacky workaround.
+   * Said workaround only tries to suppress `slash-div` deprecation.
    *
-   * See an example of this here: https://github.com/quasarframework/quasar/pull/15514#issue-1606006213
+   * Suppressed deprecations: `import`, `global-builtin`, `legacy-js-api` and `slash-div` if quasar version is older than `2.14`.
    *
-   * Reasoning for Quasar to not fix this: https://github.com/quasarframework/quasar/pull/14213#issuecomment-1219170007
-   *
-   * @default false // true if quasar version is <=2.13
+   * @default true
    */
   quietSassWarnings?: boolean
 
@@ -136,6 +134,7 @@ export default defineNuxtModule<ModuleOptions>({
     autoIncludeIconSet: true,
     cssAddon: false,
     sassVariables: false,
+    quietSassWarnings: true,
     appConfigKey: 'nuxtQuasar',
     components: {
       defaults: {},
@@ -152,6 +151,7 @@ export default defineNuxtModule<ModuleOptions>({
     const importMap = await readJSON(resolveQuasar('dist/transforms/import-map.json')) as Record<string, string>
     const transformAssetUrls = await readJSON(resolveQuasar('dist/transforms/loader-asset-urls.json')) as AssetURLOptions
     const imports = categorizeImports(importMap, resolveQuasar)
+    const sassVersion = await getSassVersion()
 
     const baseContext: Omit<ModuleContext, 'mode'> = {
       ssr: nuxt.options.ssr,
@@ -159,13 +159,11 @@ export default defineNuxtModule<ModuleOptions>({
       imports,
       options,
       quasarVersion,
+      sassVersion,
       resolveLocal,
       resolveQuasar,
       resolveQuasarExtras,
     }
-
-    // sass version is no longer pinned since v2.14
-    options.quietSassWarnings ??= satisfies(quasarVersion, '<=2.13')
 
     // Include `iconSet` if its missing from `extras.fontIcons`
     if (
@@ -277,7 +275,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       if (options.quietSassWarnings) {
-        enableQuietSassWarnings(config)
+        enableQuietSassWarnings(context, config)
       }
 
       config.plugins ??= []
@@ -370,4 +368,18 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSet, resolveQuasarExtra
 
     return icons
   }
+}
+
+async function getSassVersion(): Promise<string | null> {
+  try {
+    const sassEntry = await resolvePath('sass')
+    const modulePath = parseNodeModulePath(sassEntry)
+    if (modulePath.dir) {
+      const { version } = await readJSON(resolve(modulePath.dir, modulePath.name, './package.json'))
+      return version
+    }
+  } catch {
+    // noop
+  }
+  return null
 }
