@@ -7,6 +7,11 @@ export default defineNuxtConfig({
     '../src/module',
     '@nuxt/devtools',
   ],
+  app: {
+    head: {
+      title: 'Nuxt Quasar Playground',
+    },
+  },
   ssr: true,
   quasar: {
     plugins: [
