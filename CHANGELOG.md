@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.1.8
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.7...v2.1.8)
+
+### 🩹 Fixes
+
+- Suppress deprecation warnings emitted after `sass@1.79.0` ([7d51d82](https://github.com/Maiquu/nuxt-quasar/commit/7d51d82))
+
+### 🏡 Chore
+
+- Update deps and recreate lockfile ([116a74a](https://github.com/Maiquu/nuxt-quasar/commit/116a74a))
+- Add title to playground ([55ec640](https://github.com/Maiquu/nuxt-quasar/commit/55ec640))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.7
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.6...v2.1.7)
