@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.1.9
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.8...v2.1.9)
+
+### 🩹 Fixes
+
+- Build error by pinning typescript version to `5.6.3` ([596ddee](https://github.com/Maiquu/nuxt-quasar/commit/596ddee))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.8
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.7...v2.1.8)
