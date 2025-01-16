@@ -2,7 +2,7 @@ import semver from 'semver'
 import type { ModuleContext } from '../types'
 import { hasKeys, uniq } from '../utils'
 
-function when(condition: any, content: string | (() => string)) {
+function when(condition: unknown, content: string | (() => string)) {
   return condition
     ? typeof content === 'function' ? content() : content
     : ''

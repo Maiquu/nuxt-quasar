@@ -63,7 +63,7 @@ export type QuasarPropType =
 
 export interface QuasarPropMetadata {
   type: QuasarPropType | QuasarPropType[]
-  default?: any
+  default?: unknown
   required?: boolean
   values?: string[]
   extends?: string

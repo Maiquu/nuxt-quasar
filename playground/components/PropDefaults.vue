@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {ref} from "#imports";
-const toggle = ref(true);
-</script>
+import { ref } from '#imports'
 
+const toggle = ref(true)
+</script>
 
 <template>
   <div>
@@ -21,7 +21,7 @@ const toggle = ref(true);
             Q-Toggle with red as the default color:
           </td>
           <td>
-            <QToggle v-model="toggle"/>
+            <QToggle v-model="toggle" />
           </td>
         </tr>
         <tr>
@@ -29,7 +29,7 @@ const toggle = ref(true);
             Q-Linear-Progress with green as the default color:
           </td>
           <td>
-            <QLinearProgress indeterminate/>
+            <QLinearProgress indeterminate />
           </td>
         </tr>
       </tbody>

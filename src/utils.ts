@@ -18,13 +18,13 @@ export function normalizePath(id: string): string {
 }
 
 export function omit<T extends object, K extends keyof T & string>(object: T, keys: K[]): Omit<T, K>
-export function omit(object: Record<string, any>, keys: string[]): Record<string, any> {
+export function omit(object: Record<string, unknown>, keys: string[]): Record<string, unknown> {
   return Object.keys(object).reduce((output, key) => {
     if (!keys.includes(key)) {
       output[key] = object[key]
     }
     return output
-  }, {} as Record<string, any>)
+  }, {} as Record<string, unknown>)
 }
 
 export const readFileMemoized = pMemoize(async (path: string) => {

@@ -3,7 +3,7 @@ import { useNuxt } from '@nuxt/kit'
 import type { Plugin as VitePlugin } from 'vite'
 import type { ModuleContext } from '../../types'
 
-const directivesRegExp = /(?<=[ (])_?resolveDirective\(\s*["']([^'"]*?)["'][\s,]*[^)]*\)/g
+const directivesRegExp = /(?<=[ (])_?resolveDirective\(\s*["']([^'"]*)["'][^)]*\)/g
 
 export function transformDirectivesPlugin(context: ModuleContext): VitePlugin {
   const { sourcemap } = useNuxt().options
@@ -34,7 +34,8 @@ export function transformDirectivesPlugin(context: ModuleContext): VitePlugin {
             alias,
           })
           return alias
-        } else {
+        }
+        else {
           return full
         }
       })

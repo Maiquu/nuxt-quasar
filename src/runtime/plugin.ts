@@ -9,7 +9,7 @@ import { computed, reactive, useAppConfig, useHead, watch } from '#imports'
 import { appConfigKey, componentsWithDefaults, quasarNuxtConfig } from '#build/quasar.config.mjs'
 
 interface QuasarPluginClientContext {
-  parentApp: VueApp<any>
+  parentApp: VueApp
   $q: QVueGlobals
   lang: QuasarLanguage
   iconSet: QuasarIconSet
@@ -17,7 +17,7 @@ interface QuasarPluginClientContext {
 }
 
 interface QuasarPluginServerContext {
-  parentApp: VueApp<any>
+  parentApp: VueApp
   $q: QVueGlobals
   lang: QuasarLanguage
   iconSet: QuasarIconSet
@@ -27,7 +27,7 @@ interface QuasarPluginServerContext {
 interface QuasarSSRContext {
   req: IncomingMessage
   res: ServerResponse
-  $q: any
+  $q: unknown
   _meta: {
     htmlAttrs: string
     headTags: string
@@ -36,8 +36,8 @@ interface QuasarSSRContext {
     bodyAttrs: string
     bodyTags: string
   }
-  _modules: any[]
-  onRendered: ((...args: any[]) => any)[]
+  _modules: unknown[]
+  onRendered: ((...args: unknown[]) => unknown)[]
   __qPrevLang: string
 }
 
@@ -62,25 +62,25 @@ function getPrimaryColor() {
 }
 
 function omit<T extends object, K extends keyof T & string>(object: T, keys: K[]): Omit<T, K>
-function omit(object: Record<string, any>, keys: string[]): Record<string, any> {
+function omit(object: Record<string, unknown>, keys: string[]): Record<string, unknown> {
   return Object.keys(object).reduce((output, key) => {
     if (!keys.includes(key)) {
       output[key] = object[key]
     }
     return output
-  }, {} as Record<string, any>)
+  }, {} as Record<string, unknown>)
 }
 
 export default defineNuxtPlugin((nuxt) => {
   const quasarAppConfig = useAppConfig()[appConfigKey] as QuasarUIConfiguration & { addressbarColor?: string }
   const { lang, iconSet, plugins, components } = quasarNuxtConfig
-  let ssrContext: { req: IncomingMessage; res: ServerResponse } | undefined
+  let ssrContext: { req: IncomingMessage, res: ServerResponse } | undefined
   let quasarProxy: QuasarServerPlugin | QuasarClientPlugin
   // Since brand used in `nuxt.config` is pushed to `nuxt.options.css`, we exclude it here
   let config = defuFn(quasarAppConfig, omit(quasarNuxtConfig.config || {}, ['brand']))
 
   if (import.meta.server) {
-    const BRAND_RE = /--q-(?:.+?):(?:.+?);/g
+    const BRAND_RE = /--q-[\w-]+:.+?;/g
     const meta = reactive({
       bodyClasses: '',
       htmlAttrs: '',
@@ -108,7 +108,7 @@ export default defineNuxtPlugin((nuxt) => {
           style: bodyStyles.value,
         },
         htmlAttrs: htmlAttrsRecord.value,
-      } as UseHeadInput<any>)),
+      } as UseHeadInput<object>)),
     )
     ssrContext = {
       req: nuxt.ssrContext!.event.node.req,
@@ -119,14 +119,15 @@ export default defineNuxtPlugin((nuxt) => {
         meta.bodyClasses = ssrContext._meta.bodyClasses
         meta.htmlAttrs = ssrContext._meta.htmlAttrs
         meta.endingHeadTags = ssrContext._meta.endingHeadTags
-        ssrContext._meta = new Proxy({} as Record<string | symbol, any>, {
+        ssrContext._meta = new Proxy({} as Record<string | symbol, unknown>, {
           get(target, key) {
             return meta[key as MetaKey] ?? target[key]
           },
           set(target, key, value) {
             if (typeof meta[key as MetaKey] === 'string') {
               meta[key as MetaKey] = value
-            } else {
+            }
+            else {
               target[key] = value
             }
             return true
@@ -134,7 +135,8 @@ export default defineNuxtPlugin((nuxt) => {
         }) as QuasarSSRContext['_meta']
       },
     } as QuasarServerPlugin
-  } else {
+  }
+  else {
     quasarProxy = {
       install({ onSSRHydrated }) {
         nuxt.hook('app:suspense:resolve', () => {
@@ -169,9 +171,18 @@ export default defineNuxtPlugin((nuxt) => {
           type: propConfig,
           default: asDefault(defaultValue),
         }
-      } else if (typeof propConfig === 'object') {
-        propConfig.default = asDefault(defaultValue)
-      } else {
+      }
+      else if (typeof propConfig === 'object') {
+        if (propConfig) {
+          propConfig.default = asDefault(defaultValue)
+        }
+        else {
+          component.props[propName] = {
+            default: asDefault(defaultValue),
+          }
+        }
+      }
+      else {
         throw new TypeError(`Unexpected prop definition type used at ${name}.props.${propName}, please open an issue.`)
       }
     }
@@ -191,7 +202,8 @@ export default defineNuxtPlugin((nuxt) => {
         for (const [name, color] of Object.entries(modifiedBrand)) {
           if (!color) {
             document.body.style.removeProperty(`--q-${name}`)
-          } else {
+          }
+          else {
             document.body.style.setProperty(`--q-${name}`, color)
           }
         }

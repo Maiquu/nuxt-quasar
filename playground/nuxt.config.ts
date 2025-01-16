@@ -2,17 +2,17 @@ import materialIcons from 'quasar/icon-set/svg-material-icons'
 import materialIconsRound from 'quasar/icon-set/svg-material-icons-round'
 
 export default defineNuxtConfig({
-  compatibilityDate: '2024-08-08',
   modules: [
     '../src/module',
     '@nuxt/devtools',
   ],
+  ssr: true,
   app: {
     head: {
       title: 'Nuxt Quasar Playground',
     },
   },
-  ssr: true,
+  compatibilityDate: '2024-08-08',
   quasar: {
     plugins: [
       'AppFullscreen',

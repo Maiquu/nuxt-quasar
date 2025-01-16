@@ -10,7 +10,6 @@ import type { ModuleContext } from './types'
  * If the installed sass version supports the `silenceDeprecations` option, it uses that. Otherwise, it falls back to a hacky workaround.
  * Said workaround only tries to suppress `slash-div` deprecation.
  *
- * @param config
  */
 export function enableQuietSassWarnings(context: ModuleContext, config: ViteConfig) {
   // Use deprecation API if possible: https://github.com/sass/dart-sass/blob/main/CHANGELOG.md#1740
@@ -32,7 +31,8 @@ export function enableQuietSassWarnings(context: ModuleContext, config: ViteConf
         'legacy-js-api',
         ...(satisfies(context.quasarVersion, '<=2.13.0') ? ['slash-div'] as const : []),
       ]
-    } else if (hasSlashDivUsage) {
+    }
+    else if (hasSlashDivUsage) {
       sassConfig.verbose = true
       sassConfig.logger = {
         warn: silenceSlashDivDeprecations,
@@ -68,7 +68,7 @@ function silenceSlashDivDeprecations(logMessage: string, logOptions: LoggerWarnO
 
   if (stack !== undefined) {
     // indent each line of the stack
-    stderr.write(`    ${stack.toString().trimEnd().replace(/\n/gm, '\n    ')}\n`)
+    stderr.write(`    ${stack.toString().trimEnd().replace(/\n/g, '\n    ')}\n`)
   }
 
   stderr.write('\n')

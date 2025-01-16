@@ -23,7 +23,8 @@ export function transformScssPlugin({ options }: ModuleContext): VitePlugin {
 
         if (lang?.endsWith('.scss')) {
           code = scssTransform(src)
-        } else if (lang?.endsWith('.sass')) {
+        }
+        else if (lang?.endsWith('.sass')) {
           code = sassTransform(src)
         }
       }
@@ -31,7 +32,8 @@ export function transformScssPlugin({ options }: ModuleContext): VitePlugin {
       if (!query.vue) {
         if (filename.endsWith('.scss')) {
           code = scssTransform(src)
-        } else if (filename.endsWith('.sass')) {
+        }
+        else if (filename.endsWith('.sass')) {
           code = sassTransform(src)
         }
       }

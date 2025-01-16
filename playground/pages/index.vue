@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar';
+import { useQuasar } from 'quasar'
 import type { QBtnProps, QNotifyOptions } from 'quasar'
 
 const { dialog, fullscreen, bottomSheet, loading, loadingBar, notify, dark } = useQuasar()
@@ -16,24 +16,24 @@ const showBottomsheet = () => bottomSheet({
     {
       label: 'Drive',
       img: 'https://cdn.quasar.dev/img/logo_drive_128px.png',
-      id: 'drive'
+      id: 'drive',
     },
     {
       label: 'Keep',
       img: 'https://cdn.quasar.dev/img/logo_keep_128px.png',
-      id: 'keep'
+      id: 'keep',
     },
     {
       label: 'Google Hangouts',
       img: 'https://cdn.quasar.dev/img/logo_hangouts_128px.png',
-      id: 'calendar'
+      id: 'calendar',
     },
     {
       label: 'Calendar',
       img: 'https://cdn.quasar.dev/img/logo_calendar_128px.png',
-      id: 'calendar'
+      id: 'calendar',
     },
-  ]
+  ],
 })
 
 const random = <T extends string>(items: T[]): T =>
@@ -44,11 +44,11 @@ type Position = Exclude<QNotifyOptions['position'], undefined>
 const buttons: QBtnProps[] = [
   {
     label: 'Fullscreen',
-    onClick: () => fullscreen.toggle()
+    onClick: () => fullscreen.toggle(),
   },
   {
-    label: "Bottomsheet",
-    onClick: () => showBottomsheet()
+    label: 'Bottomsheet',
+    onClick: () => showBottomsheet(),
   },
   {
     label: 'Loading',
@@ -57,7 +57,7 @@ const buttons: QBtnProps[] = [
       setTimeout(() => {
         loading.hide()
       }, 1000)
-    }
+    },
   },
   {
     label: 'LoadingBar',
@@ -66,15 +66,15 @@ const buttons: QBtnProps[] = [
       setTimeout(() => {
         loadingBar.stop()
       }, 1000)
-    }
+    },
   },
   {
     label: 'Dialog',
-    onClick: () => dialog({ message: 'Hello World' })
+    onClick: () => dialog({ message: 'Hello World' }),
   },
   {
     label: 'Dark',
-    onClick: () => dark.toggle()
+    onClick: () => dark.toggle(),
   },
   {
     label: 'Notify',
@@ -86,12 +86,12 @@ const buttons: QBtnProps[] = [
         'center',
         'bottom',
         'top',
-      ])
-    })
+      ]),
+    }),
   },
 ]
-
 </script>
+
 <template>
   <q-page class="q-pl-lg">
     <p class="text-h6 q-pt-md">

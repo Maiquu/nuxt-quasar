@@ -40,7 +40,8 @@ export function setupCss(css: string[], options: ModuleOptions) {
   const index = css.indexOf(quasarCssPath)
   if (index !== -1) {
     css.splice(index, 1, ...quasarCss)
-  } else {
+  }
+  else {
     css.unshift(...quasarCss)
   }
 
@@ -53,7 +54,8 @@ export function setupCss(css: string[], options: ModuleOptions) {
     const i = css.indexOf(quasarIconsPath)
     if (i !== -1) {
       css.splice(i, 1, ...uniq(options.extras.fontIcons).map(resolveFontIcon))
-    } else {
+    }
+    else {
       css.unshift(...uniq(options.extras.fontIcons).map(resolveFontIcon))
     }
   }
@@ -62,7 +64,8 @@ export function setupCss(css: string[], options: ModuleOptions) {
     const i = css.indexOf(quasarFontsPath)
     if (i !== -1) {
       css.splice(i, 1, resolveFont(options.extras.font))
-    } else {
+    }
+    else {
       css.unshift(resolveFont(options.extras.font))
     }
   }

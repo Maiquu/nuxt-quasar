@@ -17,6 +17,7 @@ import { enableQuietSassWarnings } from './quietSassWarnings'
 import { generateTemplateQuasarConfig } from './template/config'
 import { generateTemplateShims } from './template/shims'
 
+/* eslint-disable-next-line */ // This interface will be augmented after `nuxt prepare`
 export interface QuasarComponentDefaults {}
 
 export type { QuasarUIConfiguration }
@@ -49,11 +50,12 @@ export interface ModuleOptions {
    */
   quietSassWarnings?: boolean
 
-  /** Quasar Plugins
+  /**
+   * Quasar Plugins
    *
    * @see [Documentation](https://quasar.dev/quasar-plugins/)
-   **/
-  plugins?: (keyof QuasarPlugins)[]
+   */
+  plugins?: (keyof QuasarPlugins & string)[]
 
   config?: QuasarUIConfiguration
 
@@ -61,7 +63,7 @@ export interface ModuleOptions {
    * Default Language pack used by Quasar
    *
    * @see [Documentation](https://quasar.dev/options/quasar-language-packs)
-   **/
+   */
   lang?: QuasarLanguageCodes
 
   /**
@@ -90,7 +92,8 @@ export interface ModuleOptions {
    */
   cssAddon?: boolean
 
-  /** `@quasar/extras` options.
+  /**
+   * `@quasar/extras` options.
    *
    * @see [Documentation](https://github.com/quasarframework/quasar/blob/dev/extras/README.md)
    */
@@ -100,10 +103,11 @@ export interface ModuleOptions {
     fontIcons?: QuasarFontIconSet[]
     /** Automaticly import selected svg icon sets provided by `@quasar/extras`. */
     svgIcons?: QuasarSvgIconSet[]
-    /** Animations provided by quasar.
+    /**
+     * Animations provided by quasar.
      *
      * @see [Documentation](https://quasar.dev/options/animations)
-     **/
+     */
     animations?: QuasarAnimations[] | 'all'
   }
 
@@ -113,7 +117,7 @@ export interface ModuleOptions {
   components?: {
     /**
      * Set defaults for quasar components
-     **/
+     */
     defaults?: QuasarComponentDefaults
   }
 }
@@ -339,14 +343,17 @@ function categorizeImports(importMap: Record<string, string>, quasarResolve: Res
     }
     if (path.includes('/components/') && !path.includes('/__tests__/')) {
       imports.components.push(importData)
-    } else if (path.includes('/composables/')) {
+    }
+    else if (path.includes('/composables/')) {
       imports.composables.push(importData)
-    } else if (path.includes('/directives/')) {
+    }
+    else if (path.includes('/directives/')) {
       imports.directives.push({
         ...importData,
         kebabCase: kebabCase(name),
       })
-    } else if (path.includes('/plugins/')) {
+    }
+    else if (path.includes('/plugins/')) {
       imports.plugins.push(importData)
     }
   }
@@ -360,7 +367,8 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSet, resolveQuasarExtra
   try {
     const icons = await readJSON(resolveQuasarExtras(`${iconSet}/icons.json`)) as string[]
     return icons
-  } catch {
+  }
+  catch {
     // Some icon sets does not provide `icons.json`, so we check `index.d.ts`
     const path = resolveQuasarExtras(`${iconSet}/index.d.ts`)
     const dts = await readFileMemoized(path)
@@ -378,7 +386,8 @@ async function getSassVersion(): Promise<string | null> {
       const { version } = await readJSON(resolve(modulePath.dir, modulePath.name, './package.json'))
       return version
     }
-  } catch {
+  }
+  catch {
     // noop
   }
   return null
