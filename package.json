@@ -29,11 +29,11 @@
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "dev:preview": "nuxi preview playground",
     "changelogen": "changelogen --release --no-tag --no-commit && eslint . --fix",
-    "typecheck": "tsc --project playground/.nuxt/tsconfig.json --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
-    "test:watch": "vitest watch"
+    "test:watch": "vitest watch",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
   },
   "peerDependencies": {
     "@quasar/extras": "^1",
@@ -66,7 +66,8 @@
     "typescript": "^5.7.3",
     "vite": "^5.4.11",
     "vitest": "^2.1.8",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-tsc": "~2.1.6"
   },
   "pnpm": {
     "peerDependencyRules": {

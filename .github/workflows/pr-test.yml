@@ -22,9 +22,6 @@ jobs:
 
       - run: pnpm install
       - run: pnpm lint
-      # dev:prepare is needed since we extend from the ./playground/.nuxt/tsconfig.json in ./tsconfig.json
-      - name: Prepare tsconfig
-        run: pnpm dev:prepare
-
-      - run: pnpm typecheck
+      - run: pnpm dev:prepare
+      - run: pnpm test:types
       - run: pnpm test

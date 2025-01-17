@@ -22,11 +22,8 @@ jobs:
 
       - run: pnpm install
       - run: pnpm lint
-
-      - name: Prepare tsconfig
-        run: pnpm dev:prepare
-
-      - run: pnpm typecheck
+      - run: pnpm dev:prepare
+      - run: pnpm test:types
       - run: pnpm test
 
       - run: pnpm prepack
