@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.1.11
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.10...v2.1.11)
+
+### 🩹 Fixes
+
+- Type error at `enableQuietSassWarnings` ([083053f](https://github.com/Maiquu/nuxt-quasar/commit/083053f))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.10
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.9...v2.1.10)
