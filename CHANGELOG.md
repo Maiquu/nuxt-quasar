@@ -1,5 +1,33 @@
 # Changelog
 
+## v2.1.10
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.9...v2.1.10)
+
+### 🩹 Fixes
+
+- Quasar files being externalized in `ssr`, resolves #107 ([#107](https://github.com/Maiquu/nuxt-quasar/issues/107))
+
+### 🏡 Chore
+
+- Updated dependencies ([12e8994](https://github.com/Maiquu/nuxt-quasar/commit/12e8994))
+- Rename `typecheck` script to `test:types`, use `vue-tsc` for typechecking ([707e26a](https://github.com/Maiquu/nuxt-quasar/commit/707e26a))
+- MIT License ([f31d05e](https://github.com/Maiquu/nuxt-quasar/commit/f31d05e))
+- Update `packageManager` version ([dc5cd17](https://github.com/Maiquu/nuxt-quasar/commit/dc5cd17))
+- Update dependencies (mostly dev) ([597c81c](https://github.com/Maiquu/nuxt-quasar/commit/597c81c))
+
+### 🎨 Styles
+
+- Migrate to `@nuxt/eslint-config` ([5f76d7c](https://github.com/Maiquu/nuxt-quasar/commit/5f76d7c))
+
+### 🤖 CI
+
+- Create release after publish succeeds ([a7792b2](https://github.com/Maiquu/nuxt-quasar/commit/a7792b2))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.9
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.8...v2.1.9)
