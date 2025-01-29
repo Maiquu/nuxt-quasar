@@ -1,7 +1,8 @@
 import type { ViteConfig } from '@nuxt/schema'
-import type { LoggerWarnOptions, Options as SassOptions } from 'sass'
+import type { LoggerWarnOptions } from 'sass'
 import satisfies from 'semver/functions/satisfies.js'
 import defu from 'defu'
+import type { SassPreprocessorOptions } from 'vite'
 import type { ModuleContext } from './types'
 
 /**
@@ -23,7 +24,7 @@ export function enableQuietSassWarnings(context: ModuleContext, config: ViteConf
 
   for (const type of types) {
     const userConfig = config.css.preprocessorOptions[type]
-    const sassConfig: SassOptions<'sync'> = {}
+    const sassConfig: SassPreprocessorOptions = {}
     if (hasDeprecationAPI) {
       sassConfig.silenceDeprecations = [
         'import',
@@ -38,7 +39,7 @@ export function enableQuietSassWarnings(context: ModuleContext, config: ViteConf
         warn: silenceSlashDivDeprecations,
       }
     }
-    config.css.preprocessorOptions[type] = defu(userConfig, sassConfig)
+    config.css.preprocessorOptions.scss = defu(userConfig, sassConfig) as SassPreprocessorOptions
   }
 }
 
