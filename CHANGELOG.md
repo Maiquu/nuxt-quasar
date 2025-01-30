@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.1.12
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.11...v2.1.12)
+
+### 🩹 Fixes
+
+- Accidentally removed `sass` preprocessor options at 083053f ([e930dbc](https://github.com/Maiquu/nuxt-quasar/commit/e930dbc))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](http://github.com/Maiquu))
+
 ## v2.1.11
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.10...v2.1.11)
