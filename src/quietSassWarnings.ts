@@ -39,7 +39,7 @@ export function enableQuietSassWarnings(context: ModuleContext, config: ViteConf
         warn: silenceSlashDivDeprecations,
       }
     }
-    config.css.preprocessorOptions.scss = defu(userConfig, sassConfig) as SassPreprocessorOptions
+    config.css.preprocessorOptions[type] = defu(userConfig, sassConfig) as SassPreprocessorOptions
   }
 }
 
