@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { Quasar, useQuasar } from 'quasar'
-import type { UseHeadInput } from 'unhead'
+import type { ReactiveHead } from '@unhead/vue'
 import type { QVueGlobals, QuasarIconSet, QuasarLanguage, QuasarUIConfiguration } from 'quasar'
 import type { App as VueApp } from 'vue'
 import { defuFn } from 'defu'
@@ -108,7 +108,7 @@ export default defineNuxtPlugin((nuxt) => {
           style: bodyStyles.value,
         },
         htmlAttrs: htmlAttrsRecord.value,
-      } as UseHeadInput<object>)),
+      } as ReactiveHead)),
     )
     ssrContext = {
       req: nuxt.ssrContext!.event.node.req,

@@ -40,34 +40,34 @@
     "quasar": "^2.8.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.15.4",
+    "@nuxt/kit": "^3.16.1",
     "defu": "^6.1.4",
     "magic-string": "^0.30.17",
     "mlly": "^1.7.4",
     "p-memoize": "^7.1.1",
-    "semver": "^7.6.3"
+    "semver": "^7.7.1"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "@nuxt/eslint-config": "^0.7.5",
+    "@nuxt/eslint-config": "^1.2.0",
     "@nuxt/module-builder": "^0.8.4",
-    "@nuxt/schema": "^3.15.4",
-    "@nuxt/test-utils": "^3.15.4",
-    "@quasar/extras": "^1.16.16",
+    "@nuxt/schema": "^3.16.1",
+    "@nuxt/test-utils": "^3.17.2",
+    "@quasar/extras": "^1.16.17",
     "@types/jsdom": "^21.1.7",
     "@types/semver": "^7.5.8",
-    "changelogen": "^0.5.7",
-    "eslint": "^9.19.0",
+    "changelogen": "^0.6.1",
+    "eslint": "^9.22.0",
     "fast-folder-size": "^2.4.0",
     "jsdom": "^24.1.3",
-    "nuxt": "^3.15.4",
-    "quasar": "^2.17.7",
-    "sass": "^1.83.4",
-    "typescript": "~5.6.3",
-    "vite": "^6.0.11",
-    "vitest": "^3.0.4",
+    "nuxt": "^3.16.1",
+    "quasar": "^2.18.1",
+    "sass": "^1.86.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vitest": "^3.0.9",
     "vue": "^3.5.13",
-    "vue-tsc": "~2.1.10"
+    "vue-tsc": "^2.2.8"
   },
   "pnpm": {
     "peerDependencyRules": {
