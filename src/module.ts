@@ -119,6 +119,11 @@ export interface ModuleOptions {
      * Set defaults for quasar components
      */
     defaults?: QuasarComponentDefaults
+    /**
+     * Skip auto-importing of Quasar components even if auto-import is enabled in Nuxt.
+     * @default true
+     */
+    autoImport?: boolean
   }
 }
 
@@ -142,6 +147,7 @@ export default defineNuxtModule<ModuleOptions>({
     appConfigKey: 'nuxtQuasar',
     components: {
       defaults: {},
+      autoImport: true,
     },
     plugins: [],
     extras: {},
@@ -196,7 +202,7 @@ export default defineNuxtModule<ModuleOptions>({
       getContents: () => generateTemplateShims(baseContext),
     })
 
-    if (nuxt.options.components !== false) {
+    if (options.components.autoImport !== false) {
       for (const component of imports.components) {
         addComponent({
           name: component.name,
