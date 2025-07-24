@@ -176,6 +176,12 @@ Auto-import svg icon sets provided by `@quasar/extras`.
 
 Import animations provided by `@quasar/extras`.
 
+### components.autoImport
+- Type: `boolean`
+- Default: `true`
+
+Auto-import quasar components
+
 ### components.defaults
 - Type: `object`
 - Default: `{}`
