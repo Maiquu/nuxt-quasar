@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.1.13
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.12...v2.1.13)
+
+### 🩹 Fixes
+
+- Implement better component autoimport check and configuration ([b66519d](https://github.com/Maiquu/nuxt-quasar/commit/b66519d))
+- Add nulling check for autoImport, modify autoImport docs ([4d2c4fb](https://github.com/Maiquu/nuxt-quasar/commit/4d2c4fb))
+
+### 🏡 Chore
+
+- Update dependencies ([3a378cb](https://github.com/Maiquu/nuxt-quasar/commit/3a378cb))
+
+### 🤖 CI
+
+- Update gh action versions, use `pnpm/action-setup` instead of `corepack` ([d60cce0](https://github.com/Maiquu/nuxt-quasar/commit/d60cce0))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](https://github.com/Maiquu))
+- David Ovčačík ([@dovca](https://github.com/dovca))
+
 ## v2.1.12
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.11...v2.1.12)
