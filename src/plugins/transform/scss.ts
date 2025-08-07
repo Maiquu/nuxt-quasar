@@ -3,9 +3,8 @@ import type { ModuleContext } from '../../types'
 import { normalizePath, parseVueRequest } from '../../utils'
 
 export function transformScssPlugin({ options }: ModuleContext): VitePlugin {
-  const sassVariables = typeof options.sassVariables === 'string'
-    ? normalizePath(options.sassVariables)
-    : options.sassVariables
+  const sassVariables
+    = typeof options.sassVariables === 'string' ? normalizePath(options.sassVariables) : options.sassVariables
 
   const scssTransform = createScssTransform('scss', sassVariables)
   const sassTransform = createScssTransform('sass', sassVariables)
@@ -46,26 +45,46 @@ export function transformScssPlugin({ options }: ModuleContext): VitePlugin {
 }
 
 function createScssTransform(fileExtension: string, sassVariables?: string | boolean): (code: string) => string {
-  const sassImportCode = ['@import \'quasar/src/css/variables.sass\'', '']
-
-  if (typeof sassVariables === 'string') {
-    sassImportCode.unshift(`@import '${sassVariables}'`)
-  }
-
-  const prefix = fileExtension === 'sass'
-    ? sassImportCode.join('\n')
-    : sassImportCode.join(';\n')
-
   return (content) => {
-    const useIndex = Math.max(
-      content.lastIndexOf('@use '),
-      content.lastIndexOf('@forward '),
-    )
+    // Check if content already imports Quasar variables to avoid conflicts
+    const hasQuasarVariables
+      = content.includes('quasar/src/css/variables')
+        || content.includes('quasar/dist/')
+        || (content.includes('@use') && content.includes('quasar'))
+
+    // Strategy to avoid namespace conflicts:
+    // 1. If content already has Quasar-related imports, don't add more
+    // 2. If custom variables are provided, use only those (they should include/forward Quasar vars)
+    // 3. If no custom variables and no existing imports, use Quasar's default variables
+    // 4. Use "as *" for backward compatibility with existing code
+    const sassUseStatements: string[] = []
+
+    if (hasQuasarVariables) {
+      // Content already imports Quasar variables, don't add duplicates
+      return content
+    }
+    else if (typeof sassVariables === 'string') {
+      // Custom variables file - assume it properly handles Quasar variables
+      sassUseStatements.push(`@use '${sassVariables}' as *`)
+    }
+    else {
+      // No custom variables and no existing imports - use Quasar's default variables
+      sassUseStatements.push('@use \'quasar/src/css/variables.sass\' as *')
+    }
+
+    sassUseStatements.push('') // Add empty line for formatting
+
+    const prefix = fileExtension === 'sass' ? sassUseStatements.join('\n') : sassUseStatements.join(';\n')
+
+    // Find the last @use or @forward statement to maintain proper order
+    const useIndex = Math.max(content.lastIndexOf('@use '), content.lastIndexOf('@forward '))
 
     if (useIndex === -1) {
+      // No existing @use/@forward statements, add our @use statements at the beginning
       return prefix + content
     }
 
+    // Find the end of the last @use/@forward statement
     const newLineIndex = content.indexOf('\n', useIndex)
 
     if (newLineIndex !== -1) {
