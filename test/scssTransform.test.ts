@@ -61,14 +61,15 @@ describe('SCSS Transform Plugin', () => {
       expect(result.split('\n').length).toBe(input.split('\n').length) // No lines added
     })
 
-    it('should NOT add imports when content has custom variables referencing Quasar', () => {
+    it('should add custom imports even when content has local files with quasar in path', () => {
       const transform = getScssTransform('scss', 'custom-vars.sass')
       const input = '@use "~/assets/css/quasar/qvariables.scss" as *;\n\n.button {\n  color: $primary;\n}'
 
       const result = transform(input)
 
-      expect(result).toBe(input) // Should return unchanged
-      expect(result.includes('custom-vars.sass')).toBe(false) // Should not add custom import
+      expect(result).not.toBe(input) // Should be changed
+      expect(result.includes('custom-vars.sass')).toBe(true) // Should add custom import
+      expect(result.includes('.button {')).toBe(true) // Original content should be preserved
     })
 
     it('should detect Quasar dist imports and avoid conflicts', () => {
@@ -205,6 +206,51 @@ describe('SCSS Transform Plugin', () => {
 
       expect(result).toContain('@use \'quasar/src/css/variables.sass\' as *')
       expect(result).toContain(input) // Whitespace preserved
+    })
+  })
+
+  describe('Comment False Positive Prevention', () => {
+    it('should NOT be fooled by comments containing @use and quasar', () => {
+      const transform = getScssTransform('scss', false)
+
+      // Comment with both @use and quasar should still add import
+      const input1 = '/* TODO: Consider using @use with quasar variables */\n.button { color: red; }'
+      const result1 = transform(input1)
+      expect(result1).toContain('@use \'quasar/src/css/variables.sass\' as *') // Should add import
+
+      // Multi-line comment with @use and quasar should still add import
+      const input2 = '/*\n * This file might use @use with quasar\n * in the future\n */\n.button { color: red; }'
+      const result2 = transform(input2)
+      expect(result2).toContain('@use \'quasar/src/css/variables.sass\' as *') // Should add import
+
+      // Single-line comment with @use and quasar should still add import
+      const input3 = '// We might @use quasar/variables later\n.button { color: red; }'
+      const result3 = transform(input3)
+      expect(result3).toContain('@use \'quasar/src/css/variables.sass\' as *') // Should add import
+    })
+
+    it('should properly detect actual @use statements with quasar/', () => {
+      const transform = getScssTransform('scss', false)
+
+      // Single quotes should be detected
+      const input1 = '@use \'quasar/some-file\' as *;\n.button { color: red; }'
+      const result1 = transform(input1)
+      expect(result1).toBe(input1) // Should be unchanged
+
+      // Double quotes should be detected
+      const input2 = '@use "quasar/another-file" as q;\n.button { color: red; }'
+      const result2 = transform(input2)
+      expect(result2).toBe(input2) // Should be unchanged
+
+      // Multiple spaces after @use should be handled
+      const input3 = '@use    "quasar/variables" as *;\n.button { color: red; }'
+      const result3 = transform(input3)
+      expect(result3).toBe(input3) // Should be unchanged
+
+      // Tab after @use should be handled
+      const input4 = '@use\t\'quasar/icons\' as icons;\n.button { color: red; }'
+      const result4 = transform(input4)
+      expect(result4).toBe(input4) // Should be unchanged
     })
   })
 

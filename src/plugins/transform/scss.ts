@@ -50,7 +50,7 @@ function createScssTransform(fileExtension: string, sassVariables?: string | boo
     const hasQuasarVariables
       = content.includes('quasar/src/css/variables')
         || content.includes('quasar/dist/')
-        || (content.includes('@use') && content.includes('quasar'))
+        || /@use\s+['"]quasar(?:[/'"]|$)/.test(content) // Matches @use statements importing from quasar package only (path starts with "quasar"), avoiding false positives from comments and local paths
 
     // Strategy to avoid namespace conflicts:
     // 1. If content already has Quasar-related imports, don't add more
