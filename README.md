@@ -104,13 +104,6 @@ Can optionally be a string which points to a file that contains the variables.
 
 > Requires `sass` installed.
 
-### quietSassWarnings
-- Type: `boolean`
-- Default: `false` (if `quasar` version is <=2.13, then `true`)
-
-Quasar is pinned to a specific version (1.32.12) of sass, which is causing deprecation warnings, polluting the console log when running Nuxt.
-Enabling this option silences these deprecation warnings.
-
 ### lang
 - Type: `string`
 - Default: `'en-US'`

@@ -13,7 +13,6 @@ import { virtualQuasarEntryPlugin } from './plugins/virtual/entry'
 import { virtualAnimationsPlugin } from './plugins/virtual/animations'
 import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { setupCss } from './setupCss'
-import { enableQuietSassWarnings } from './quietSassWarnings'
 import { generateTemplateQuasarConfig } from './template/config'
 import { generateTemplateShims } from './template/shims'
 
@@ -37,18 +36,6 @@ export interface ModuleOptions {
    * @default false
    */
   sassVariables?: string | boolean
-  /**
-   *
-   * Suppress sass deprecation warnings caused by quasar by modifying vite preprocessor options.
-   *
-   * If the installed sass version supports the `silenceDeprecations` option, it uses that. Otherwise, it falls back to a hacky workaround.
-   * Said workaround only tries to suppress `slash-div` deprecation.
-   *
-   * Suppressed deprecations: `import`, `global-builtin`, `legacy-js-api` and `slash-div` if quasar version is older than `2.14`.
-   *
-   * @default true
-   */
-  quietSassWarnings?: boolean
 
   /**
    * Quasar Plugins
@@ -143,7 +130,6 @@ export default defineNuxtModule<ModuleOptions>({
     autoIncludeIconSet: true,
     cssAddon: false,
     sassVariables: false,
-    quietSassWarnings: true,
     appConfigKey: 'nuxtQuasar',
     components: {
       defaults: {},
@@ -282,10 +268,6 @@ export default defineNuxtModule<ModuleOptions>({
         __QUASAR_SSR_SERVER__: ssr && isServer,
         __QUASAR_SSR_CLIENT__: ssr && isClient,
         __QUASAR_SSR_PWA__: false,
-      }
-
-      if (options.quietSassWarnings) {
-        enableQuietSassWarnings(context, config)
       }
 
       config.plugins ??= []
