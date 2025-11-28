@@ -3,8 +3,8 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
-      - '!*-rc.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
 
 permissions:
   id-token: write
@@ -27,7 +27,12 @@ jobs:
       - run: pnpm test:types
       - run: pnpm test
       - run: pnpm prepack
-      - run: pnpm publish
+      - run: |
+          if [[ "${GITHUB_REF##*/}" == *"-rc."* ]]; then
+            pnpm publish --tag rc
+          else
+            pnpm publish
+          fi
       - name: Create release
         run: npx changelogen gh release
         env:
