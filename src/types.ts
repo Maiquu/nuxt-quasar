@@ -47,19 +47,19 @@ export interface QuasarComponentMetadata {
   props?: Record<string, QuasarPropMetadata>
 }
 
-export type QuasarPropType =
-  | 'Boolean'
-  | 'Number'
-  | 'String'
-  | 'Array'
-  | 'Object'
-  | 'File'
-  | 'FileList'
-  | 'Element'
-  | 'Function'
-  | 'Any'
-  | 'null'
-  | 'undefined'
+export type QuasarPropType
+  = | 'Boolean'
+    | 'Number'
+    | 'String'
+    | 'Array'
+    | 'Object'
+    | 'File'
+    | 'FileList'
+    | 'Element'
+    | 'Function'
+    | 'Any'
+    | 'null'
+    | 'undefined'
 
 export interface QuasarPropMetadata {
   type: QuasarPropType | QuasarPropType[]

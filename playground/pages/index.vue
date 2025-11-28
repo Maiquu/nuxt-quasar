@@ -37,7 +37,7 @@ const showBottomsheet = () => bottomSheet({
 })
 
 const random = <T extends string>(items: T[]): T =>
-  items[Math.floor(Math.random() * items.length)]
+  items[Math.floor(Math.random() * items.length)]!
 
 type Position = Exclude<QNotifyOptions['position'], undefined>
 

@@ -10,6 +10,8 @@ function getScssTransform(fileExtension: 'scss' | 'sass', sassVariables?: string
     dev: true,
     mode: 'client',
     imports: {
+      raw: {},
+      composables: [],
       components: [],
       directives: [],
       plugins: [],

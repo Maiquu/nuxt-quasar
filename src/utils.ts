@@ -41,8 +41,8 @@ const PASCAL_CASE = /[a-z][A-Z]|^[A-Z]/g
 export function kebabCase(string: string): string {
   return string.replaceAll(PASCAL_CASE,
     match => match.length === 1
-      ? match[0].toLowerCase()
-      : `${match[0]}-${match[1].toLowerCase()}`,
+      ? match[0]!.toLowerCase()
+      : `${match[0]}-${match[1]!.toLowerCase()}`,
   )
 }
 
@@ -84,7 +84,7 @@ export function parseVueRequest(id: string): {
   filename: string
   query: VueQuery
 } {
-  const [filename, rawQuery] = id.split('?', 2)
+  const [filename = '', rawQuery] = id.split('?', 2)
   const query = Object.fromEntries(new URLSearchParams(rawQuery)) as VueQuery
   if (query.vue != null) {
     query.vue = true

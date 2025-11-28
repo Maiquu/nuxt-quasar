@@ -14,7 +14,7 @@ export function transformDirectivesPlugin(context: ModuleContext): VitePlugin {
     transform(code, id) {
       const [filename] = id.split('?', 2)
 
-      if (!filename.endsWith('.vue'))
+      if (!filename || !filename.endsWith('.vue'))
         return null
 
       const s = new MagicString(code)

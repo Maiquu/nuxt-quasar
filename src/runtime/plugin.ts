@@ -146,6 +146,7 @@ export default defineNuxtPlugin((nuxt) => {
     } as QuasarClientPlugin
   }
 
+  // @ts-expect-error Private 2nd argument and custom plugin not defined in QuasarPlugins interface
   nuxt.vueApp.use(Quasar, {
     lang,
     iconSet,
@@ -154,7 +155,6 @@ export default defineNuxtPlugin((nuxt) => {
       ...plugins,
     },
     config,
-  // @ts-expect-error Private Argument
   }, ssrContext)
 
   const quasar = useQuasar()
@@ -163,6 +163,9 @@ export default defineNuxtPlugin((nuxt) => {
 
   for (const [name, propDefaults] of Object.entries(components.defaults || {})) {
     const component = componentsWithDefaults[name]
+    if (!component) {
+      continue
+    }
     for (const [propName, defaultValue] of Object.entries(propDefaults)) {
       const propConfig = component.props[propName]
       // Constructor or Array of Constructors

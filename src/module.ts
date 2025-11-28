@@ -121,7 +121,6 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: 'quasar',
     compatibility: {
       nuxt: '>=3.0.0',
-      bridge: false,
     },
   },
   defaults: {
@@ -360,7 +359,7 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSet, resolveQuasarExtra
     // Some icon sets does not provide `icons.json`, so we check `index.d.ts`
     const path = resolveQuasarExtras(`${iconSet}/index.d.ts`)
     const dts = await readFileMemoized(path)
-    const icons = [...dts.matchAll(iconDeclarationPattern)].map(arr => arr[1])
+    const icons = [...dts.matchAll(iconDeclarationPattern)].map(arr => arr[1]!)
 
     return icons
   }
