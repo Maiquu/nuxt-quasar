@@ -33,6 +33,8 @@ export interface ModuleOptions {
    *
    * **Requires `sass`**
    *
+   * **Note:** Variables will not be injected if any `.sass` file from `quasar` is imported manually.
+   *
    * @default false
    */
   sassVariables?: string | boolean

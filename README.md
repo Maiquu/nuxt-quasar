@@ -99,10 +99,12 @@ List of quasar plugins to apply. (`Dialog`, `Notify` etc.)
 - Type: `boolean | string`
 - Default: `false`
 
-Enables usage of Quasar Sass/SCSS variables.
+Enables usage of Quasar Sass/SCSS variables in `<style>` tags.
 Can optionally be a string which points to a file that contains the variables.
 
 > Requires `sass` installed.
+
+> **Note**: Variables will not be injected if any `.sass` file from `quasar` is imported manually.
 
 ### lang
 - Type: `string`
