@@ -29,9 +29,9 @@ jobs:
       - run: pnpm prepack
       - run: |
           if [[ "${GITHUB_REF##*/}" == *"-rc."* ]]; then
-            pnpm publish --tag rc
+            pnpm publish --no-git-checks --tag rc
           else
-            pnpm publish
+            pnpm publish --no-git-checks
           fi
       - name: Create release
         run: npx changelogen gh release
