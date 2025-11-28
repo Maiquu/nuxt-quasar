@@ -26,7 +26,6 @@
     "dev:analyze": "nuxi analyze playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "dev:preview": "nuxi preview playground",
-    "changelogen": "changelogen --release --no-tag --no-commit && eslint . --fix",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
