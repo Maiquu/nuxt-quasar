@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.0.0-rc.1
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.0-rc.0...v3.0.0-rc.1)
+
+### 🤖 CI
+
+- Add --no-git-checks option to pnpm publish commands ([d919db3](https://github.com/Maiquu/nuxt-quasar/commit/d919db3))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](https://github.com/Maiquu))
+
 ## v3.0.0-rc.0
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.13...v3.0.0-rc.0)
