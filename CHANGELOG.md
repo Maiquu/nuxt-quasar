@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.0.0-rc.3
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.0-rc.2...v3.0.0-rc.3)
+
+### 🤖 CI
+
+- Reorder npm installation step ([2298aa9](https://github.com/Maiquu/nuxt-quasar/commit/2298aa9))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](https://github.com/Maiquu))
+
 ## v3.0.0-rc.2
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.0-rc.1...v3.0.0-rc.2)
