@@ -7,6 +7,7 @@ on:
       - '!*-rc.[0-9]+'
 
 permissions:
+  id-token: write
   contents: write
 
 jobs:
@@ -25,12 +26,8 @@ jobs:
       - run: pnpm dev:prepare
       - run: pnpm test:types
       - run: pnpm test
-
       - run: pnpm prepack
-      - uses: JS-DevTools/npm-publish@v3.1.1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-
+      - run: pnpm publish
       - name: Create release
         run: npx changelogen gh release
         env:
