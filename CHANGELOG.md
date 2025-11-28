@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.0.0-rc.2
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.0-rc.1...v3.0.0-rc.2)
+
+### 🤖 CI
+
+- Update release workflow to ensure latest npm and explicitly set registry URL ([cc53b7e](https://github.com/Maiquu/nuxt-quasar/commit/cc53b7e))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](https://github.com/Maiquu))
+
 ## v3.0.0-rc.1
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.0-rc.0...v3.0.0-rc.1)
