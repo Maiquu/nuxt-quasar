@@ -1,5 +1,47 @@
 # Changelog
 
+## v3.0.0-rc.0
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.13...v3.0.0-rc.0)
+
+### 🚀 Enhancements
+
+- ⚠️  Upgrade to nuxt 4 ([8ef389a](https://github.com/Maiquu/nuxt-quasar/commit/8ef389a))
+
+### 🩹 Fixes
+
+- ⚠️  Changed to `@use` instead of `@import` statements to avoid deprecation warning messages ([#115](https://github.com/Maiquu/nuxt-quasar/pull/115))
+
+### 💅 Refactors
+
+- Remove analyzeBundleSize test file ([677e522](https://github.com/Maiquu/nuxt-quasar/commit/677e522))
+
+### 📖 Documentation
+
+- Clarify usage of Quasar Sass/SCSS variables in README and module options ([74284cf](https://github.com/Maiquu/nuxt-quasar/commit/74284cf))
+
+### 🏡 Chore
+
+- Fix type errors after upgrade ([c0a8012](https://github.com/Maiquu/nuxt-quasar/commit/c0a8012))
+- Update packageManager to pnpm@10.24.0 ([6e90ff1](https://github.com/Maiquu/nuxt-quasar/commit/6e90ff1))
+- Add bump script ([e0f0a51](https://github.com/Maiquu/nuxt-quasar/commit/e0f0a51))
+- Remove changelogen script from package.json ([f58ba28](https://github.com/Maiquu/nuxt-quasar/commit/f58ba28))
+
+### 🤖 CI
+
+- Migrate to trusted publishing ([a1243c7](https://github.com/Maiquu/nuxt-quasar/commit/a1243c7))
+- Refine release workflow tag patterns and support rc tags ([8abd4c6](https://github.com/Maiquu/nuxt-quasar/commit/8abd4c6))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Upgrade to nuxt 4 ([8ef389a](https://github.com/Maiquu/nuxt-quasar/commit/8ef389a))
+- ⚠️  Changed to `@use` instead of `@import` statements to avoid deprecation warning messages ([#115](https://github.com/Maiquu/nuxt-quasar/pull/115))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](https://github.com/Maiquu))
+- Chris Harris ([@kathysledge](https://github.com/kathysledge))
+
 ## v2.1.13
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v2.1.12...v2.1.13)
