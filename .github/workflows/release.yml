@@ -16,14 +16,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
       - uses: pnpm/action-setup@v4.1.0
-      - name: Ensure latest npm
-        run: npm install -g npm@latest
       - uses: actions/setup-node@v4.2.0
         with:
           node-version: 22.x
           registry-url: https://registry.npmjs.org
           cache: pnpm
 
+      - name: Ensure latest npm
+        run: npm install -g npm@latest
       - run: pnpm install
       - run: pnpm lint
       - run: pnpm dev:prepare
