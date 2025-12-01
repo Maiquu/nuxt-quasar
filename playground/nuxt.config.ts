@@ -4,9 +4,9 @@ import materialIconsRound from 'quasar/icon-set/svg-material-icons-round'
 export default defineNuxtConfig({
   modules: [
     '../src/module',
-    '@nuxt/devtools',
   ],
   ssr: true,
+  devtools: { enabled: true },
   app: {
     head: {
       title: 'Nuxt Quasar Playground',
