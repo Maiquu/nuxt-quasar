@@ -1,5 +1,22 @@
 # Changelog
 
+## v3.0.0
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.0-rc.3...v3.0.0)
+
+### 📖 Documentation
+
+- Remove peer dependency installation commands as `nuxi module add` already handles them ([763812f](https://github.com/Maiquu/nuxt-quasar/commit/763812f))
+
+### 🏡 Chore
+
+- Migrate playground to use nuxt 4 directory structure ([452fb55](https://github.com/Maiquu/nuxt-quasar/commit/452fb55))
+- Update bump script ([61efb9a](https://github.com/Maiquu/nuxt-quasar/commit/61efb9a))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](https://github.com/Maiquu))
+
 ## v3.0.0-rc.3
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.0-rc.2...v3.0.0-rc.3)
