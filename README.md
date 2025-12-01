@@ -23,16 +23,6 @@
 Add `nuxt-quasar-ui` dependency to your project
 
 ```bash
-# Using pnpm
-pnpm add quasar @quasar/extras
-npx nuxi@latest module add quasar
-
-# Using yarn
-yarn add quasar @quasar/extras
-npx nuxi@latest module add quasar
-
-# Using npm
-npm install quasar @quasar/extras
 npx nuxi@latest module add quasar
 ```
 
