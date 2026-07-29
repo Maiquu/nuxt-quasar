@@ -10,8 +10,7 @@ describe('ssr', async () => {
   })
 
   it('renders button with defaults', async () => {
-    // Get response to a server-rendered page with `$fetch`.
-    const html = await $fetch('/')
+    const html = await $fetch('/') as string
     const dom = new JSDOM(html)
     const { document } = dom.window
     const btn = document.querySelector('#btn_default')
@@ -21,8 +20,7 @@ describe('ssr', async () => {
   })
 
   it('renders button that overrides the defaults', async () => {
-    // Get response to a server-rendered page with `$fetch`.
-    const html = await $fetch('/')
+    const html = await $fetch('/') as string
     const dom = new JSDOM(html, {})
     const { document } = dom.window
     document.write(html)

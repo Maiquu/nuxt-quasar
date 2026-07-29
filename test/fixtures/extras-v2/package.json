@@ -1,0 +1,8 @@
+{
+  "name": "@fixture/extras-v2",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@quasar/extras": ">=2"
+  }
+}
