@@ -3,7 +3,7 @@ import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, ad
 import type { ViteConfig } from '@nuxt/schema'
 import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
-import { parseNodeModulePath } from 'mlly'
+import { parseNodeModulePath, resolvePathSync } from 'mlly'
 import { version } from '../package.json'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
 import type { ModuleContext, QuasarFontIconSet, QuasarImportData, QuasarImports, QuasarSvgIconSet, QuasarUIConfiguration, ResolveFn } from './types'
@@ -15,6 +15,8 @@ import { virtualBrandPlugin } from './plugins/virtual/brand'
 import { setupCss } from './setupCss'
 import { generateTemplateQuasarConfig } from './template/config'
 import { generateTemplateShims } from './template/shims'
+import semver from 'semver'
+import { join } from 'node:path/posix'
 
 /* eslint-disable-next-line */ // This interface will be augmented after `nuxt prepare`
 export interface QuasarComponentDefaults {}
@@ -142,13 +144,19 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(options, nuxt) {
     const { resolve: resolveLocal } = createResolver(import.meta.url)
     const { resolve: resolveQuasar } = createResolver(dirname(await resolvePath('quasar/package.json')))
-    const { resolve: resolveQuasarExtras } = createResolver(dirname(await resolvePath('@quasar/extras/package.json')))
 
     const { version: quasarVersion } = await readJSON(resolveQuasar('package.json'))
     const importMap = await readJSON(resolveQuasar('dist/transforms/import-map.json')) as Record<string, string>
     const transformAssetUrls = await readJSON(resolveQuasar('dist/transforms/loader-asset-urls.json')) as AssetURLOptions
     const imports = categorizeImports(importMap, resolveQuasar)
-    const sassVersion = await getSassVersion()
+    const sassVersion = await getPackageVersion('sass')
+    const quasarExtrasVersion = await getPackageVersion('@quasar/extras')
+    const quasarExtrasGte2 = quasarExtrasVersion
+      ? semver.major(quasarExtrasVersion) >= 2
+      : false
+
+    const resolveQuasarExtras: ResolveFn = (...paths) =>
+      resolvePathSync(join('@quasar/extras', ...paths))
 
     const baseContext: Omit<ModuleContext, 'mode'> = {
       ssr: nuxt.options.ssr,
@@ -156,6 +164,7 @@ export default defineNuxtModule<ModuleOptions>({
       imports,
       options,
       quasarVersion,
+      quasarExtrasGte2,
       sassVersion,
       resolveLocal,
       resolveQuasar,
@@ -367,10 +376,10 @@ async function getIconsFromIconset(iconSet: QuasarSvgIconSet, resolveQuasarExtra
   }
 }
 
-async function getSassVersion(): Promise<string | null> {
+async function getPackageVersion(packageName: string): Promise<string | null> {
   try {
-    const sassEntry = await resolvePath('sass')
-    const modulePath = parseNodeModulePath(sassEntry)
+    const packageEntry = await resolvePath(packageName)
+    const modulePath = parseNodeModulePath(packageEntry)
     if (modulePath.dir) {
       const { version } = await readJSON(resolve(modulePath.dir, modulePath.name, './package.json'))
       return version

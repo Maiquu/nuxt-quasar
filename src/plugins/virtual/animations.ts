@@ -1,3 +1,4 @@
+import type { QuasarGeneralAnimations, QuasarInAnimations, QuasarOutAnimations } from 'quasar'
 import { readFile } from 'node:fs/promises'
 import type { Plugin as VitePlugin } from 'vite'
 import { quasarAnimationsPath } from '../../constants'
@@ -8,7 +9,13 @@ import { uniq } from '../../utils'
 const RESOLVED_ID = '\0/__quasar/animations.css'
 const RESOLVED_ID_WITH_QUERY_RE = /([/\\])__quasar\1animations\.css(\?.*)?$/
 
-export function virtualAnimationsPlugin({ options, resolveQuasarExtras }: ModuleContext): VitePlugin {
+interface AnimationsModule {
+  generalAnimations: QuasarGeneralAnimations[]
+  inAnimations: QuasarInAnimations[]
+  outAnimations: QuasarOutAnimations[]
+}
+
+export function virtualAnimationsPlugin({ options, resolveQuasarExtras, quasarExtrasGte2 }: ModuleContext): VitePlugin {
   return {
     name: 'quasar:animations',
 
@@ -27,7 +34,10 @@ export function virtualAnimationsPlugin({ options, resolveQuasarExtras }: Module
 
       let animations = options.extras?.animations || []
       if (animations === 'all') {
-        const { generalAnimations, inAnimations, outAnimations } = await import('@quasar/extras/animate/animate-list.mjs')
+        const { generalAnimations, inAnimations, outAnimations } = (quasarExtrasGte2
+          ? await import('@quasar/extras/animate/animate-list.common')
+          // @ts-expect-error No `.mjs` in `@quasar/extras@>=2`
+          : await import('@quasar/extras/animate/animate-list.mjs')) as AnimationsModule
         animations = [...generalAnimations, ...inAnimations, ...outAnimations]
       }
       else {
