@@ -31,6 +31,7 @@ function getScssTransform(fileExtension: 'scss' | 'sass', sassVariables?: string
       extras: {},
     },
     quasarVersion: '2.0.0',
+    quasarExtrasGte2: true,
     sassVersion: '1.90.0',
     resolveLocal: (path: string) => path,
     resolveQuasar: (path: string) => path,
