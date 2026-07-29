@@ -4,8 +4,12 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
+  // To view only quasar related packages
   "files.exclude": {
-    "node_modules/[^q]*": true
+    "node_modules/[^q@]*": true,
+    "node_modules/[q@][^uq]*": true,
+    "node_modules/[q@][uq][^au]*": true,
+    "node_modules/[q@][uq][au][^sa]*": true,
   },
   "eslint.validate": [
     "typescript",
