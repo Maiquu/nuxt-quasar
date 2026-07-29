@@ -1,8 +1,9 @@
 import { dirname, resolve } from 'node:path'
 import { addComponent, addImports, addImportsSources, addPlugin, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, resolvePath } from '@nuxt/kit'
 import type { ViteConfig } from '@nuxt/schema'
-import type { QuasarAnimations, QuasarFonts, QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
+import type { QuasarIconSets as QuasarIconSet, QuasarIconSet as QuasarIconSetObject, QuasarLanguageCodes, QuasarPlugins } from 'quasar'
 import type { AssetURLOptions } from 'vue/compiler-sfc'
+import type { QuasarAnimations, QuasarFonts } from '@quasar/extras'
 import { parseNodeModulePath, resolvePathSync } from 'mlly'
 import { version } from '../package.json'
 import { transformDirectivesPlugin } from './plugins/transform/directives'
@@ -17,6 +18,7 @@ import { generateTemplateQuasarConfig } from './template/config'
 import { generateTemplateShims } from './template/shims'
 import semver from 'semver'
 import { join } from 'node:path/posix'
+import { pathToFileURL } from 'node:url'
 
 /* eslint-disable-next-line */ // This interface will be augmented after `nuxt prepare`
 export interface QuasarComponentDefaults {}
@@ -150,13 +152,17 @@ export default defineNuxtModule<ModuleOptions>({
     const transformAssetUrls = await readJSON(resolveQuasar('dist/transforms/loader-asset-urls.json')) as AssetURLOptions
     const imports = categorizeImports(importMap, resolveQuasar)
     const sassVersion = await getPackageVersion('sass')
-    const quasarExtrasVersion = await getPackageVersion('@quasar/extras')
-    const quasarExtrasGte2 = quasarExtrasVersion
-      ? semver.major(quasarExtrasVersion) >= 2
-      : false
 
+    const resolveURLs = [
+      pathToFileURL(resolve(nuxt.options.rootDir, 'nuxt.config.ts')),
+      pathToFileURL(process.cwd()),
+    ]
     const resolveQuasarExtras: ResolveFn = (...paths) =>
-      resolvePathSync(join('@quasar/extras', ...paths))
+      resolvePathSync(join('@quasar/extras', ...paths), { url: resolveURLs })
+
+    const { version: quasarExtrasVersion } = await readJSON(resolveQuasarExtras('package.json'))
+
+    const quasarExtrasGte2 = semver.major(quasarExtrasVersion) >= 2
 
     const baseContext: Omit<ModuleContext, 'mode'> = {
       ssr: nuxt.options.ssr,
