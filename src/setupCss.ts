@@ -1,9 +1,9 @@
-import type { QuasarFonts } from 'quasar'
 import { logger } from '@nuxt/kit'
 import { quasarAnimationsPath, quasarBrandPath, quasarCssPath, quasarFontsPath, quasarIconsPath } from './constants'
 import type { ModuleOptions } from './module'
 import type { QuasarFontIconSet } from './types'
 import { uniq } from './utils'
+import type { QuasarFonts } from '@quasar/extras'
 
 /**
  * Inject the Quasar css into the nuxt.options.css array.

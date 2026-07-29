@@ -1,5 +1,6 @@
-import type { QuasarGeneralAnimations, QuasarInAnimations, QuasarOutAnimations } from 'quasar'
+import type { QuasarGeneralAnimations, QuasarInAnimations, QuasarOutAnimations } from '@quasar/extras'
 import { readFile } from 'node:fs/promises'
+import { pathToFileURL } from 'node:url'
 import type { Plugin as VitePlugin } from 'vite'
 import { quasarAnimationsPath } from '../../constants'
 import type { ModuleContext } from '../../types'
@@ -34,10 +35,13 @@ export function virtualAnimationsPlugin({ options, resolveQuasarExtras, quasarEx
 
       let animations = options.extras?.animations || []
       if (animations === 'all') {
-        const { generalAnimations, inAnimations, outAnimations } = (quasarExtrasGte2
-          ? await import('@quasar/extras/animate/animate-list.common')
-          // @ts-expect-error No `.mjs` in `@quasar/extras@>=2`
-          : await import('@quasar/extras/animate/animate-list.mjs')) as AnimationsModule
+        const animateListPath = resolveQuasarExtras(
+          quasarExtrasGte2
+            ? 'animate/animate-list.common'
+            : 'animate/animate-list.mjs',
+        )
+        const { generalAnimations, inAnimations, outAnimations }
+          = await import(pathToFileURL(animateListPath).href) as AnimationsModule
         animations = [...generalAnimations, ...inAnimations, ...outAnimations]
       }
       else {
