@@ -67,8 +67,8 @@ importers:
         specifier: ^4.5.1
         version: 4.5.1(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7(supports-color@10.2.2)))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7(supports-color@10.2.2)))(@parcel/watcher@2.6.0)(@types/node@22.20.1)(@vue/compiler-sfc@3.5.40)(db0@0.3.4)(esbuild@0.28.1)(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(ioredis@5.11.1(supports-color@10.2.2))(lightningcss@1.33.0)(magicast@0.5.3)(optionator@0.9.4)(oxc-parser@0.140.0)(rollup-plugin-visualizer@7.0.1(rolldown@1.2.0)(rollup@4.62.3))(rollup@4.62.3)(sass@1.102.0)(srvx@0.11.22)(supports-color@10.2.2)(terser@5.49.0)(typescript@5.9.3)(vite@8.1.5(@types/node@22.20.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.102.0)(terser@5.49.0)(yaml@2.9.0))(vue-tsc@3.3.8(typescript@5.9.3))(yaml@2.9.0)
       quasar:
-        specifier: ^2.23.2
-        version: 2.23.2
+        specifier: ^2.30.0
+        version: 2.30.0
       sass:
         specifier: ^1.102.0
         version: 1.102.0
@@ -4099,9 +4099,9 @@ packages:
   quansync@0.2.11:
     resolution: {integrity: sha512-AifT7QEbW9Nri4tAwR5M/uzpBuqfZf+zwaEM/QkzEjj7NBuFD2rBuy0K3dE+8wltbezDV7JMA0WfnCPYRSYbXA==}
 
-  quasar@2.23.2:
-    resolution: {integrity: sha512-4MeD5/RIkXLVvDgrbhZgBsbwd/v8eJaEiLRkuv6nt0xKCoQ2l7TL2KvmOCs7zf/7uh+o3Y5EsM/59jFqnrVWaQ==}
-    engines: {node: '>= 10.18.1', npm: '>= 6.13.4', yarn: '>= 1.21.1'}
+  quasar@2.30.0:
+    resolution: {integrity: sha512-o2hdaj/D7m+DHckbvHNz7DqF3CpnTKD2qSrjDS2SwJSXaDHnurjikLu3bwisjbPygC2e/pYiBJBu8kPfOSLIkg==}
+    engines: {node: '>= 22.0.0'}
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -9593,7 +9593,7 @@ snapshots:
 
   quansync@0.2.11: {}
 
-  quasar@2.23.2: {}
+  quasar@2.30.0: {}
 
   queue-microtask@1.2.3: {}
 
