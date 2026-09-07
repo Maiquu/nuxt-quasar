@@ -1,5 +1,21 @@
 # Changelog
 
+## v3.1.1
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/0dd227f1fae5997e1485aadb2df94e564df42ab8...v3.1.1)
+
+### 🩹 Fixes
+
+- Filter non-identifier import-map keys ([ebb02ce](https://github.com/Maiquu/nuxt-quasar/commit/ebb02ce))
+
+### 🏡 Chore
+
+- Bump quasar devDependency version ([1e1eafa](https://github.com/Maiquu/nuxt-quasar/commit/1e1eafa))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](https://github.com/Maiquu))
+
 ## v3.1.0
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.1...v3.1.0)
