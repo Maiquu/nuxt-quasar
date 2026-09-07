@@ -117,6 +117,17 @@ When enabled, it provides breakpoint aware versions for all flex (and display) r
 > **Warning**
 > Note that there will be a noticeable bump in CSS footprint when enabling it. So only do it if you really need it.
 
+### virtualEntry
+- Type: `boolean`
+- Default: `true`
+
+Resolves `quasar` to a generated virtual entry of deep-path imports, instead of the package's own barrel file, so unused components and composables can be dropped from the bundle.
+
+This is required for tree-shaking on Quasar `<2.25.0`. Newer versions declare a `sideEffects` field, which lets the bundler shake the barrel on its own - the virtual entry still trims the SSR bundle further.
+
+> **Warning**
+> This is an escape hatch, intended for the case where a Quasar release breaks entry generation before the module has been updated. Disabling it increases bundle size, so prefer opening an issue over leaving it off.
+
 ### appConfigKey
 - Type: `string`
 - Default: `nuxtQuasar`
