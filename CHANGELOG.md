@@ -1,5 +1,36 @@
 # Changelog
 
+## v3.1.0
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.1...v3.1.0)
+
+### 🚀 Enhancements
+
+- Support @quasar/extras v2 ([3c6ef13](https://github.com/Maiquu/nuxt-quasar/commit/3c6ef13))
+
+### 🩹 Fixes
+
+- Support @quasar/extras v2 exports ([3b08687](https://github.com/Maiquu/nuxt-quasar/commit/3b08687))
+
+### 🏡 Chore
+
+- Migrate to pnpm v11 ([ff32e86](https://github.com/Maiquu/nuxt-quasar/commit/ff32e86))
+- Update dev dependencies ([644cedd](https://github.com/Maiquu/nuxt-quasar/commit/644cedd))
+- Refine file exclusion patterns for Quasar packages in VSCode settings ([f4ad0c2](https://github.com/Maiquu/nuxt-quasar/commit/f4ad0c2))
+- Update lockfile ([2c425c8](https://github.com/Maiquu/nuxt-quasar/commit/2c425c8))
+
+### ✅ Tests
+
+- Add Quasar extras v1 and v2 fixtures ([a6eef72](https://github.com/Maiquu/nuxt-quasar/commit/a6eef72))
+
+### 🎨 Styles
+
+- Test fixture lint ([553b472](https://github.com/Maiquu/nuxt-quasar/commit/553b472))
+
+### ❤️ Contributors
+
+- Ege İliklier ([@Maiquu](https://github.com/Maiquu))
+
 ## v3.0.1
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.0.0...v3.0.1)
