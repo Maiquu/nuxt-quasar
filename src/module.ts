@@ -86,6 +86,20 @@ export interface ModuleOptions {
   cssAddon?: boolean
 
   /**
+   * Resolve `quasar` to a generated virtual entry of deep-path imports,
+   * instead of the package's own barrel file.
+   *
+   * Required for tree-shaking on Quasar `<2.25.0`. Newer versions ship a
+   * `sideEffects` field, which lets the bundler shake the barrel on its own;
+   * the virtual entry still trims the SSR bundle further.
+   *
+   * Disable as an escape hatch if a Quasar release breaks entry generation.
+   *
+   * @default true
+   */
+  virtualEntry?: boolean
+
+  /**
    * `@quasar/extras` options.
    *
    * @see [Documentation](https://github.com/quasarframework/quasar/blob/dev/extras/README.md)
@@ -135,6 +149,7 @@ export default defineNuxtModule<ModuleOptions>({
     autoIncludeIconSet: true,
     cssAddon: false,
     sassVariables: false,
+    virtualEntry: true,
     appConfigKey: 'nuxtQuasar',
     components: {
       defaults: {},
@@ -291,8 +306,11 @@ export default defineNuxtModule<ModuleOptions>({
         virtualAnimationsPlugin(context),
         virtualBrandPlugin(context),
         transformDirectivesPlugin(context),
-        virtualQuasarEntryPlugin(context),
       )
+
+      if (options.virtualEntry) {
+        config.plugins.push(virtualQuasarEntryPlugin(context))
+      }
 
       if (options.sassVariables) {
         config.plugins.push(transformScssPlugin(context))
@@ -327,20 +345,24 @@ export default defineNuxtModule<ModuleOptions>({
   },
 })
 
+const VALID_IDENTIFIER_RE = /^[A-Z_$][\w$]*$/i
+
 function isFontIconSet(iconSet: QuasarIconSet): iconSet is QuasarFontIconSet {
   return !iconSet.startsWith('svg-')
 }
 
 function categorizeImports(importMap: Record<string, string>, quasarResolve: ResolveFn): QuasarImports {
+  const entries = Object.entries(importMap).filter(([name]) => VALID_IDENTIFIER_RE.test(name))
+
   const imports: QuasarImports = {
-    raw: importMap,
+    raw: Object.fromEntries(entries),
     components: [],
     composables: [],
     directives: [],
     plugins: [],
   }
 
-  for (const [name, path] of Object.entries(importMap)) {
+  for (const [name, path] of entries) {
     const importData: QuasarImportData = {
       name,
       path: quasarResolve(path),
