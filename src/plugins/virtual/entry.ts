@@ -24,6 +24,9 @@ export function virtualQuasarEntryPlugin(context: ModuleContext): VitePlugin {
     enforce: 'pre',
 
     config(config) {
+      // Adding SSR settings to the client config makes Nuxt clear optimizeDeps.include.
+      if (context.mode !== 'server') return
+
       config.ssr ??= {}
       config.ssr.noExternal ??= []
       if (config.ssr.noExternal !== true) {
