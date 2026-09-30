@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.1.2
+
+[compare changes](https://github.com/Maiquu/nuxt-quasar/compare/v3.1.1...v3.1.2)
+
+### 🩹 Fixes
+
+- Limit Quasar SSR config to server builds ([6743a6a](https://github.com/Maiquu/nuxt-quasar/commit/6743a6a))
+
+### ❤️ Contributors
+
+- Ilya Semenov ([@IlyaSemenov](https://github.com/IlyaSemenov))
+
 ## v3.1.1
 
 [compare changes](https://github.com/Maiquu/nuxt-quasar/compare/0dd227f1fae5997e1485aadb2df94e564df42ab8...v3.1.1)
